@@ -1,9 +1,12 @@
+#!/usr/bin/env python3
+
 # Filename  : MapWriter.py
 # Authors   : Bjorn Lindeijer and Georg Muntingh
 # Version   : 1.1
 # Date      : April 29, 2008
 # Copyright : Public Domain
 
+import binascii
 import os, sys, math
 from PIL import Image
 import struct, base64, zlib
@@ -28,7 +31,7 @@ class Tileset:
         """
         TileImage = Image.open(self.Filename).convert("RGB")
         TileIW, TileIH = TileImage.size
-        TilesetW, TilesetH = TileIW / self.TileWidth, TileIH / self.TileHeight
+        TilesetW, TilesetH = int(TileIW / self.TileWidth), int(TileIH / self.TileHeight)
 
         for y in range(TilesetH):
             for x in range(TilesetW):
@@ -37,7 +40,7 @@ class Tileset:
                 self.List.append(tile)
 
                 str = tile.tobytes()
-                if not self.TileDict.has_key(str):
+                if not str in self.TileDict:
                     self.TileDict[str] = len(self.List) - 1
 
     def findTile(self, tileImage):
@@ -45,7 +48,7 @@ class Tileset:
             and returns 0 if the tile could not be found. Constant complexity due to dictionary lookup.
         """
         str = tileImage.tobytes()
-        if self.TileDict.has_key(str):
+        if str in self.TileDict:
             return self.TileDict[str] + 1
         else:
             return 0
@@ -68,7 +71,7 @@ class TileMap:
         """
         MapImage = Image.open(mapImageFile).convert("RGB")
         MapImageWidth, MapImageHeight = MapImage.size
-        self.Width, self.Height = MapImageWidth / self.TileWidth, MapImageHeight / self.TileHeight
+        self.Width, self.Height = int(MapImageWidth / self.TileWidth), int(MapImageHeight / self.TileHeight)
         progress = -1
 
         for y in range(self.Height):
@@ -88,8 +91,8 @@ class TileMap:
     def printProgress(self, percentage):
         """ This function prints the percentage on the current row after erasing what is already there.
         """
-        print '%s\r' % ' '*20,       # clean up row
-        print '%3d%% ' % percentage, # ending with comma prevents newline from being appended
+        #print('%s\r' % ' '*20),       # clean up row
+        print('\r' + str(percentage) + '  ', end=''), # ending with comma prevents newline from being appended
         sys.stdout.flush()
 
     def write(self, fileName):
@@ -117,10 +120,16 @@ class TileMap:
         data = doc.createElement("data")
 
         data.setAttribute("encoding", "base64")
-        TileData = ""
+        TileData = None
         for tileId in self.List:
-            TileData = TileData + struct.pack("<l", tileId)  # pack the tileId into a long
-        b64data = doc.createTextNode(base64.b64encode(TileData))
+            if TileData == None:
+                TileData = bytearray(struct.pack("<l", tileId))  # pack the tileId into a long
+            else:
+                TileData.extend(struct.pack("<l", tileId))  # pack the tileId into a long
+        TileData = bytes(TileData)
+        encoded = base64.b64encode(TileData).decode("utf-8")
+        #print(str(encoded))
+        b64data = doc.createTextNode(encoded)
         data.appendChild(b64data)
 
         layer.appendChild(data)
@@ -131,12 +140,12 @@ class TileMap:
         file.close()
 
 if sys.argv[1] == "--help":
-    print "Usage  : python Image2Map.py [tileX] [tileY] <map image file> <tileset file>"
-    print "Example: python MapWriter.py 8 8 JansHouse.png JansHouse-Tileset.png"
+    print("Usage  : python Image2Map.py [tileX] [tileY] <map image file> <tileset file>")
+    print("Example: python MapWriter.py 8 8 JansHouse.png JansHouse-Tileset.png")
 elif len(sys.argv) < 5:
-    print "Error  : You specified too few arguments!\n"
-    print "Usage  : python Image2Map.py [tileX] [tileY] <map image file> <tileset file>"
-    print "Example: python MapWriter.py 8 8 JansHouse.png JansHouse-Tileset.png"
+    print("Error  : You specified too few arguments!\n")
+    print("Usage  : python Image2Map.py [tileX] [tileY] <map image file> <tileset file>")
+    print("Example: python MapWriter.py 8 8 JansHouse.png JansHouse-Tileset.png")
 else:
     tileX, tileY = int(sys.argv[1]), int(sys.argv[2])
     mapImageFile, tileImageFile = sys.argv[3], sys.argv[4]
