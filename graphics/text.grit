@@ -1,0 +1,14 @@
+# Export tiles
+-gt
+
+# Transparent color is magenta
+-gT FF00FF
+
+# Exclude map
+-m!
+
+# 16 Colors (bit depth = 4 bit per pixel)
+-gB4
+
+# One palette
+-pn 16

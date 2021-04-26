@@ -1,0 +1,7 @@
+build/
+built_assets/
+*.gba
+*.sav
+*.elf
+
+*.swp
