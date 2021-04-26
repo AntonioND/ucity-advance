@@ -404,8 +404,7 @@ void BuildModeUpdateStatusBar(void)
     StatusBarPrint(0, 0, str);
 
     int32_t money = MoneyGet();
-    snprintf(str, sizeof(str), "Funds:     %c%9" PRId32,
-             (money < 0) ? '-' : ' ', money);
+    snprintf(str, sizeof(str), "Funds:     %10" PRId32, money);
     StatusBarPrint(0, 1, str);
 
     Room_Game_Draw_RCI_Bars();
@@ -422,8 +421,7 @@ void ModifyModeUpdateStatusBar(void)
     StatusBarPrint(0, 0, str);
 
     int32_t money = MoneyGet();
-    snprintf(str, sizeof(str), "Funds:     %c%9" PRId32,
-             (money < 0) ? '-' : ' ', money);
+    snprintf(str, sizeof(str), "Funds:     %10" PRId32, money);
     StatusBarPrint(0, 1, str);
 
     int y = (StatusBarPositionGet() == STATUS_BAR_UP) ? 0 : (GBA_SCREEN_H - 16);
@@ -489,8 +487,7 @@ void ViewModeUpdateStatusBar(void)
     char str[31];
 
     int32_t money = MoneyGet();
-    snprintf(str, sizeof(str), "Funds:     %c%9" PRId32,
-             (money < 0) ? '-' : ' ', money);
+    snprintf(str, sizeof(str), "Funds:     %10" PRId32, money);
     StatusBarPrint(0, 0, str);
 
     snprintf(str, sizeof(str), "Date:  %s", DateString());
