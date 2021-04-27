@@ -12,7 +12,9 @@
 
 #include "date.h"
 #include "input_utils.h"
+#include "main.h"
 #include "room_game/room_game.h"
+#include "room_minimap/room_minimap.h"
 
 // Assets
 
@@ -93,12 +95,13 @@ void Sound_Init(void)
     SOUND_DMA_Setup_AB(wave_a, wave_b);
 }
 
-int main(int argc, char *argv[])
+void Game_Clear_Screen(void)
 {
-    UGBA_Init(&argc, &argv);
+    uint32_t zero = 0;
 
-    IRQ_SetHandler(IRQ_VBLANK, vbl_handler);
-    IRQ_Enable(IRQ_VBLANK);
+    SWI_CpuSet_Fill32(&zero, (void *)MEM_PALETTE, MEM_PALETTE_SIZE);
+
+    SWI_CpuSet_Fill32(&zero, (void *)MEM_OAM, MEM_OAM_SIZE);
 
     for (int i = 0; i < 128; i++)
     {
@@ -106,13 +109,67 @@ int main(int argc, char *argv[])
         OBJ_RegularEnableSet(i, 0);
     }
 
+    SWI_CpuSet_Fill32(&zero, (void *)MEM_VRAM, MEM_VRAM_SIZE);
+}
+
+static int current_room;
+
+void Game_Room_Load(int room)
+{
+    Game_Clear_Screen();
+
+    switch (room)
+    {
+        case ROOM_GAME:
+            Room_Game_Load();
+            break;
+
+        case ROOM_MINIMAP:
+            Room_Minimap_Load();
+            break;
+
+        default:
+            UGBA_Assert(0);
+            return;
+    }
+
+    current_room = room;
+}
+
+void Game_Room_Handle_Current(void)
+{
+    switch (current_room)
+    {
+        case ROOM_GAME:
+            Room_Game_Handle();
+            break;
+
+        case ROOM_MINIMAP:
+            Room_Minimap_Handle();
+            break;
+
+        default:
+            UGBA_Assert(0);
+            return;
+    }
+}
+
+int main(int argc, char *argv[])
+{
+    UGBA_Init(&argc, &argv);
+
+    IRQ_SetHandler(IRQ_VBLANK, vbl_handler);
+    IRQ_Enable(IRQ_VBLANK);
+
+    Game_Clear_Screen();
+
     Sound_Init();
 
     //UMOD_Song_Play(SONG_KAOS_OCH_DEKADENS_MOD);
 
     DateReset();
 
-    Room_Game_Load();
+    Game_Room_Load(ROOM_GAME);
 
     while (1)
     {
@@ -126,7 +183,7 @@ int main(int argc, char *argv[])
         KEYS_Update();
         Key_Autorepeat_Update();
 
-        Room_Game_Handle();
+        Game_Room_Handle_Current();
     }
 
     return 0;

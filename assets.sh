@@ -45,6 +45,11 @@ tools/build/png2sprites/png2sprites \
     sprites/building_menu_tiles.png \
     sprites/building_menu_map.png
 
+tools/build/png2sprites/png2sprites \
+    ${OUT_DIR}/sprites/ \
+    sprites/minimap_menu_tiles.png \
+    sprites/minimap_menu_map.png
+
 # Convert other graphics
 
 mkdir ${OUT_DIR}/graphics

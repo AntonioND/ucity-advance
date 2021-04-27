@@ -8,8 +8,9 @@
 
 #include <ugba/ugba.h>
 
-#include "input_utils.h"
 #include "date.h"
+#include "input_utils.h"
+#include "main.h"
 #include "money.h"
 #include "map_utils.h"
 #include "room_game/building_info.h"
@@ -514,6 +515,11 @@ void Room_Game_Handle(void)
                 Room_Game_Set_Mode(MODE_SELECT_BUILDING);
             else if (keys_pressed & KEY_B)
                 Room_Game_Set_Mode(MODE_WATCH);
+
+            if (keys_released & KEY_START)
+            {
+                Game_Room_Load(ROOM_MINIMAP);
+            }
 
             break;
         }
