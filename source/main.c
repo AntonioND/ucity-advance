@@ -20,6 +20,7 @@
 
 #include "audio/umod_pack_bin.h"
 #include "audio/umod_pack_info.h"
+#include "maps/test_map.h"
 
 // Buffer size needs to be a multiple of 16 (the amount of bytes copied to the
 // FIFO whenever it gets data from DMA).
@@ -109,7 +110,7 @@ void Game_Clear_Screen(void)
         OBJ_RegularEnableSet(i, 0);
     }
 
-    SWI_CpuSet_Fill32(&zero, (void *)MEM_VRAM, MEM_VRAM_SIZE);
+    //SWI_CpuSet_Fill32(&zero, (void *)MEM_VRAM, MEM_VRAM_SIZE);
 }
 
 static int current_room;
@@ -168,6 +169,8 @@ int main(int argc, char *argv[])
     //UMOD_Song_Play(SONG_KAOS_OCH_DEKADENS_MOD);
 
     DateReset();
+
+    Load_City_Data(test_map_map, 9, 9);
 
     Game_Room_Load(ROOM_GAME);
 

@@ -24,7 +24,6 @@
 
 #include "graphics/cursor.h"
 #include "maps/city_tileset.h"
-#include "maps/test_map.h"
 
 typedef enum {
     MODE_RUNNING,
@@ -43,6 +42,15 @@ static int scrolly = 0;
 static int last_build_x = -1;
 static int last_build_y = -1;
 
+void Load_City_Data(const void *map, int scx, int scy)
+{
+    // Load the map
+    copy_map_to_sbb(map, (void *)CITY_MAP_BASE,
+                    CITY_MAP_HEIGHT, CITY_MAP_WIDTH);
+
+    BG_RegularScrollSet(2, scx * 8, scy * 8);
+}
+
 void Load_City_Graphics(void)
 {
     // Load the palettes
@@ -50,10 +58,6 @@ void Load_City_Graphics(void)
 
     // Load the tiles
     SWI_CpuSet_Copy16(city_tileset_tiles, (void *)CITY_TILES_BASE, city_tileset_tiles_size);
-
-    // Load the map
-    copy_map_to_sbb(test_map_map, (void *)CITY_MAP_BASE,
-                    test_map_map_height, test_map_map_width);
 
     // Setup background
     BG_RegularInit(2, BG_REGULAR_512x512, BG_16_COLORS,
@@ -179,8 +183,6 @@ void Room_Game_Load(void)
     // ===============
 
     Load_City_Graphics();
-
-    BG_RegularScrollSet(2, 0, 0);
 
     DISP_ModeSet(0);
     DISP_Object1DMappingEnable(1);

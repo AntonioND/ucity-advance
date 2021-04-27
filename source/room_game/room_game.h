@@ -108,6 +108,8 @@
 
 // ----------------------------------------------------------------------------
 
+void Load_City_Data(const void *map, int scx, int scy);
+
 void Room_Game_Load(void);
 void Room_Game_Handle(void);
 
