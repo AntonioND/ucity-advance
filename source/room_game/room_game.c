@@ -186,9 +186,7 @@ void Room_Game_Load(void)
 
     DISP_ModeSet(0);
     DISP_Object1DMappingEnable(1);
-    DISP_LayersEnable(1, 1, 1, 0, 1);
-
-    CON_InitDefault();
+    DISP_LayersEnable(0, 1, 1, 0, 1);
 
     // Prepare cursor
 
