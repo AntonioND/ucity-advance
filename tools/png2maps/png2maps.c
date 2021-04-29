@@ -70,16 +70,16 @@ int used_palettes = 0;
 
 int Palette_Get_Or_Add_Color(palette_info *p, int r, int g, int b)
 {
-    for (size_t i = 0; i < p->numcolors; i++)
+    r &= 0xF8;
+    g &= 0xF8;
+    b &= 0xF8;
+
+    for (int i = 0; i < p->numcolors; i++)
     {
         color_info *c = &(p->color[i]);
         if ((c->r == r) && (c->g == g) && (c->b == b))
             return i;
     }
-
-    r &= 0xF8;
-    g &= 0xF8;
-    b &= 0xF8;
 
     if (p->numcolors < 16)
     {
@@ -122,6 +122,10 @@ int Palette_Is_Subset(palette_info *whole, palette_info *subset)
 
 int Palette_Get_Color_Index(palette_info *p, int r, int g, int b)
 {
+    r &= 0xF8;
+    g &= 0xF8;
+    b &= 0xF8;
+
     for (size_t i = 0; i < p->numcolors; i++)
     {
         color_info *c = &(p->color[i]);
@@ -166,7 +170,7 @@ int Load_And_Convert_Tileset(const char *in_png, const char *base_name,
 
     printf("  Size: %dx%d\n", width, height);
 
-    total_tiles = height / 8;
+    total_tiles = (width / 8) * (height / 8);
 
     printf("  Total tiles: %d\n", total_tiles);
 
@@ -187,7 +191,11 @@ int Load_And_Convert_Tileset(const char *in_png, const char *base_name,
         {
             for (int i = 0; i < 8; i++)
             {
-                int index = ((c * 8 * 8) + (j * 8) + i) * 4;
+                int xx = ((c % (width / 8)) * 8) + i;
+                int yy = (c / (width / 8) * 8) + j;
+
+                int index = (xx + (yy * width)) * 4;
+
                 int r = buffer[index + 0];
                 int g = buffer[index + 1];
                 int b = buffer[index + 2];
@@ -248,7 +256,11 @@ int Load_And_Convert_Tileset(const char *in_png, const char *base_name,
         {
             for (int i = 0; i < 8; i++)
             {
-                int index = ((c * 8 * 8) + (j * 8) + i) * 4;
+                int xx = ((c % (width / 8)) * 8) + i;
+                int yy = (c / (width / 8) * 8) + j;
+
+                int index = (xx + (yy * width)) * 4;
+
                 int r = buffer[index + 0];
                 int g = buffer[index + 1];
                 int b = buffer[index + 2];
