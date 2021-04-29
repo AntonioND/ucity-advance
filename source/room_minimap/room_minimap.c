@@ -2,6 +2,8 @@
 //
 // Copyright (c) 2021, Antonio Niño Díaz
 
+#include <string.h>
+
 #include <ugba/ugba.h>
 
 #include "input_utils.h"
@@ -19,7 +21,7 @@
 
 #define FRAMEBUFFER_TILES_BASE          MEM_BG_TILES_BLOCK_ADDR(0)
 #define FRAMEBUFFER_MAP_BASE            MEM_BG_MAP_BLOCK_ADDR(16)
-#define FRAMEBUFFER_COLOR_BASE          (240)
+#define FRAMEBUFFER_COLOR_BASE          (192)
 
 #define BG_FRAME_PALETTE                (0)
 #define BG_FRAME_TILES_BASE             MEM_BG_TILES_BLOCK_ADDR(3)
@@ -100,22 +102,29 @@ static void Room_Minimap_Refresh_Icons(void)
     }
 }
 
-static void Room_Minimap_Set_Watching_Mode(void)
+static void Minimap_Title(const char *text)
 {
-    current_mode = MODE_WATCHING;
+    char full_title[16];
+    memset(full_title, ' ', sizeof(full_title));
 
-    for (int i = 0; i < 14; i++)
+    size_t l = strlen(text);
+    int start = (sizeof(full_title) - l) / 2;
+    int end = start + l;
+    for (int i = start; i < end; i++)
+        full_title[i] = *text++;
+
+    uintptr_t addr = BG_FRAME_MAP_BASE + ((30 - sizeof(full_title)) / 2) * 2;
+
+    for (int i = 0; i < 16; i++)
     {
-        OBJ_RegularInit(i, i * 16, 0, OBJ_SIZE_16x16, OBJ_16_COLORS, 0, 0);
-        OBJ_RegularEnableSet(i, 0);
+        int c = full_title[i];
+
+        uint16_t *ptr = (uint16_t *)addr;
+
+        *ptr = MAP_REGULAR_TILE(c) | MAP_REGULAR_PALETTE(BG_FRAME_PALETTE);
+
+        addr += 2;
     }
-}
-
-static void Room_Minimap_Set_Selecting_Mode(void)
-{
-    current_mode = MODE_SELECTING;
-
-    Room_Minimap_Refresh_Icons();
 }
 
 static void Plot_Tile(void *tiles, int x, int y, int color)
@@ -146,10 +155,8 @@ static void Palettes_Set_White(void)
         MEM_PALETTE_BG[i] = RGB15(31, 31, 31);
 }
 
-static void Draw_Minimap_Overview(void)
+static void Palettes_Set_Colors(void)
 {
-    Palettes_Set_White();
-
 #define C_WHITE             (FRAMEBUFFER_COLOR_BASE + 0)
 #define C_LIGHT_GREEN       (FRAMEBUFFER_COLOR_BASE + 1)
 #define C_GREEN             (FRAMEBUFFER_COLOR_BASE + 2)
@@ -162,6 +169,25 @@ static void Draw_Minimap_Overview(void)
 #define C_GREY              (FRAMEBUFFER_COLOR_BASE + 9)
 #define C_GREY_BLUE         (FRAMEBUFFER_COLOR_BASE + 10)
 #define C_BLACK             (FRAMEBUFFER_COLOR_BASE + 11)
+
+    // Load palette
+    MEM_PALETTE_BG[C_WHITE] = RGB15(31, 31, 31);
+    MEM_PALETTE_BG[C_LIGHT_GREEN] = RGB15(15, 31, 15);
+    MEM_PALETTE_BG[C_GREEN] = RGB15(0, 31, 0);
+    MEM_PALETTE_BG[C_LIGHT_BLUE] = RGB15(15, 15, 31);
+    MEM_PALETTE_BG[C_BLUE] = RGB15(0, 0, 31);
+    MEM_PALETTE_BG[C_DARK_BLUE] = RGB15(0, 0, 15);
+    MEM_PALETTE_BG[C_PURPLE] = RGB15(15, 0, 15);
+    MEM_PALETTE_BG[C_YELLOW] = RGB15(31, 31, 0);
+    MEM_PALETTE_BG[C_RED] = RGB15(31, 0, 0);
+    MEM_PALETTE_BG[C_GREY] = RGB15(15, 15, 15);
+    MEM_PALETTE_BG[C_GREY_BLUE] = RGB15(15, 15, 20);
+    MEM_PALETTE_BG[C_BLACK] = RGB15(0, 0, 0);
+}
+
+static void Draw_Minimap_Overview(void)
+{
+    Palettes_Set_White();
 
     static uint8_t color_array[] = {
         [TYPE_FIELD] = C_WHITE,
@@ -188,6 +214,8 @@ static void Draw_Minimap_Overview(void)
         [TYPE_RADIATION] = C_RED,
     };
 
+    Minimap_Title("Overview");
+
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)
     {
         for (int i = 0; i < CITY_MAP_WIDTH; i++)
@@ -211,19 +239,89 @@ static void Draw_Minimap_Overview(void)
         }
     }
 
-    // Load palette
-    MEM_PALETTE_BG[C_WHITE] = RGB15(31, 31, 31);
-    MEM_PALETTE_BG[C_LIGHT_GREEN] = RGB15(15, 31, 15);
-    MEM_PALETTE_BG[C_GREEN] = RGB15(0, 31, 0);
-    MEM_PALETTE_BG[C_LIGHT_BLUE] = RGB15(15, 15, 31);
-    MEM_PALETTE_BG[C_BLUE] = RGB15(0, 0, 31);
-    MEM_PALETTE_BG[C_DARK_BLUE] = RGB15(0, 0, 15);
-    MEM_PALETTE_BG[C_PURPLE] = RGB15(15, 0, 15);
-    MEM_PALETTE_BG[C_YELLOW] = RGB15(31, 31, 0);
-    MEM_PALETTE_BG[C_RED] = RGB15(31, 0, 0);
-    MEM_PALETTE_BG[C_GREY] = RGB15(15, 15, 15);
-    MEM_PALETTE_BG[C_GREY_BLUE] = RGB15(15, 15, 20);
-    MEM_PALETTE_BG[C_BLACK] = RGB15(0, 0, 0);
+    Palettes_Set_Colors();
+}
+
+static void Draw_Minimap_Zone(void)
+{
+    Palettes_Set_White();
+
+    static uint8_t color_array[] = {
+        [TYPE_FIELD] = C_WHITE,
+        [TYPE_FOREST] = C_LIGHT_GREEN,
+        [TYPE_WATER] = C_LIGHT_BLUE,
+        [TYPE_RESIDENTIAL] = C_GREEN,
+        [TYPE_INDUSTRIAL] = C_YELLOW,
+        [TYPE_COMMERCIAL] = C_BLUE,
+        [TYPE_POLICE_DEPT] = C_GREY,
+        [TYPE_FIRE_DEPT] = C_GREY,
+        [TYPE_HOSPITAL] = C_GREY,
+        [TYPE_PARK] = C_LIGHT_GREEN,
+        [TYPE_STADIUM] = C_GREY,
+        [TYPE_SCHOOL] = C_GREY,
+        [TYPE_HIGH_SCHOOL] = C_GREY,
+        [TYPE_UNIVERSITY] = C_GREY,
+        [TYPE_MUSEUM] = C_GREY,
+        [TYPE_LIBRARY] = C_GREY,
+        [TYPE_AIRPORT] = C_GREY,
+        [TYPE_PORT] = C_GREY,
+        [TYPE_DOCK] = C_GREY,
+        [TYPE_POWER_PLANT] = C_GREY,
+        [TYPE_FIRE] = C_GREY, // Placeholder, never used.
+        [TYPE_RADIATION] = C_GREY,
+    };
+
+    Minimap_Title("Zone Map");
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            uint16_t type = CityMapGetType(i, j);
+
+            int color = color_array[type & TYPE_MASK];
+
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, color);
+        }
+    }
+
+    Palettes_Set_Colors();
+}
+
+static void Draw_Minimap_Selected(void)
+{
+    switch (selected_minimap)
+    {
+        case MINIMAP_SELECTION_OVERVIEW:
+            Draw_Minimap_Overview();
+            break;
+        case MINIMAP_SELECTION_ZONE_MAP:
+            Draw_Minimap_Zone();
+            break;
+        default:
+            UGBA_Assert(0);
+            break;
+    }
+}
+
+static void Room_Minimap_Set_Watching_Mode(void)
+{
+    current_mode = MODE_WATCHING;
+
+    for (int i = 0; i < 14; i++)
+    {
+        OBJ_RegularInit(i, i * 16, 0, OBJ_SIZE_16x16, OBJ_16_COLORS, 0, 0);
+        OBJ_RegularEnableSet(i, 0);
+    }
+
+    Draw_Minimap_Selected();
+}
+
+static void Room_Minimap_Set_Selecting_Mode(void)
+{
+    current_mode = MODE_SELECTING;
+
+    Room_Minimap_Refresh_Icons();
 }
 
 void Room_Minimap_Load(void)
@@ -313,8 +411,6 @@ void Room_Minimap_Load(void)
     selected_minimap = MINIMAP_SELECTION_OVERVIEW;
 
     Room_Minimap_Set_Watching_Mode();
-
-    Draw_Minimap_Overview();
 }
 
 void Room_Minimap_Handle(void)
