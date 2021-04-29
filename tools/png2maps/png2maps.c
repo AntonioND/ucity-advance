@@ -120,6 +120,51 @@ int Palette_Is_Subset(palette_info *whole, palette_info *subset)
     return 1;
 }
 
+int Palette_Merge(palette_info *whole, palette_info *subset)
+{
+    int common = 0;
+
+    for (size_t i = 0; i < subset->numcolors; i++)
+    {
+        color_info *cs = &(subset->color[i]);
+
+        int color_present = 0;
+
+        for (size_t j = 0; j < whole->numcolors; j++)
+        {
+            color_info *cw = &(whole->color[j]);
+
+            if ((cs->r == cw->r) && (cs->g == cw->g) && (cs->b == cw->b))
+            {
+                color_present = 1;
+                break;
+            }
+        }
+
+        if (color_present == 1)
+            common++;
+    }
+
+    int total = subset->numcolors + whole->numcolors - common;
+
+    if (total > 16)
+        return 0;
+
+    // Merge
+
+    for (size_t i = 0; i < subset->numcolors; i++)
+    {
+        color_info *cs = &(subset->color[i]);
+        if (Palette_Get_Or_Add_Color(whole, cs->r, cs->g, cs->b) == -1)
+        {
+            printf("%s:%d: This shouldn't happen.\n", __func__, __LINE__);
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
 int Palette_Get_Color_Index(palette_info *p, int r, int g, int b)
 {
     r &= 0xF8;
@@ -222,6 +267,14 @@ int Load_And_Convert_Tileset(const char *in_png, const char *base_name,
                 //printf("%d: Found palette: %d\n", c, pal_index);
                 break;
             }
+
+            if (Palette_Merge(search, &p))
+            {
+                pal_index = i;
+                printf("%d: Merged palette: %d\n", c, pal_index);
+                break;
+            }
+
         }
 
         // If the palette doesn't exist, create it
