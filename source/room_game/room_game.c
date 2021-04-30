@@ -2,9 +2,7 @@
 //
 // Copyright (c) 2021 Antonio Niño Díaz
 
-#include <stdio.h>
 #include <string.h>
-#include <inttypes.h>
 
 #include <ugba/ugba.h>
 
@@ -13,6 +11,7 @@
 #include "main.h"
 #include "money.h"
 #include "map_utils.h"
+#include "text_utils.h"
 #include "room_game/building_info.h"
 #include "room_game/build_menu.h"
 #include "room_game/draw_building.h"
@@ -400,12 +399,14 @@ void BuildModeUpdateStatusBar(void)
     building_info *bi = Get_Building_Info(building);
 
     char str[31];
+    str[0] = 0;
 
-    snprintf(str, sizeof(str), "Cost:       %9" PRId32, bi->price);
+    strcpy(str, "Cost:      ");
+    Print_Integer_Decimal_Right(&str[strlen(str)], 11, bi->price);
     StatusBarPrint(0, 0, str);
 
-    int32_t money = MoneyGet();
-    snprintf(str, sizeof(str), "Funds:     %10" PRId32, money);
+    strcpy(str, "Funds:     ");
+    Print_Integer_Decimal_Right(&str[strlen(str)], 11, MoneyGet());
     StatusBarPrint(0, 1, str);
 
     Room_Game_Draw_RCI_Bars();
@@ -417,12 +418,14 @@ void ModifyModeUpdateStatusBar(void)
     building_info *bi = Get_Building_Info(building);
 
     char str[31];
+    str[0] = 0;
 
-    snprintf(str, sizeof(str), "Cost:       %9" PRId32, bi->price);
+    strcpy(str, "Cost:      ");
+    Print_Integer_Decimal_Right(&str[strlen(str)], 11, bi->price);
     StatusBarPrint(0, 0, str);
 
-    int32_t money = MoneyGet();
-    snprintf(str, sizeof(str), "Funds:     %10" PRId32, money);
+    strcpy(str, "Funds:     ");
+    Print_Integer_Decimal_Right(&str[strlen(str)], 11, MoneyGet());
     StatusBarPrint(0, 1, str);
 
     int y = (StatusBarPositionGet() == STATUS_BAR_UP) ? 0 : (GBA_SCREEN_H - 16);
@@ -486,12 +489,14 @@ void Room_Game_Set_Mode(int mode)
 void ViewModeUpdateStatusBar(void)
 {
     char str[31];
+    str[0] = 0;
 
-    int32_t money = MoneyGet();
-    snprintf(str, sizeof(str), "Funds:     %10" PRId32, money);
+    strcpy(str, "Funds:     ");
+    Print_Integer_Decimal_Right(&str[strlen(str)], 11, MoneyGet());
     StatusBarPrint(0, 0, str);
 
-    snprintf(str, sizeof(str), "Date:  %s", DateString());
+    strcpy(str, "Date:  ");
+    strcat(str, DateString());
     StatusBarPrint(0, 1, str);
 
     Room_Game_Draw_RCI_Bars();

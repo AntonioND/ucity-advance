@@ -2,9 +2,6 @@
 //
 // Copyright (c) 2017-2019, 2021, Antonio Niño Díaz
 
-#include <inttypes.h>
-#include <stdio.h>
-
 #include <ugba/ugba.h>
 
 #include "input_utils.h"

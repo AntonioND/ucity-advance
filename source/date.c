@@ -2,7 +2,9 @@
 //
 // Copyright (c) 2021, Antonio Niño Díaz
 
-#include <stdio.h>
+#include <string.h>
+
+#include "text_utils.h"
 
 static int date_year;
 static int date_month; // 0 (January) - 11 (December)
@@ -26,8 +28,15 @@ static char date_str[30];
 
 const char *DateString(void)
 {
-    snprintf(date_str, sizeof(date_str),
-             "%s %4d", month_name[date_month], date_year);
+    date_str[0] = '\0';
+
+    strcpy(date_str, month_name[date_month]);
+
+    int l = strlen(date_str);
+    date_str[l] = ' ';
+    l++;
+
+    Print_Integer_Decimal(&date_str[l], date_year);
 
     return date_str;
 }

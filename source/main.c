@@ -2,10 +2,6 @@
 //
 // Copyright (c) 2021 Antonio Niño Díaz
 
-#include <stdio.h>
-#include <string.h>
-#include <inttypes.h>
-
 #include <ugba/ugba.h>
 
 #include <umod/umod.h>
@@ -176,11 +172,6 @@ int main(int argc, char *argv[])
 
     while (1)
     {
-        //char text[30];
-        //snprintf(text, sizeof(text), "%" PRId32 "   ", MoneyGet());
-        //CON_CursorSet(0, 0);
-        //CON_Print(text);
-
         SWI_VBlankIntrWait();
 
         KEYS_Update();
