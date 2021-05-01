@@ -9,8 +9,10 @@
 #include "input_utils.h"
 #include "main.h"
 
+#include "simulation/simulation_services.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
+#include "room_game/tileset_info.h"
 
 // Assets
 
@@ -155,34 +157,109 @@ static void Palettes_Set_White(void)
         MEM_PALETTE_BG[i] = RGB15(31, 31, 31);
 }
 
+typedef enum {
+     C_WHITE    = FRAMEBUFFER_COLOR_BASE,
+     C_PURPLE,
+     C_YELLOW,
+     C_GREY,
+     C_GREY_BLUE,
+     C_BLACK,
+
+     C_RED_1,
+     C_RED_2,
+     C_RED_3,
+     C_RED_4,
+     C_RED_5,
+     C_RED_6,
+     C_RED_7,
+     C_RED_8,
+
+     C_GREEN_1,
+     C_GREEN_2,
+     C_GREEN_3,
+     C_GREEN_4,
+     C_GREEN_5,
+     C_GREEN_6,
+     C_GREEN_7,
+     C_GREEN_8,
+
+     C_BLUE_1,
+     C_BLUE_2,
+     C_BLUE_3,
+     C_BLUE_4,
+     C_BLUE_5,
+     C_BLUE_6,
+     C_BLUE_7,
+     C_BLUE_8,
+
+     C_PURPLE_1,
+     C_PURPLE_2,
+     C_PURPLE_3,
+     C_PURPLE_4,
+     C_PURPLE_5,
+     C_PURPLE_6,
+     C_PURPLE_7,
+     C_PURPLE_8,
+
+     // Aliases
+
+     C_RED = C_RED_8,
+
+     C_GREEN = C_GREEN_8,
+     C_LIGHT_GREEN = C_GREEN_4,
+     C_DARK_GREEN = C_GREEN_2,
+
+     C_BLUE = C_BLUE_8,
+     C_LIGHT_BLUE = C_BLUE_4,
+     C_DARK_BLUE = C_BLUE_2,
+} color_index;
+
 static void Palettes_Set_Colors(void)
 {
-#define C_WHITE             (FRAMEBUFFER_COLOR_BASE + 0)
-#define C_LIGHT_GREEN       (FRAMEBUFFER_COLOR_BASE + 1)
-#define C_GREEN             (FRAMEBUFFER_COLOR_BASE + 2)
-#define C_LIGHT_BLUE        (FRAMEBUFFER_COLOR_BASE + 3)
-#define C_BLUE              (FRAMEBUFFER_COLOR_BASE + 4)
-#define C_DARK_BLUE         (FRAMEBUFFER_COLOR_BASE + 5)
-#define C_PURPLE            (FRAMEBUFFER_COLOR_BASE + 6)
-#define C_YELLOW            (FRAMEBUFFER_COLOR_BASE + 7)
-#define C_RED               (FRAMEBUFFER_COLOR_BASE + 8)
-#define C_GREY              (FRAMEBUFFER_COLOR_BASE + 9)
-#define C_GREY_BLUE         (FRAMEBUFFER_COLOR_BASE + 10)
-#define C_BLACK             (FRAMEBUFFER_COLOR_BASE + 11)
 
     // Load palette
     MEM_PALETTE_BG[C_WHITE] = RGB15(31, 31, 31);
-    MEM_PALETTE_BG[C_LIGHT_GREEN] = RGB15(15, 31, 15);
-    MEM_PALETTE_BG[C_GREEN] = RGB15(0, 31, 0);
-    MEM_PALETTE_BG[C_LIGHT_BLUE] = RGB15(15, 15, 31);
-    MEM_PALETTE_BG[C_BLUE] = RGB15(0, 0, 31);
-    MEM_PALETTE_BG[C_DARK_BLUE] = RGB15(0, 0, 15);
     MEM_PALETTE_BG[C_PURPLE] = RGB15(15, 0, 15);
     MEM_PALETTE_BG[C_YELLOW] = RGB15(31, 31, 0);
-    MEM_PALETTE_BG[C_RED] = RGB15(31, 0, 0);
     MEM_PALETTE_BG[C_GREY] = RGB15(15, 15, 15);
     MEM_PALETTE_BG[C_GREY_BLUE] = RGB15(15, 15, 20);
     MEM_PALETTE_BG[C_BLACK] = RGB15(0, 0, 0);
+
+    MEM_PALETTE_BG[C_RED_1] = RGB15(31, 28, 28);
+    MEM_PALETTE_BG[C_RED_2] = RGB15(31, 24, 24);
+    MEM_PALETTE_BG[C_RED_3] = RGB15(31, 20, 20);
+    MEM_PALETTE_BG[C_RED_4] = RGB15(31, 16, 16);
+    MEM_PALETTE_BG[C_RED_5] = RGB15(31, 12, 12);
+    MEM_PALETTE_BG[C_RED_6] = RGB15(31, 8, 8);
+    MEM_PALETTE_BG[C_RED_7] = RGB15(31, 4, 4);
+    MEM_PALETTE_BG[C_RED_8] = RGB15(31, 0, 0);
+
+    MEM_PALETTE_BG[C_GREEN_1] = RGB15(28, 31, 28);
+    MEM_PALETTE_BG[C_GREEN_2] = RGB15(24, 31, 24);
+    MEM_PALETTE_BG[C_GREEN_3] = RGB15(20, 31, 20);
+    MEM_PALETTE_BG[C_GREEN_4] = RGB15(16, 31, 16);
+    MEM_PALETTE_BG[C_GREEN_5] = RGB15(12, 31, 12);
+    MEM_PALETTE_BG[C_GREEN_6] = RGB15(8, 31, 8);
+    MEM_PALETTE_BG[C_GREEN_7] = RGB15(4, 31, 4);
+    MEM_PALETTE_BG[C_GREEN_8] = RGB15(0, 31, 0);
+
+    MEM_PALETTE_BG[C_BLUE_1] = RGB15(28, 28, 31);
+    MEM_PALETTE_BG[C_BLUE_2] = RGB15(24, 24, 31);
+    MEM_PALETTE_BG[C_BLUE_3] = RGB15(20, 20, 31);
+    MEM_PALETTE_BG[C_BLUE_4] = RGB15(16, 16, 31);
+    MEM_PALETTE_BG[C_BLUE_5] = RGB15(12, 12, 31);
+    MEM_PALETTE_BG[C_BLUE_6] = RGB15(8, 8, 31);
+    MEM_PALETTE_BG[C_BLUE_7] = RGB15(4, 4, 31);
+    MEM_PALETTE_BG[C_BLUE_8] = RGB15(0, 0, 31);
+
+    MEM_PALETTE_BG[C_PURPLE_1] = RGB15(29, 28, 29);
+    MEM_PALETTE_BG[C_PURPLE_2] = RGB15(27, 24, 27);
+    MEM_PALETTE_BG[C_PURPLE_3] = RGB15(25, 20, 25);
+    MEM_PALETTE_BG[C_PURPLE_4] = RGB15(23, 16, 23);
+    MEM_PALETTE_BG[C_PURPLE_5] = RGB15(21, 12, 21);
+    MEM_PALETTE_BG[C_PURPLE_6] = RGB15(19, 8, 19);
+    MEM_PALETTE_BG[C_PURPLE_7] = RGB15(17, 4, 17);
+    MEM_PALETTE_BG[C_PURPLE_8] = RGB15(15, 0, 15);
 }
 
 static void Draw_Minimap_Overview(void)
@@ -288,6 +365,151 @@ static void Draw_Minimap_Zone(void)
     Palettes_Set_Colors();
 }
 
+void Draw_Minimap_Police(void)
+{
+    Palettes_Set_White();
+
+    Minimap_Title("Police Influence");
+
+    Simulation_Services(T_POLICE_DEPT_CENTER);
+
+    uint8_t *map = Simulation_ServicesGetMap();
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            uint8_t value = map[j * CITY_MAP_WIDTH + i];
+            int color;
+
+            if (value < 4)
+                color = C_WHITE;
+            else
+                color = C_BLUE_1 + (value / 32);
+
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, color);
+        }
+    }
+
+    Palettes_Set_Colors();
+}
+
+void Draw_Minimap_FireProtection(void)
+{
+    Palettes_Set_White();
+
+    Minimap_Title("Fire Protection");
+
+    Simulation_Services(T_FIRE_DEPT_CENTER);
+
+    uint8_t *map = Simulation_ServicesGetMap();
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            uint8_t value = map[j * CITY_MAP_WIDTH + i];
+            int color;
+
+            if (value < 4)
+                color = C_WHITE;
+            else
+                color = C_RED_1 + (value / 32);
+
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, color);
+        }
+    }
+
+    Palettes_Set_Colors();
+}
+
+void Draw_Minimap_Hospitals(void)
+{
+    Palettes_Set_White();
+
+    Minimap_Title("Hospitals");
+
+    Simulation_Services(T_HOSPITAL_CENTER);
+
+    uint8_t *map = Simulation_ServicesGetMap();
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            uint8_t value = map[j * CITY_MAP_WIDTH + i];
+            int color;
+
+            if (value < 4)
+                color = C_WHITE;
+            else
+                color = C_GREEN_1 + (value / 32);
+
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, color);
+        }
+    }
+
+    Palettes_Set_Colors();
+}
+
+void Draw_Minimap_Schools(void)
+{
+    Palettes_Set_White();
+
+    Minimap_Title("Schools");
+
+    Simulation_Services(T_SCHOOL_CENTER);
+
+    uint8_t *map = Simulation_ServicesGetMap();
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            uint8_t value = map[j * CITY_MAP_WIDTH + i];
+            int color;
+
+            if (value < 4)
+                color = C_WHITE;
+            else
+                color = C_PURPLE_1 + (value / 32);
+
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, color);
+        }
+    }
+
+    Palettes_Set_Colors();
+}
+
+void Draw_Minimap_HighSchools(void)
+{
+    Palettes_Set_White();
+
+    Minimap_Title("High Schools");
+
+    Simulation_ServicesBig(T_HIGH_SCHOOL_CENTER);
+
+    uint8_t *map = Simulation_ServicesGetMap();
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            uint8_t value = map[j * CITY_MAP_WIDTH + i];
+            int color;
+
+            if (value < 4)
+                color = C_WHITE;
+            else
+                color = C_PURPLE_1 + (value / 32);
+
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, color);
+        }
+    }
+
+    Palettes_Set_Colors();
+}
+
 static void Draw_Minimap_Selected(void)
 {
     switch (selected_minimap)
@@ -298,6 +520,28 @@ static void Draw_Minimap_Selected(void)
         case MINIMAP_SELECTION_ZONE_MAP:
             Draw_Minimap_Zone();
             break;
+        //case MINIMAP_SELECTION_TRANSPORT_MAP:
+        case MINIMAP_SELECTION_POLICE:
+            Draw_Minimap_Police();
+            break;
+        case MINIMAP_SELECTION_FIRE_PROTECTION:
+            Draw_Minimap_FireProtection();
+            break;
+        case MINIMAP_SELECTION_HOSPITALS:
+            Draw_Minimap_Hospitals();
+            break;
+        case MINIMAP_SELECTION_SCHOOLS:
+            Draw_Minimap_Schools();
+            break;
+        case MINIMAP_SELECTION_HIGH_SCHOOLS:
+            Draw_Minimap_HighSchools();
+            break;
+        //case MINIMAP_SELECTION_POWER_GRID:
+        //case MINIMAP_SELECTION_POWER_DENSITY:
+        //case MINIMAP_SELECTION_POPULATION_DENSITY:
+        //case MINIMAP_SELECTION_TRAFFIC:
+        //case MINIMAP_SELECTION_POLLUTION:
+        //case MINIMAP_SELECTION_HAPPINESS:
         default:
             UGBA_Assert(0);
             break;
