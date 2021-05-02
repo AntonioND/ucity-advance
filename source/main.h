@@ -10,5 +10,6 @@
 
 void Game_Room_Load(int room);
 void Game_Room_Handle_Current(void);
+void Game_Clear_Screen(void);
 
 #endif // MAIN_H__
