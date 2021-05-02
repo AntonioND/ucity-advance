@@ -8,6 +8,9 @@
 #include <stdint.h>
 
 uint8_t *Simulation_PowerDistributionGetMap(void);
+
+// Make sure to call Simulation_HappinessResetMap() before this one, or the
+// happiness flags will be saved on top of the previous state.
 void Simulation_PowerDistribution(void);
 
 #endif // SIMULATION_SIMULATION_POWER_H__

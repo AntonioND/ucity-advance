@@ -13,6 +13,7 @@
 #include "room_game/tileset_info.h"
 #include "simulation/building_density.h"
 #include "simulation/queue.h"
+#include "simulation/simulation_happiness.h"
 
 #define TILE_HANDLED_BIT                7
 #define TILE_HANDLED_POWER_PLANT_BIT    6
@@ -22,7 +23,7 @@
 // How much power there is now
 #define TILE_POWER_LEVEL_MASK           (0x3F)
 
-EWRAM_BSS static uint8_t power_map[CITY_MAP_HEIGHT * CITY_MAP_WIDTH];
+static uint8_t power_map[CITY_MAP_HEIGHT * CITY_MAP_WIDTH];
 
 uint8_t *Simulation_PowerDistributionGetMap(void)
 {
@@ -225,13 +226,6 @@ void Simulation_PowerDistribution(void)
 {
     memset(power_map, 0, sizeof(power_map));
 
-    // TODO: Move this to the initial cleanup before a simulation step
-    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
-    {
-        for (int i = 0; i < CITY_MAP_WIDTH; i++)
-            Simulation_HappinessResetFlags(i, j, TILE_OK_POWER);
-    }
-
     int month = DateGetMonth();
 
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)
@@ -320,4 +314,62 @@ void Simulation_PowerDistribution(void)
 
     for (int i = 0; i < CITY_MAP_HEIGHT * CITY_MAP_WIDTH; i++)
         power_map[i] &= TILE_POWER_LEVEL_MASK;
+
+    // Checks all tiles of this building and flags them as "not powered" unless
+    // all of them are powered.
+
+    uint8_t *happiness_map = Simulation_HappinessGetMap();
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; )
+        {
+            uint16_t tile, type;
+            CityMapGetTypeAndTile(i, j, &tile, &type);
+
+            // If this isn't a powered tile, skip it
+            if ((TypeHasElectricityExtended(type) & TYPE_HAS_POWER) == 0)
+            {
+                i++;
+                continue;
+            }
+
+            // Only check top left corner of each building
+            city_tile_info *tile_info = City_Tileset_Entry_Info(tile);
+            if ((tile_info->base_x_delta != 0) || (tile_info->base_y_delta != 0))
+            {
+                i++;
+                continue;
+            }
+
+            building_info *info = Get_BuildingFromBaseTile(tile);
+
+            int total = info->height * info->width;
+            int count = 0;
+
+            for (int y = j; y < (j + info->height); y++)
+            {
+                for (int x = i; x < (i + info->width); x++)
+                {
+                    if (happiness_map[y * CITY_MAP_WIDTH + x] & TILE_OK_POWER)
+                        count++;
+                }
+            }
+
+            if ((count > 0) && (count < total))
+            {
+                // If any of the tiles is powered, but not all of them are,
+                // reset them all.
+
+                for (int y = j; y < (j + info->height); y++)
+                {
+                    for (int x = i; x < (i + info->width); x++)
+                        happiness_map[y * CITY_MAP_WIDTH + x] &= ~TILE_OK_POWER;
+                }
+            }
+
+            // Skip rest of the width of this building
+            i += info->width;
+        }
+    }
 }

@@ -521,6 +521,7 @@ void Draw_Minimap_PowerGrid(void)
 
     Minimap_Title("Power Grid");
 
+    Simulation_HappinessResetMap();
     Simulation_PowerDistribution();
 
     uint8_t *map = Simulation_PowerDistributionGetMap();
