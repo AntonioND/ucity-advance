@@ -52,6 +52,12 @@ void DateReset(void)
     DateSet(0, 1950);
 }
 
+// 0 = January, 11 = December
+int DateGetMonth(void)
+{
+    return date_month;
+}
+
 void DateStep(void)
 {
     date_month++;

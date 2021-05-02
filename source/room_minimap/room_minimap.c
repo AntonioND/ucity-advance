@@ -9,8 +9,11 @@
 #include "input_utils.h"
 #include "main.h"
 
+#include "simulation/simulation_happiness.h"
+#include "simulation/simulation_power.h"
 #include "simulation/simulation_services.h"
 #include "room_game/draw_common.h"
+#include "room_game/draw_power_lines.h"
 #include "room_game/room_game.h"
 #include "room_game/tileset_info.h"
 
@@ -161,6 +164,7 @@ typedef enum {
      C_WHITE    = FRAMEBUFFER_COLOR_BASE,
      C_PURPLE,
      C_YELLOW,
+     C_ORANGE,
      C_GREY,
      C_GREY_BLUE,
      C_BLACK,
@@ -221,6 +225,7 @@ static void Palettes_Set_Colors(void)
     MEM_PALETTE_BG[C_WHITE] = RGB15(31, 31, 31);
     MEM_PALETTE_BG[C_PURPLE] = RGB15(15, 0, 15);
     MEM_PALETTE_BG[C_YELLOW] = RGB15(31, 31, 0);
+    MEM_PALETTE_BG[C_ORANGE] = RGB15(31, 20, 0);
     MEM_PALETTE_BG[C_GREY] = RGB15(15, 15, 15);
     MEM_PALETTE_BG[C_GREY_BLUE] = RGB15(15, 15, 20);
     MEM_PALETTE_BG[C_BLACK] = RGB15(0, 0, 0);
@@ -510,6 +515,56 @@ void Draw_Minimap_HighSchools(void)
     Palettes_Set_Colors();
 }
 
+void Draw_Minimap_PowerGrid(void)
+{
+    Palettes_Set_White();
+
+    Minimap_Title("Power Grid");
+
+    Simulation_PowerDistribution();
+
+    uint8_t *map = Simulation_PowerDistributionGetMap();
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            int color = C_WHITE;
+
+            uint16_t type = CityMapGetType(i, j);
+
+            if ((type & TYPE_MASK) == TYPE_POWER_PLANT)
+            {
+                color = C_BLUE;
+            }
+            else if (TypeHasElectricityExtended(type) & TYPE_HAS_POWER)
+            {
+                uint8_t flags = Simulation_HappinessGetFlags(i, j);
+
+                if (flags & TILE_OK_POWER)
+                {
+                    // If this tile has enough power
+                    color = C_GREEN;
+                }
+                else
+                {
+                    uint8_t entry = map[j * CITY_MAP_WIDTH + i];
+
+                    // If this tile has some power, but not enough
+                    if (entry > 0)
+                        color = C_ORANGE;
+                    else
+                        color = C_RED;
+                }
+            }
+
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, color);
+        }
+    }
+
+    Palettes_Set_Colors();
+}
+
 static void Draw_Minimap_Selected(void)
 {
     switch (selected_minimap)
@@ -536,7 +591,9 @@ static void Draw_Minimap_Selected(void)
         case MINIMAP_SELECTION_HIGH_SCHOOLS:
             Draw_Minimap_HighSchools();
             break;
-        //case MINIMAP_SELECTION_POWER_GRID:
+        case MINIMAP_SELECTION_POWER_GRID:
+            Draw_Minimap_PowerGrid();
+            break;
         //case MINIMAP_SELECTION_POWER_DENSITY:
         //case MINIMAP_SELECTION_POPULATION_DENSITY:
         //case MINIMAP_SELECTION_TRAFFIC:

@@ -5,6 +5,8 @@
 #ifndef ROOM_GAME_DRAW_POWER_LINES_H__
 #define ROOM_GAME_DRAW_POWER_LINES_H__
 
+uint16_t TypeHasElectricityExtended(uint16_t type);
+
 void MapTileUpdatePowerLines(int x, int y);
 
 void MapUpdateNeighboursPowerLines(int x, int y);

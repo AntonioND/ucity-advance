@@ -5,10 +5,12 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <ugba/ugba.h>
+
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
 
-static uint8_t services_matrix[CITY_MAP_WIDTH * CITY_MAP_HEIGHT];
+EWRAM_BSS static uint8_t services_matrix[CITY_MAP_WIDTH * CITY_MAP_HEIGHT];
 
 uint8_t *Simulation_ServicesGetMap(void)
 {

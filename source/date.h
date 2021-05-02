@@ -10,6 +10,9 @@ const char *DateString(void);
 void DateSet(int month, int year);
 void DateReset(void);
 
+// 0 = January, 11 = December
+int DateGetMonth(void);
+
 void DateStep(void);
 
 #endif // DATE_H__

@@ -37,7 +37,9 @@
 #define TILE_OK_POLLUTION           (1 << TILE_OK_POLLUTION_BIT)
 #define TILE_OK_TRAFFIC             (1 << TILE_OK_TRAFFIC_BIT)
 
-#define TILE_OK_MASK                0x1F
+#define TILE_OK_MASK                (TILE_OK_POWER | TILE_OK_SERVICES | \
+                                     TILE_OK_EDUCATION | TILE_OK_POLLUTION | \
+                                     TILE_OK_TRAFFIC)
 
 // ----------------------------------------------------------------------------
 
