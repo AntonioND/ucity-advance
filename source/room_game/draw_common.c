@@ -77,6 +77,14 @@ uint16_t CityMapGetTile(int x, int y)
     return MAP_REGULAR_TILE(read_tile_sbb(map, x, y));
 }
 
+void CityMapGetTypeAndTileUnsafe(int x, int y, uint16_t *tile, uint16_t *type)
+{
+    void *map = (void *)CITY_MAP_BASE;
+    *tile = MAP_REGULAR_TILE(read_tile_sbb(map, x, y));
+    city_tile_info *tile_info = City_Tileset_Entry_Info(*tile);
+    *type = tile_info->element_type;
+}
+
 void CityMapGetTypeAndTile(int x, int y, uint16_t *tile, uint16_t *type)
 {
     int fix = 0;
@@ -118,10 +126,7 @@ void CityMapGetTypeAndTile(int x, int y, uint16_t *tile, uint16_t *type)
     }
     else
     {
-        void *map = (void *)CITY_MAP_BASE;
-        *tile = MAP_REGULAR_TILE(read_tile_sbb(map, x, y));
-        city_tile_info *tile_info = City_Tileset_Entry_Info(*tile);
-        *type = tile_info->element_type;
+        CityMapGetTypeAndTileUnsafe(x, y, tile, type);
     }
 }
 

@@ -92,7 +92,7 @@ static void AddToQueueHorizontalDisplacement(int x, int y)
         return;
 
     uint16_t tile, type;
-    CityMapGetTypeAndTile(x, y, &tile, &type);
+    CityMapGetTypeAndTileUnsafe(x, y, &tile, &type);
 
     // Check if it transmits power
     if ((TypeHasElectricityExtended(type) & TYPE_HAS_POWER) == 0)
@@ -118,7 +118,7 @@ static void AddToQueueVerticalDisplacement(int x, int y)
         return;
 
     uint16_t tile, type;
-    CityMapGetTypeAndTile(x, y, &tile, &type);
+    CityMapGetTypeAndTileUnsafe(x, y, &tile, &type);
 
     // Check if it transmits power
     if ((TypeHasElectricityExtended(type) & TYPE_HAS_POWER) == 0)
@@ -325,7 +325,7 @@ void Simulation_PowerDistribution(void)
         for (int i = 0; i < CITY_MAP_WIDTH; )
         {
             uint16_t tile, type;
-            CityMapGetTypeAndTile(i, j, &tile, &type);
+            CityMapGetTypeAndTileUnsafe(i, j, &tile, &type);
 
             // If this isn't a powered tile, skip it
             if ((TypeHasElectricityExtended(type) & TYPE_HAS_POWER) == 0)
