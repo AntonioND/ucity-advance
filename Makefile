@@ -81,13 +81,13 @@ WARNFLAGS   := -Wall -Wextra -Wunused-parameter
 
 ARCH        := -mthumb -mthumb-interwork
 
-CFLAGS      := -g -O2 -mcpu=arm7tdmi -mtune=arm7tdmi \
+CFLAGS      := -g -O2 -flto -mcpu=arm7tdmi -mtune=arm7tdmi \
                $(WARNFLAGS) $(ARCH) $(INCLUDES) -D__GBA__
 
 CXXFLAGS    := $(CFLAGS) -fno-rtti -fno-exceptions
 
 ASFLAGS     := -g $(ARCH)
-LDFLAGS     := -g $(ARCH) -Wl,-Map,$(BUILDDIR)/$(TARGET).map
+LDFLAGS     := -g -flto $(ARCH) -Wl,-Map,$(BUILDDIR)/$(TARGET).map
 
 # Build options
 # -------------
