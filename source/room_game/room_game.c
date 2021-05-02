@@ -173,6 +173,8 @@ static void Load_Cursor_Graphics(void)
 
 void Room_Game_Load(void)
 {
+    Game_Clear_Screen();
+
     BuildSelectMenuLoadGfx();
     StatusBarLoad();
     StatusBarShow();

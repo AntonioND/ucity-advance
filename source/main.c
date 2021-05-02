@@ -94,6 +94,8 @@ void Sound_Init(void)
 
 void Game_Clear_Screen(void)
 {
+    DISP_LayersEnable(0, 0, 0, 0, 0);
+
     uint32_t zero = 0;
 
     SWI_CpuSet_Fill32(&zero, (void *)MEM_PALETTE, MEM_PALETTE_SIZE);

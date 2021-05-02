@@ -375,6 +375,15 @@ int Load_And_Convert_Tileset(const char *in_png, const char *base_name,
             int g = palettes[p].color[i].g >> 3;
             int b = palettes[p].color[i].b >> 3;
 
+            if (i == 0)
+            {
+                // Export all color 0s as black, even if it was magenta
+                // originally
+                r = 0;
+                g = 0;
+                b = 0;
+            }
+
             uint16_t color = (b << 10) | (g << 5) | r;
             fprintf(fc, "0x%04X", color);
 

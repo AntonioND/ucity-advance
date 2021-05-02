@@ -614,8 +614,6 @@ static void Room_Minimap_Set_Watching_Mode(void)
         OBJ_RegularInit(i, i * 16, 0, OBJ_SIZE_16x16, OBJ_16_COLORS, 0, 0);
         OBJ_RegularEnableSet(i, 0);
     }
-
-    Draw_Minimap_Selected();
 }
 
 static void Room_Minimap_Set_Selecting_Mode(void)
@@ -712,6 +710,8 @@ void Room_Minimap_Load(void)
     selected_minimap = MINIMAP_SELECTION_OVERVIEW;
 
     Room_Minimap_Set_Watching_Mode();
+
+    Draw_Minimap_Selected();
 }
 
 void Room_Minimap_Handle(void)
@@ -729,7 +729,7 @@ void Room_Minimap_Handle(void)
             if (left || right)
                 Room_Minimap_Set_Selecting_Mode();
 
-            if (keys_released & KEY_START)
+            if (keys_released & (KEY_START | KEY_B))
                 Game_Room_Load(ROOM_GAME);
 
             break;
@@ -737,9 +737,13 @@ void Room_Minimap_Handle(void)
         case MODE_SELECTING:
         {
             if (keys_pressed & KEY_A)
+            {
                 Room_Minimap_Set_Watching_Mode();
 
-            if (keys_pressed & KEY_B)
+                Draw_Minimap_Selected();
+            }
+
+            if (keys_released & KEY_B)
                 Room_Minimap_Set_Watching_Mode();
 
             if (keys_released & KEY_START)
