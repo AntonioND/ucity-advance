@@ -13,8 +13,6 @@ int MapDeleteBuilding(int forced, int x, int y);
 
 void MapClearDemolishedTile(int x, int y);
 
-int BuildingIsCoordinateOrigin(int x, int y);
-
 // Top level drawing functions
 void Building_Remove(int force, int x, int y);
 void Building_Build(int force, int type, int x, int y);

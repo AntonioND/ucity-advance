@@ -570,3 +570,13 @@ city_tile_info *City_Tileset_Entry_Info(uint16_t city_index)
     UGBA_Assert(city_index < city_tileset_map_map_height);
     return &city_tileset_info[city_index];
 }
+
+int BuildingIsCoordinateOrigin(uint16_t tile)
+{
+    city_tile_info *info = City_Tileset_Entry_Info(tile);
+
+    if ((info->base_x_delta != 0) || (info->base_y_delta != 0))
+        return 0;
+
+    return 1;
+}

@@ -30,6 +30,8 @@ city_tile_info *City_Tileset_Entry_Info(uint16_t city_index);
 
 void CityMapDrawTerrainTile(uint16_t city_tile, void *map, int x, int y);
 
+int BuildingIsCoordinateOrigin(uint16_t tile);
+
 // ----------------------------------------------------------------------------
 
 // List of tiles

@@ -337,16 +337,3 @@ void Building_Build(int force, int type, int x, int y)
 
     UGBA_Assert(0);
 }
-
-// Returns 1 if it is the origin, 0 if not
-int BuildingIsCoordinateOrigin(int x, int y)
-{
-    uint16_t tile = CityMapGetTile(x, y);
-
-    city_tile_info *info = City_Tileset_Entry_Info(tile);
-
-    if ((info->base_x_delta != 0) || (info->base_y_delta != 0))
-        return 0;
-
-    return 1;
-}

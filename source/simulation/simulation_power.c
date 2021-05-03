@@ -335,8 +335,7 @@ void Simulation_PowerDistribution(void)
             }
 
             // Only check top left corner of each building
-            city_tile_info *tile_info = City_Tileset_Entry_Info(tile);
-            if ((tile_info->base_x_delta != 0) || (tile_info->base_y_delta != 0))
+            if (BuildingIsCoordinateOrigin(tile) == 0)
             {
                 i++;
                 continue;
