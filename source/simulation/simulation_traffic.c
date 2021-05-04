@@ -37,18 +37,6 @@ uint8_t *Simulation_TrafficGetMap(void)
     return &traffic_map[0];
 }
 
-// Checks bounds, returns 0 if outside the map else the map value.
-static int Simulation_TrafficGetMapValue(int x, int y)
-{
-    if ((x < 0) || (x >= CITY_MAP_WIDTH))
-        return 0;
-
-    if ((y < 0) || (y >= CITY_MAP_HEIGHT))
-        return 0;
-
-    return traffic_map[y * CITY_MAP_WIDTH + x];
-}
-
 // Returns remaining density of a building from any tile of it.
 static uint8_t *TrafficGetBuildingiRemainingDensityPointer(int x, int y)
 {
