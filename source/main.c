@@ -54,7 +54,7 @@ static int current_dma_buffer = 0;
 ALIGNED(32) int8_t wave_a[BUFFER_SIZE * 2];
 ALIGNED(32) int8_t wave_b[BUFFER_SIZE * 2];
 
-IWRAM_CODE ARM_CODE void vbl_handler(void)
+IWRAM_CODE ARM_CODE void Master_VBL_Handler(void)
 {
     // The buffer swap needs to be done right at the beginning of the VBL
     // interrupt handler so that the timing is always the same in each frame.
@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
 {
     UGBA_Init(&argc, &argv);
 
-    IRQ_SetHandler(IRQ_VBLANK, vbl_handler);
+    IRQ_SetHandler(IRQ_VBLANK, Master_VBL_Handler);
     IRQ_Enable(IRQ_VBLANK);
 
     Game_Clear_Screen();
