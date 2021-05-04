@@ -139,6 +139,18 @@ void CityMapDrawTile(uint16_t tile, int x, int y)
     write_tile_sbb(vram_info, map, x, y);
 }
 
+void CityMapToggleHFlip(int x, int y)
+{
+    void *map = (void *)CITY_MAP_BASE;
+    toggle_hflip_tile_sbb(map, x, y);
+}
+
+void CityMapToggleVFlip(int x, int y)
+{
+    void *map = (void *)CITY_MAP_BASE;
+    toggle_vflip_tile_sbb(map, x, y);
+}
+
 // Checks if a bridge of a certain type can be built. For that to be possible,
 // the coordinates must point at a water tile next to the ground, but with only
 // one tile of ground surounding it (or 2 at two opposite sides). It cannot

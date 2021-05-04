@@ -11,4 +11,7 @@ uint8_t *Simulation_TrafficGetMap(void);
 
 void Simulation_Traffic(void);
 
+void Simulation_TrafficRemoveAnimationTiles(void);
+void Simulation_TrafficAnimate(void);
+
 #endif // SIMULATION_SIMULATION_TRAFFIC_H__

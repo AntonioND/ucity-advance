@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "map_utils.h"
 #include "room_game/building_info.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
@@ -689,6 +690,52 @@ void Simulation_Traffic(void)
                      (tile == T_ROAD_LR_2) || (tile == T_ROAD_LR_3))
             {
                 CityMapDrawTile(T_ROAD_LR + traffic_level, i, j);
+            }
+        }
+    }
+}
+
+void Simulation_TrafficRemoveAnimationTiles(void)
+{
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            uint16_t tile = CityMapGetTile(i, j);
+
+            if ((tile == T_ROAD_TB) || (tile == T_ROAD_TB_1) ||
+                (tile == T_ROAD_TB_2) || (tile == T_ROAD_TB_3))
+            {
+                CityMapDrawTile(T_ROAD_TB, i, j);
+            }
+            else if ((tile == T_ROAD_LR) || (tile == T_ROAD_LR_1) ||
+                     (tile == T_ROAD_LR_2) || (tile == T_ROAD_LR_3))
+            {
+                CityMapDrawTile(T_ROAD_LR, i, j);
+            }
+        }
+    }
+}
+
+void Simulation_TrafficAnimate(void)
+{
+    // Animate tiles of the map with traffic animation
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            uint16_t tile = CityMapGetTile(i, j);
+
+            if ((tile == T_ROAD_TB_1) || (tile == T_ROAD_TB_2) ||
+                (tile == T_ROAD_TB_3))
+            {
+                CityMapToggleVFlip(i, j);
+            }
+            else if ((tile == T_ROAD_LR_1) || (tile == T_ROAD_LR_2) ||
+                     (tile == T_ROAD_LR_3))
+            {
+                CityMapToggleHFlip(i, j);
             }
         }
     }
