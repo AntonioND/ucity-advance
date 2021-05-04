@@ -12,6 +12,7 @@
 #include "simulation/simulation_happiness.h"
 #include "simulation/simulation_power.h"
 #include "simulation/simulation_services.h"
+#include "simulation/simulation_traffic.h"
 #include "room_game/draw_common.h"
 #include "room_game/draw_power_lines.h"
 #include "room_game/room_game.h"
@@ -220,7 +221,6 @@ typedef enum {
 
 static void Palettes_Set_Colors(void)
 {
-
     // Load palette
     MEM_PALETTE_BG[C_WHITE] = RGB15(31, 31, 31);
     MEM_PALETTE_BG[C_PURPLE] = RGB15(15, 0, 15);
@@ -566,6 +566,74 @@ void Draw_Minimap_PowerGrid(void)
     Palettes_Set_Colors();
 }
 
+void Draw_Minimap_Traffic(void)
+{
+    Palettes_Set_White();
+
+    Minimap_Title("Traffic");
+
+    Simulation_Traffic();
+
+    uint8_t *map = Simulation_TrafficGetMap();
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            uint16_t type = CityMapGetType(i, j);
+
+            if (type & (TYPE_HAS_ROAD | TYPE_HAS_TRAIN))
+            {
+                // Has road or train
+
+                int traffic_density = map[j * CITY_MAP_WIDTH + i];
+
+                traffic_density >>= 3;
+                if (traffic_density > 6)
+                    traffic_density = 6;
+
+                int color = C_BLUE_1 + traffic_density;
+
+                Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, color);
+
+                continue;
+            }
+
+            // Tile doesn't have road or train
+
+            // Check if this is a building. If so, draw as a green pattern if
+            // all cars could leave/arrive, otherwise draw it red.
+
+            type &= TYPE_MASK;
+
+            if ((type == TYPE_FIELD) || (type  == TYPE_FOREST) ||
+                (type  == TYPE_WATER) || (type  == TYPE_DOCK))
+            {
+                // Empty tile
+                Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, C_WHITE);
+                continue;
+            }
+
+            uint16_t tile = CityMapGetTile(i, j);
+
+            city_tile_info *ti = City_Tileset_Entry_Info(tile);
+
+            int ox = i + ti->base_x_delta;
+            int oy = j + ti->base_y_delta;
+
+            int remaining_density = map[oy * CITY_MAP_WIDTH + ox];
+
+            // If remaining density is 0, building is ok
+            if (remaining_density == 0)
+                Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, C_GREEN);
+            else
+                Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, C_RED);
+        }
+    }
+
+    Palettes_Set_Colors();
+}
+
 static void Draw_Minimap_Selected(void)
 {
     switch (selected_minimap)
@@ -597,7 +665,9 @@ static void Draw_Minimap_Selected(void)
             break;
         //case MINIMAP_SELECTION_POWER_DENSITY:
         //case MINIMAP_SELECTION_POPULATION_DENSITY:
-        //case MINIMAP_SELECTION_TRAFFIC:
+        case MINIMAP_SELECTION_TRAFFIC:
+            Draw_Minimap_Traffic();
+            break;
         //case MINIMAP_SELECTION_POLLUTION:
         //case MINIMAP_SELECTION_HAPPINESS:
         default:
