@@ -18,11 +18,137 @@
 #include "room_game/room_game.h"
 #include "room_game/tileset_info.h"
 #include "room_game/status_bar.h"
+#include "simulation/simulation_traffic.h"
+#include "simulation/simulation_water.h"
 
 // Assets
 
 #include "graphics/cursor.h"
 #include "maps/city_tileset.h"
+
+// ----------------------------------------------------------------------------
+
+// Must be a power of 2
+#define ANIMATION_TRANSPORT_COUNT_FRAMES    4
+
+// Must be a multiple of ANIMATION_TRANSPORT_COUNT_FRAMES
+#define ANIMATION_COUNT_FRAMES_NORMAL       60
+
+// Doesn't need to be a multiple of ANIMATION_TRANSPORT_COUNT_FRAMES
+#define ANIMATION_COUNT_FRAMES_DISASTER     15
+
+int animation_has_to_update_transport;
+int animation_has_to_update_map;
+int animation_countdown; // This goes from 0 to ANIMATION_COUNT_FRAMES_xxxxx
+
+int game_animations_disabled = 0;
+
+int simulation_disaster_mode = 0;
+
+static void GameAnimateMapVBLFastHandle(void)
+{
+    if (game_animations_disabled)
+        return;
+
+    if (simulation_disaster_mode)
+    {
+        // Disaster mode
+
+        if (animation_countdown < ANIMATION_COUNT_FRAMES_DISASTER)
+        {
+            animation_countdown++;
+            return;
+        }
+
+        animation_countdown = 0;
+
+        animation_has_to_update_map = 1;
+
+        return;
+    }
+    else
+    {
+        // Normal mode
+
+        // Update every ANIMATION_TRANSPORT_COUNT_FRAMES frames
+        if ((animation_countdown & (ANIMATION_TRANSPORT_COUNT_FRAMES - 1))
+                == (ANIMATION_TRANSPORT_COUNT_FRAMES -1))
+        {
+            // This function does a fast update of the position of all sprites,
+            // it doesn't handle creation or destruction of objects.
+            // TODO: Simulation_TransportAnimsVBLHandle();
+
+            animation_has_to_update_transport = 1;
+        }
+
+        if (animation_countdown < ANIMATION_COUNT_FRAMES_NORMAL)
+        {
+            animation_countdown++;
+            return;
+        }
+
+        animation_countdown = 0;
+
+        animation_has_to_update_map = 1;
+
+        return;
+    }
+}
+
+static void GameAnimateMap(void)
+{
+    if (game_animations_disabled)
+        return;
+
+    if (simulation_disaster_mode)
+    {
+        // Disaster mode
+
+        if (animation_has_to_update_map)
+        {
+            //Simulation_FireAnimate();
+            Simulation_WaterAnimate();
+
+            animation_has_to_update_map = 0;
+        }
+
+        return;
+    }
+    else
+    {
+        // Normal mode
+
+        if (animation_has_to_update_transport)
+        {
+            // TODO: Simulation_TransportAnimsHandle()
+            animation_has_to_update_transport = 0;
+        }
+
+        if (animation_has_to_update_map)
+        {
+            Simulation_TrafficAnimate();
+            Simulation_WaterAnimate();
+
+            animation_has_to_update_map = 0;
+        }
+
+        return;
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+void Room_Game_FastVBLHandler(void)
+{
+    GameAnimateMapVBLFastHandle();
+}
+
+void Room_Game_SlowVBLHandler(void)
+{
+    // TODO
+}
+
+// ----------------------------------------------------------------------------
 
 typedef enum {
     MODE_RUNNING,
@@ -528,6 +654,8 @@ void Room_Game_Handle(void)
                 Game_Room_Load(ROOM_MINIMAP);
             }
 
+            GameAnimateMap();
+
             break;
         }
         case MODE_WATCH:
@@ -536,6 +664,8 @@ void Room_Game_Handle(void)
 
             if (keys_released & KEY_B)
                 Room_Game_Set_Mode(MODE_RUNNING);
+
+            GameAnimateMap();
 
             break;
         }

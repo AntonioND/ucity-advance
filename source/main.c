@@ -18,6 +18,8 @@
 #include "audio/umod_pack_info.h"
 #include "maps/test_map.h"
 
+static int current_room;
+
 // Buffer size needs to be a multiple of 16 (the amount of bytes copied to the
 // FIFO whenever it gets data from DMA).
 //
@@ -62,6 +64,9 @@ IWRAM_CODE ARM_CODE void Master_VBL_Handler(void)
     if (current_dma_buffer == 0)
         SOUND_DMA_Retrigger_AB();
 
+    if (current_room == ROOM_GAME)
+        Room_Game_FastVBLHandler();
+
     REG_IME = 1;
 
     if (current_dma_buffer == 1)
@@ -70,6 +75,9 @@ IWRAM_CODE ARM_CODE void Master_VBL_Handler(void)
         UMOD_Mix(&wave_a[BUFFER_SIZE], &wave_b[BUFFER_SIZE], BUFFER_SIZE);
 
     current_dma_buffer ^= 1;
+
+    if (current_room == ROOM_GAME)
+        Room_Game_SlowVBLHandler();
 }
 
 void Sound_Init(void)
@@ -110,8 +118,6 @@ void Game_Clear_Screen(void)
 
     //SWI_CpuSet_Fill32(&zero, (void *)MEM_VRAM, MEM_VRAM_SIZE);
 }
-
-static int current_room;
 
 void Game_Room_Load(int room)
 {

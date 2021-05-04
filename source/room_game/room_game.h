@@ -117,6 +117,9 @@ void Room_Game_Handle(void);
 
 void BuildModeUpdateStatusBar(void);
 
+void Room_Game_FastVBLHandler(void);
+void Room_Game_SlowVBLHandler(void);
+
 // ----------------------------------------------------------------------------
 
 #endif // ROOM_GAME_ROOM_GAME_H__
