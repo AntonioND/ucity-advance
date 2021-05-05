@@ -10,6 +10,7 @@
 #include "main.h"
 
 #include "simulation/simulation_happiness.h"
+#include "simulation/simulation_pollution.h"
 #include "simulation/simulation_power.h"
 #include "simulation/simulation_services.h"
 #include "simulation/simulation_traffic.h"
@@ -206,6 +207,14 @@ typedef enum {
      C_PURPLE_7,
      C_PURPLE_8,
 
+     C_YELLOW_RED_1,
+     C_YELLOW_RED_2,
+     C_YELLOW_RED_3,
+     C_YELLOW_RED_4,
+     C_YELLOW_RED_5,
+     C_YELLOW_RED_6,
+     C_YELLOW_RED_7,
+
      // Aliases
 
      C_RED = C_RED_8,
@@ -265,6 +274,14 @@ static void Palettes_Set_Colors(void)
     MEM_PALETTE_BG[C_PURPLE_6] = RGB15(19, 8, 19);
     MEM_PALETTE_BG[C_PURPLE_7] = RGB15(17, 4, 17);
     MEM_PALETTE_BG[C_PURPLE_8] = RGB15(15, 0, 15);
+
+    MEM_PALETTE_BG[C_YELLOW_RED_1] = RGB15(31, 31, 10);
+    MEM_PALETTE_BG[C_YELLOW_RED_2] = RGB15(31, 31, 0);
+    MEM_PALETTE_BG[C_YELLOW_RED_3] = RGB15(31, 24, 0);
+    MEM_PALETTE_BG[C_YELLOW_RED_4] = RGB15(31, 17, 0);
+    MEM_PALETTE_BG[C_YELLOW_RED_5] = RGB15(31, 10, 0);
+    MEM_PALETTE_BG[C_YELLOW_RED_6] = RGB15(31, 5, 0);
+    MEM_PALETTE_BG[C_YELLOW_RED_7] = RGB15(31, 0, 0);
 }
 
 static void Draw_Minimap_Overview(void)
@@ -634,6 +651,38 @@ void Draw_Minimap_Traffic(void)
     Palettes_Set_Colors();
 }
 
+void Draw_Minimap_Pollution(void)
+{
+    Palettes_Set_White();
+
+    Minimap_Title("Pollution");
+
+    Simulation_Pollution();
+
+    uint8_t *map = Simulation_PollutionGetMap();
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            unsigned int pollution = map[j * CITY_MAP_WIDTH + i];
+
+            unsigned int value = pollution >> 5;
+
+            int color;
+
+            if (value == 0)
+                color = C_WHITE;
+            else
+                color = C_YELLOW_RED_1 + (value - 1);
+
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, color);
+        }
+    }
+
+    Palettes_Set_Colors();
+}
+
 static void Draw_Minimap_Selected(void)
 {
     switch (selected_minimap)
@@ -668,7 +717,9 @@ static void Draw_Minimap_Selected(void)
         case MINIMAP_SELECTION_TRAFFIC:
             Draw_Minimap_Traffic();
             break;
-        //case MINIMAP_SELECTION_POLLUTION:
+        case MINIMAP_SELECTION_POLLUTION:
+            Draw_Minimap_Pollution();
+            break;
         //case MINIMAP_SELECTION_HAPPINESS:
         default:
             UGBA_Assert(0);

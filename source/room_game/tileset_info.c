@@ -580,3 +580,11 @@ int BuildingIsCoordinateOrigin(uint16_t tile)
 
     return 1;
 }
+
+void BuildingGetCoordinateOrigin(uint16_t tile, int x, int y, int *ox, int *oy)
+{
+    city_tile_info *info = City_Tileset_Entry_Info(tile);
+
+    *ox = x + info->base_x_delta;
+    *oy = y + info->base_y_delta;
+}

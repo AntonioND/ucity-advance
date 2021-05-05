@@ -32,6 +32,8 @@ void CityMapDrawTerrainTile(uint16_t city_tile, void *map, int x, int y);
 
 int BuildingIsCoordinateOrigin(uint16_t tile);
 
+void BuildingGetCoordinateOrigin(uint16_t tile, int x, int y, int *ox, int *oy);
+
 // ----------------------------------------------------------------------------
 
 // List of tiles

@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 
-// Population is the whole population of the building, the others are per-tile
+// Values refer to the top left corner of a building
 typedef struct {
     uint8_t population;
     uint8_t energy_cost;
