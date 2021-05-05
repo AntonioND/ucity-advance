@@ -17,7 +17,7 @@
 #define TRAFFIC_MAX_LEVEL       (256 / 6) // Max level of adequate traffic
 #define TRAFFIC_JAM_MAX_TILES   30 // Max percent of tiles with high traffic
 
-static uint8_t traffic_map[CITY_MAP_HEIGHT * CITY_MAP_WIDTH];
+EWRAM_BSS static uint8_t traffic_map[CITY_MAP_HEIGHT * CITY_MAP_WIDTH];
 EWRAM_BSS static uint8_t scratch_map[CITY_MAP_HEIGHT * CITY_MAP_WIDTH];
 
 // Amount of tiles with traffic jams.

@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <ugba/ugba.h>
+
 #include "date.h"
 #include "room_game/building_info.h"
 #include "room_game/draw_common.h"
@@ -23,7 +25,7 @@
 // How much power there is now
 #define TILE_POWER_LEVEL_MASK           (0x3F)
 
-static uint8_t power_map[CITY_MAP_HEIGHT * CITY_MAP_WIDTH];
+EWRAM_BSS static uint8_t power_map[CITY_MAP_HEIGHT * CITY_MAP_WIDTH];
 
 uint8_t *Simulation_PowerDistributionGetMap(void)
 {
