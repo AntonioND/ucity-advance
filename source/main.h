@@ -5,11 +5,12 @@
 #ifndef MAIN_H__
 #define MAIN_H__
 
-#define ROOM_GAME       (0)
-#define ROOM_MINIMAP    (1)
+#define ROOM_INVALID    (0)
+#define ROOM_GAME       (1)
+#define ROOM_MINIMAP    (2)
 
-void Game_Room_Load(int room);
-void Game_Room_Handle_Current(void);
+void Game_Room_Prepare_Switch(int new_room);
+
 void Game_Clear_Screen(void);
 
 #endif // MAIN_H__

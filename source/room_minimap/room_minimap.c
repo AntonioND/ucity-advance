@@ -836,6 +836,11 @@ void Room_Minimap_Load(void)
     Draw_Minimap_Selected();
 }
 
+void Room_Minimap_Unload(void)
+{
+    Game_Clear_Screen();
+}
+
 void Room_Minimap_Handle(void)
 {
     uint16_t keys_pressed = KEYS_Pressed();
@@ -852,7 +857,10 @@ void Room_Minimap_Handle(void)
                 Room_Minimap_Set_Selecting_Mode();
 
             if (keys_released & (KEY_START | KEY_B))
-                Game_Room_Load(ROOM_GAME);
+            {
+                Game_Room_Prepare_Switch(ROOM_GAME);
+                return;
+            }
 
             break;
         }
@@ -869,7 +877,10 @@ void Room_Minimap_Handle(void)
                 Room_Minimap_Set_Watching_Mode();
 
             if (keys_released & KEY_START)
-                Game_Room_Load(ROOM_GAME);
+            {
+                Game_Room_Prepare_Switch(ROOM_GAME);
+                return;
+            }
 
             if (Key_Autorepeat_Pressed_Left())
             {

@@ -6,6 +6,7 @@
 #define ROOM_MINIMAP_ROOM_MINIMAP_H__
 
 void Room_Minimap_Load(void);
+void Room_Minimap_Unload(void);
 
 void Room_Minimap_Handle(void);
 

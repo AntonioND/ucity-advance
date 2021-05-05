@@ -18,7 +18,125 @@
 #include "audio/umod_pack_info.h"
 #include "maps/test_map.h"
 
-static int current_room;
+static int next_room = ROOM_INVALID;
+static int current_room = ROOM_INVALID;
+
+void Game_Clear_Screen(void)
+{
+    DISP_LayersEnable(0, 0, 0, 0, 0);
+
+    uint32_t zero = 0;
+
+    SWI_CpuSet_Fill32(&zero, (void *)MEM_PALETTE, MEM_PALETTE_SIZE);
+
+    SWI_CpuSet_Fill32(&zero, (void *)MEM_OAM, MEM_OAM_SIZE);
+
+    for (int i = 0; i < 128; i++)
+    {
+        OBJ_RegularInit(i, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
+        OBJ_RegularEnableSet(i, 0);
+    }
+
+    //SWI_CpuSet_Fill32(&zero, (void *)MEM_VRAM, MEM_VRAM_SIZE);
+}
+
+static void Game_Room_Unload(int room)
+{
+    switch (room)
+    {
+        case ROOM_GAME:
+            Room_Game_Unload();
+            break;
+
+        case ROOM_MINIMAP:
+            Room_Minimap_Unload();
+            break;
+
+        default:
+            UGBA_Assert(0);
+            return;
+    }
+}
+
+static void Game_Room_Load(int room)
+{
+    Game_Clear_Screen();
+
+    switch (room)
+    {
+        case ROOM_GAME:
+            Room_Game_Load();
+            break;
+
+        case ROOM_MINIMAP:
+            Room_Minimap_Load();
+            break;
+
+        default:
+            UGBA_Assert(0);
+            return;
+    }
+
+    current_room = room;
+    next_room = room;
+}
+
+void Game_Room_Prepare_Switch(int new_room)
+{
+    if (new_room != current_room)
+        next_room = new_room;
+}
+
+static int Game_Room_HasToSwitch(void)
+{
+    if (next_room != current_room)
+        return 1;
+
+    return 0;
+}
+
+static void Game_Room_DoSwitch(void)
+{
+    int unload_room = current_room;
+    int load_room = next_room;
+
+    // Make sure that the interrupt handler of this room isn't called again
+    current_room = ROOM_INVALID;
+    next_room = ROOM_INVALID;
+
+    // Unload room
+    Game_Room_Unload(unload_room);
+
+    // Make sure that the next room doesn't see any of the presses/releases from
+    // the previous room.
+    KEYS_Update();
+    KEYS_Update();
+
+    // Load room
+    Game_Room_Load(load_room);
+
+    // Setup room handlers
+    current_room = load_room;
+    next_room = load_room;
+}
+
+static void Game_Room_Handle_Current(void)
+{
+    switch (current_room)
+    {
+        case ROOM_GAME:
+            Room_Game_Handle();
+            break;
+
+        case ROOM_MINIMAP:
+            Room_Minimap_Handle();
+            break;
+
+        default:
+            UGBA_Assert(0);
+            return;
+    }
+}
 
 // Buffer size needs to be a multiple of 16 (the amount of bytes copied to the
 // FIFO whenever it gets data from DMA).
@@ -56,6 +174,8 @@ static int current_dma_buffer = 0;
 ALIGNED(32) int8_t wave_a[BUFFER_SIZE * 2];
 ALIGNED(32) int8_t wave_b[BUFFER_SIZE * 2];
 
+static int nested_vbl_handler = 0;
+
 IWRAM_CODE ARM_CODE void Master_VBL_Handler(void)
 {
     // The buffer swap needs to be done right at the beginning of the VBL
@@ -64,8 +184,13 @@ IWRAM_CODE ARM_CODE void Master_VBL_Handler(void)
     if (current_dma_buffer == 0)
         SOUND_DMA_Retrigger_AB();
 
+    // Do critical animations
+
     if (current_room == ROOM_GAME)
         Room_Game_FastVBLHandler();
+
+    // Now that the fast parts of the handler are done, let other (short)
+    // interrupts happen if needed.
 
     REG_IME = 1;
 
@@ -76,8 +201,28 @@ IWRAM_CODE ARM_CODE void Master_VBL_Handler(void)
 
     current_dma_buffer ^= 1;
 
+    // All the code from this point can take over a frame to end. In order not
+    // to nest multiple long calls and get locked, the following part of the
+    // handler can only be run if it isn't being run already.
+
+    if (nested_vbl_handler)
+        return;
+
+    nested_vbl_handler = 1;
+
+    // Update keys here
+
+    KEYS_Update();
+    Key_Autorepeat_Update();
+
+    // Handle things that can take longer than a frame
+
     if (current_room == ROOM_GAME)
         Room_Game_SlowVBLHandler();
+
+    // Let the next VBL handler do all the work again
+
+    nested_vbl_handler = 0;
 }
 
 void Sound_Init(void)
@@ -98,65 +243,6 @@ void Sound_Init(void)
     TM_TimerStart(DMA_TIMER_INDEX, RELOAD_VALUE, 1, 0);
 
     SOUND_DMA_Setup_AB(wave_a, wave_b);
-}
-
-void Game_Clear_Screen(void)
-{
-    DISP_LayersEnable(0, 0, 0, 0, 0);
-
-    uint32_t zero = 0;
-
-    SWI_CpuSet_Fill32(&zero, (void *)MEM_PALETTE, MEM_PALETTE_SIZE);
-
-    SWI_CpuSet_Fill32(&zero, (void *)MEM_OAM, MEM_OAM_SIZE);
-
-    for (int i = 0; i < 128; i++)
-    {
-        OBJ_RegularInit(i, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
-        OBJ_RegularEnableSet(i, 0);
-    }
-
-    //SWI_CpuSet_Fill32(&zero, (void *)MEM_VRAM, MEM_VRAM_SIZE);
-}
-
-void Game_Room_Load(int room)
-{
-    Game_Clear_Screen();
-
-    switch (room)
-    {
-        case ROOM_GAME:
-            Room_Game_Load();
-            break;
-
-        case ROOM_MINIMAP:
-            Room_Minimap_Load();
-            break;
-
-        default:
-            UGBA_Assert(0);
-            return;
-    }
-
-    current_room = room;
-}
-
-void Game_Room_Handle_Current(void)
-{
-    switch (current_room)
-    {
-        case ROOM_GAME:
-            Room_Game_Handle();
-            break;
-
-        case ROOM_MINIMAP:
-            Room_Minimap_Handle();
-            break;
-
-        default:
-            UGBA_Assert(0);
-            return;
-    }
 }
 
 int main(int argc, char *argv[])
@@ -182,10 +268,10 @@ int main(int argc, char *argv[])
     {
         SWI_VBlankIntrWait();
 
-        KEYS_Update();
-        Key_Autorepeat_Update();
-
         Game_Room_Handle_Current();
+
+        if (Game_Room_HasToSwitch())
+            Game_Room_DoSwitch();
     }
 
     return 0;

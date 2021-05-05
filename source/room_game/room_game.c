@@ -138,18 +138,6 @@ static void GameAnimateMap(void)
 
 // ----------------------------------------------------------------------------
 
-void Room_Game_FastVBLHandler(void)
-{
-    GameAnimateMapVBLFastHandle();
-}
-
-void Room_Game_SlowVBLHandler(void)
-{
-    // TODO
-}
-
-// ----------------------------------------------------------------------------
-
 typedef enum {
     MODE_RUNNING,
     MODE_WATCH,
@@ -320,6 +308,13 @@ void Room_Game_Load(void)
     Cursor_Set_Size(8, 8);
     Cursor_Reset_Position();
     Cursor_Refresh();
+}
+
+void Room_Game_Unload(void)
+{
+    Cursor_Hide();
+
+    Game_Clear_Screen();
 }
 
 static void Room_Game_Draw_RCI_Bars(void)
@@ -632,6 +627,75 @@ void ViewModeUpdateStatusBar(void)
 
 void Room_Game_Handle(void)
 {
+    switch (current_mode)
+    {
+        case MODE_RUNNING:
+        {
+            GameAnimateMap();
+
+            break;
+        }
+        case MODE_WATCH:
+        {
+            GameAnimateMap();
+
+            break;
+        }
+        case MODE_SELECT_BUILDING:
+        {
+            break;
+        }
+        case MODE_MODIFY_MAP:
+        {
+            break;
+        }
+        default:
+        {
+            UGBA_Assert(0);
+            break;
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+void Room_Game_FastVBLHandler(void)
+{
+    GameAnimateMapVBLFastHandle();
+
+    switch (current_mode)
+    {
+        case MODE_RUNNING:
+        {
+            Room_Game_Handle_Scroll();
+            break;
+        }
+        case MODE_WATCH:
+        {
+            Room_Game_Handle_Scroll_Fast();
+            break;
+        }
+        case MODE_SELECT_BUILDING:
+        {
+            break;
+        }
+        case MODE_MODIFY_MAP:
+        {
+            Room_Game_Handle_Scroll();
+            break;
+        }
+        default:
+        {
+            UGBA_Assert(0);
+            break;
+        }
+    }
+
+    Room_Game_Handle_Drift();
+}
+
+void Room_Game_SlowVBLHandler(void)
+{
     uint16_t keys_pressed = KEYS_Pressed();
     uint16_t keys_released = KEYS_Released();
     uint16_t keys = KEYS_Held();
@@ -640,8 +704,6 @@ void Room_Game_Handle(void)
     {
         case MODE_RUNNING:
         {
-            Room_Game_Handle_Scroll();
-
             ViewModeUpdateStatusBar();
 
             if (keys_pressed & KEY_SELECT)
@@ -651,21 +713,16 @@ void Room_Game_Handle(void)
 
             if (keys_released & KEY_START)
             {
-                Game_Room_Load(ROOM_MINIMAP);
+                Game_Room_Prepare_Switch(ROOM_MINIMAP);
+                return;
             }
-
-            GameAnimateMap();
 
             break;
         }
         case MODE_WATCH:
         {
-            Room_Game_Handle_Scroll_Fast();
-
             if (keys_released & KEY_B)
                 Room_Game_Set_Mode(MODE_RUNNING);
-
-            GameAnimateMap();
 
             break;
         }
@@ -682,8 +739,6 @@ void Room_Game_Handle(void)
         }
         case MODE_MODIFY_MAP:
         {
-            Room_Game_Handle_Scroll();
-
             if (keys_released & KEY_B)
                 Room_Game_Set_Mode(MODE_RUNNING);
             else if (keys_pressed & KEY_SELECT)
@@ -711,6 +766,4 @@ void Room_Game_Handle(void)
             break;
         }
     }
-
-    Room_Game_Handle_Drift();
 }
