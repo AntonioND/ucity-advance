@@ -196,8 +196,6 @@ void BuildIconPlace(int building, int x, int y)
 
 void BuildSelectMenuShow(void)
 {
-    BuildSelectMenuHide();
-
     int index = 0;
 
     int y = 20;
@@ -258,6 +256,16 @@ void BuildSelectMenuShow(void)
             }
             index++;
         }
+    }
+
+    // Clear a few more sprites in case one of them would be left on the screen.
+    // This can happen when moving from a group with many elements to a group
+    // with less elements.
+    for (int i = 0; i < 5; i++)
+    {
+        OBJ_RegularInit(index, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
+        OBJ_RegularEnableSet(index, 0);
+        index++;
     }
 }
 
