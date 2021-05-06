@@ -696,6 +696,53 @@ static void Draw_Minimap_PowerDensity(void)
     Palettes_Set_Colors();
 }
 
+static void Draw_Minimap_PopulationDensity(void)
+{
+    Palettes_Set_White();
+
+    Minimap_Title("Population Density");
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            int color = C_WHITE;
+
+            uint16_t tile, type;
+            CityMapGetTypeAndTile(i, j, &tile, &type);
+
+            const city_tile_info *tile_info = City_Tileset_Entry_Info(tile);
+
+            if ((tile_info->base_x_delta != 0) ||
+                (tile_info->base_y_delta != 0))
+            {
+                tile = CityMapGetTile(i + tile_info->base_x_delta,
+                                      j + tile_info->base_y_delta);
+            }
+
+            const city_tile_density_info *info = CityTileDensityInfo(tile);
+
+            int population = info->population >> 3;
+
+            if (population == 0)
+            {
+                color = C_WHITE;
+            }
+            else
+            {
+                if (population > 7)
+                    population = 7;
+
+                color = C_BLUE_1 + (population - 1);
+            }
+
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, color);
+        }
+    }
+
+    Palettes_Set_Colors();
+}
+
 static void Draw_Minimap_Traffic(void)
 {
     Palettes_Set_White();
@@ -830,7 +877,9 @@ static void Draw_Minimap_Selected(void)
         case MINIMAP_SELECTION_POWER_DENSITY:
             Draw_Minimap_PowerDensity();
             break;
-        //case MINIMAP_SELECTION_POPULATION_DENSITY:
+        case MINIMAP_SELECTION_POPULATION_DENSITY:
+            Draw_Minimap_PopulationDensity();
+            break;
         case MINIMAP_SELECTION_TRAFFIC:
             Draw_Minimap_Traffic();
             break;
