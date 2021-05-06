@@ -18,9 +18,6 @@
 #include "audio/umod_pack_info.h"
 #include "maps/test_map.h"
 
-static int next_room = ROOM_INVALID;
-static int current_room = ROOM_INVALID;
-
 void Game_Clear_Screen(void)
 {
     DISP_LayersEnable(0, 0, 0, 0, 0);
@@ -37,8 +34,23 @@ void Game_Clear_Screen(void)
         OBJ_RegularEnableSet(i, 0);
     }
 
+    // TODO: Clear all VRAM except for the city map
     //SWI_CpuSet_Fill32(&zero, (void *)MEM_VRAM, MEM_VRAM_SIZE);
 }
+
+// ----------------------------------------------------------------------------
+
+static int next_room = ROOM_INVALID;
+static int current_room = ROOM_INVALID;
+
+#define SWITCH_IDLE             0
+#define SWITCH_LEAVING_ROOM     1
+#define SWITCH_ENTERING_ROOM    2
+
+#define SWITCH_COUNT_FRAMES     10
+
+static int switch_mode = SWITCH_IDLE;
+static int switch_countup;
 
 static void Game_Room_Unload(int room)
 {
@@ -81,18 +93,76 @@ static void Game_Room_Load(int room)
     next_room = room;
 }
 
-void Game_Room_Prepare_Switch(int new_room)
-{
-    if (new_room != current_room)
-        next_room = new_room;
-}
-
 static int Game_Room_HasToSwitch(void)
 {
-    if (next_room != current_room)
-        return 1;
+    if (next_room == current_room)
+        return 0;
 
-    return 0;
+    if (switch_mode != SWITCH_LEAVING_ROOM)
+        return 0;
+
+    if (switch_countup < SWITCH_COUNT_FRAMES)
+        return 0;
+
+    return 1;
+}
+
+static void Game_Room_Update_Switch(void)
+{
+    const uint16_t first_target = BLDCNT_1ST_BG0 | BLDCNT_1ST_BG1 |
+                                  BLDCNT_1ST_BG2 | BLDCNT_1ST_BG3 |
+                                  BLDCNT_1ST_OBJ | BLDCNT_1ST_BD;
+    switch (switch_mode)
+    {
+        case SWITCH_IDLE:
+            // Do nothing
+            break;
+        case SWITCH_LEAVING_ROOM:
+        {
+            switch_countup += 4;
+
+            if (switch_countup > 16)
+                DISP_BlendYSet(16);
+            else
+                DISP_BlendYSet(switch_countup);
+
+            DISP_BlendSetup(first_target, 0, BLDCNT_BRIGTHNESS_DECREASE);
+            break;
+        }
+        case SWITCH_ENTERING_ROOM:
+        {
+            switch_countup += 4;
+
+            if (switch_countup > 16)
+            {
+                DISP_BlendSetup(0, 0, BLDCNT_DISABLE);
+                switch_mode = SWITCH_IDLE;
+            }
+            else
+            {
+                DISP_BlendSetup(first_target, 0, BLDCNT_BRIGTHNESS_DECREASE);
+                DISP_BlendYSet(16 - switch_countup);
+            }
+            break;
+        }
+        default:
+            UGBA_Assert(0);
+            break;
+    }
+}
+
+void Game_Room_Prepare_Switch(int new_room)
+{
+    // If another change has been requested, skip this new change
+    if (switch_mode != SWITCH_IDLE)
+        return;
+
+    switch_mode = SWITCH_LEAVING_ROOM;
+    switch_countup = 0;
+
+    UGBA_Assert(new_room != current_room);
+
+    next_room = new_room;
 }
 
 static void Game_Room_DoSwitch(void)
@@ -111,6 +181,10 @@ static void Game_Room_DoSwitch(void)
     // the previous room.
     KEYS_Update();
     KEYS_Update();
+
+    // Update state machine of switching rooms
+    switch_mode = SWITCH_ENTERING_ROOM;
+    switch_countup = 0;
 
     // Load room
     Game_Room_Load(load_room);
@@ -137,6 +211,8 @@ static void Game_Room_Handle_Current(void)
             return;
     }
 }
+
+// ----------------------------------------------------------------------------
 
 // Buffer size needs to be a multiple of 16 (the amount of bytes copied to the
 // FIFO whenever it gets data from DMA).
@@ -188,6 +264,8 @@ IWRAM_CODE ARM_CODE void Master_VBL_Handler(void)
 
     if (current_room == ROOM_GAME)
         Room_Game_FastVBLHandler();
+
+    Game_Room_Update_Switch();
 
     // Now that the fast parts of the handler are done, let other (short)
     // interrupts happen if needed.
