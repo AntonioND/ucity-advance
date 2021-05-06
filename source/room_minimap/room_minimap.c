@@ -640,6 +640,61 @@ static void Draw_Minimap_PowerGrid(void)
     Palettes_Set_Colors();
 }
 
+static void Draw_Minimap_PowerDensity(void)
+{
+    Palettes_Set_White();
+
+    Minimap_Title("Power Density");
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            int color = C_WHITE;
+
+            uint16_t tile, type;
+            CityMapGetTypeAndTile(i, j, &tile, &type);
+
+            if ((type & TYPE_MASK) == TYPE_POWER_PLANT)
+            {
+                color = C_RED;
+            }
+            else if (TypeHasElectricityExtended(type) & TYPE_HAS_POWER)
+            {
+                city_tile_info *tile_info = City_Tileset_Entry_Info(tile);
+
+                if ((tile_info->base_x_delta != 0) ||
+                    (tile_info->base_y_delta != 0))
+                {
+                    tile = CityMapGetTile(i + tile_info->base_x_delta,
+                                          j + tile_info->base_y_delta);
+                }
+
+                city_tile_density_info *info = CityTileDensityInfo(tile);
+
+                int cost = info->energy_cost;
+
+                if (cost == 0)
+                {
+                    color = C_WHITE;
+                }
+                else
+                {
+                    if (cost > 7)
+                        cost = 7;
+
+                    color = C_BLUE_1 + (cost - 1);
+                }
+
+            }
+
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, color);
+        }
+    }
+
+    Palettes_Set_Colors();
+}
+
 static void Draw_Minimap_Traffic(void)
 {
     Palettes_Set_White();
@@ -771,7 +826,9 @@ static void Draw_Minimap_Selected(void)
         case MINIMAP_SELECTION_POWER_GRID:
             Draw_Minimap_PowerGrid();
             break;
-        //case MINIMAP_SELECTION_POWER_DENSITY:
+        case MINIMAP_SELECTION_POWER_DENSITY:
+            Draw_Minimap_PowerDensity();
+            break;
         //case MINIMAP_SELECTION_POPULATION_DENSITY:
         case MINIMAP_SELECTION_TRAFFIC:
             Draw_Minimap_Traffic();
