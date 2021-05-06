@@ -354,7 +354,7 @@ static void Room_Game_Handle_Scroll(void)
             {
                 if (mapy > 0)
                 {
-                    scrolly = -1;
+                    scrolly = -2;
                 }
                 else
                 {
@@ -373,7 +373,7 @@ static void Room_Game_Handle_Scroll(void)
             {
                 if (mapy < maxscrolly)
                 {
-                    scrolly = 1;
+                    scrolly = 2;
                 }
                 else
                 {
@@ -396,7 +396,7 @@ static void Room_Game_Handle_Scroll(void)
             {
                 if (mapx > 0)
                 {
-                    scrollx = -1;
+                    scrollx = -2;
                 }
                 else
                 {
@@ -415,7 +415,7 @@ static void Room_Game_Handle_Scroll(void)
             {
                 if (mapx < maxscrollx)
                 {
-                    scrollx = 1;
+                    scrollx = 2;
                 }
                 else
                 {
@@ -465,12 +465,12 @@ static void Room_Game_Handle_Scroll_Fast(void)
         if (keys & KEY_UP)
         {
             if (mapy > 0)
-                scrolly = -1;
+                scrolly = -2;
         }
         else if (keys & KEY_DOWN)
         {
             if (mapy < maxscrolly)
-                scrolly = 1;
+                scrolly = 2;
         }
     }
 
@@ -479,12 +479,12 @@ static void Room_Game_Handle_Scroll_Fast(void)
         if (keys & KEY_LEFT)
         {
             if (mapx > 0)
-                scrollx = -1;
+                scrollx = -2;
         }
         else if (keys & KEY_RIGHT)
         {
             if (mapx < maxscrollx)
-                scrollx = 1;
+                scrollx = 2;
         }
     }
 }
