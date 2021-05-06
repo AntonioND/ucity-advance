@@ -221,11 +221,11 @@ typedef enum {
 
      C_GREEN = C_GREEN_8,
      C_LIGHT_GREEN = C_GREEN_4,
-     C_DARK_GREEN = C_GREEN_2,
+     C_DARK_GREEN = C_GREEN_6,
 
      C_BLUE = C_BLUE_8,
      C_LIGHT_BLUE = C_BLUE_4,
-     C_DARK_BLUE = C_BLUE_2,
+     C_DARK_BLUE = C_BLUE_6,
 } color_index;
 
 static void Palettes_Set_Colors(void)
@@ -387,7 +387,64 @@ static void Draw_Minimap_Zone(void)
     Palettes_Set_Colors();
 }
 
-void Draw_Minimap_Police(void)
+static void Draw_Minimap_TransportMap(void)
+{
+    Palettes_Set_White();
+
+    static uint8_t color_array[] = {
+        [TYPE_FIELD] = C_WHITE,
+        [TYPE_FOREST] = C_WHITE,
+        [TYPE_WATER] = C_LIGHT_BLUE,
+        [TYPE_RESIDENTIAL] = C_GREY,
+        [TYPE_INDUSTRIAL] = C_GREY,
+        [TYPE_COMMERCIAL] = C_GREY,
+        [TYPE_POLICE_DEPT] = C_GREY,
+        [TYPE_FIRE_DEPT] = C_GREY,
+        [TYPE_HOSPITAL] = C_GREY,
+        [TYPE_PARK] = C_GREY,
+        [TYPE_STADIUM] = C_GREY,
+        [TYPE_SCHOOL] = C_GREY,
+        [TYPE_HIGH_SCHOOL] = C_GREY,
+        [TYPE_UNIVERSITY] = C_GREY,
+        [TYPE_MUSEUM] = C_GREY,
+        [TYPE_LIBRARY] = C_GREY,
+        [TYPE_AIRPORT] = C_PURPLE,
+        [TYPE_PORT] = C_GREEN,
+        [TYPE_DOCK] = C_LIGHT_BLUE,
+        [TYPE_POWER_PLANT] = C_GREY,
+        [TYPE_FIRE] = C_GREY, // Placeholder, never used.
+        [TYPE_RADIATION] = C_GREY,
+    };
+
+    Minimap_Title("Transport");
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            uint16_t type = CityMapGetType(i, j);
+
+            int color;
+
+            if (type == (TYPE_HAS_ROAD | TYPE_WATER))
+                color = C_DARK_BLUE;
+            else if (type == (TYPE_HAS_TRAIN | TYPE_WATER))
+                color = C_PURPLE;
+            else if (type & TYPE_HAS_ROAD)
+                color = C_BLACK;
+            else if (type & TYPE_HAS_TRAIN)
+                color = C_RED;
+            else
+                color = color_array[type & TYPE_MASK];
+
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, color);
+        }
+    }
+
+    Palettes_Set_Colors();
+}
+
+static void Draw_Minimap_Police(void)
 {
     Palettes_Set_White();
 
@@ -416,7 +473,7 @@ void Draw_Minimap_Police(void)
     Palettes_Set_Colors();
 }
 
-void Draw_Minimap_FireProtection(void)
+static void Draw_Minimap_FireProtection(void)
 {
     Palettes_Set_White();
 
@@ -445,7 +502,7 @@ void Draw_Minimap_FireProtection(void)
     Palettes_Set_Colors();
 }
 
-void Draw_Minimap_Hospitals(void)
+static void Draw_Minimap_Hospitals(void)
 {
     Palettes_Set_White();
 
@@ -474,7 +531,7 @@ void Draw_Minimap_Hospitals(void)
     Palettes_Set_Colors();
 }
 
-void Draw_Minimap_Schools(void)
+static void Draw_Minimap_Schools(void)
 {
     Palettes_Set_White();
 
@@ -503,7 +560,7 @@ void Draw_Minimap_Schools(void)
     Palettes_Set_Colors();
 }
 
-void Draw_Minimap_HighSchools(void)
+static void Draw_Minimap_HighSchools(void)
 {
     Palettes_Set_White();
 
@@ -532,7 +589,7 @@ void Draw_Minimap_HighSchools(void)
     Palettes_Set_Colors();
 }
 
-void Draw_Minimap_PowerGrid(void)
+static void Draw_Minimap_PowerGrid(void)
 {
     Palettes_Set_White();
 
@@ -583,7 +640,7 @@ void Draw_Minimap_PowerGrid(void)
     Palettes_Set_Colors();
 }
 
-void Draw_Minimap_Traffic(void)
+static void Draw_Minimap_Traffic(void)
 {
     Palettes_Set_White();
 
@@ -651,7 +708,7 @@ void Draw_Minimap_Traffic(void)
     Palettes_Set_Colors();
 }
 
-void Draw_Minimap_Pollution(void)
+static void Draw_Minimap_Pollution(void)
 {
     Palettes_Set_White();
 
@@ -693,7 +750,9 @@ static void Draw_Minimap_Selected(void)
         case MINIMAP_SELECTION_ZONE_MAP:
             Draw_Minimap_Zone();
             break;
-        //case MINIMAP_SELECTION_TRANSPORT_MAP:
+        case MINIMAP_SELECTION_TRANSPORT_MAP:
+            Draw_Minimap_TransportMap();
+            break;
         case MINIMAP_SELECTION_POLICE:
             Draw_Minimap_Police();
             break;
