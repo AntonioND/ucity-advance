@@ -26,7 +26,7 @@ typedef struct {
     char *name;
 } city_tile_info;
 
-city_tile_info *City_Tileset_Entry_Info(uint16_t city_index);
+const city_tile_info *City_Tileset_Entry_Info(uint16_t city_index);
 
 void CityMapDrawTerrainTile(uint16_t city_tile, void *map, int x, int y);
 

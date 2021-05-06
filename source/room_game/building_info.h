@@ -13,9 +13,9 @@ typedef struct {
 } building_info;
 
 // The argument is one of the B_*** defines
-building_info *Get_Building_Info(int building_type);
+const building_info *Get_Building_Info(int building_type);
 
-building_info *Get_BuildingFromBaseTile(uint16_t tile);
+const building_info *Get_BuildingFromBaseTile(uint16_t tile);
 
 // Index of every building
 #define B_Residential       0

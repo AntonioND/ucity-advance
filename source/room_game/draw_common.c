@@ -28,7 +28,7 @@ uint16_t CityMapGetTypeNoBoundCheck(int x, int y)
 {
     void *map = (void *)CITY_MAP_BASE;
     uint16_t tile = MAP_REGULAR_TILE(read_tile_sbb(map, x, y));
-    city_tile_info *tile_info = City_Tileset_Entry_Info(tile);
+    const city_tile_info *tile_info = City_Tileset_Entry_Info(tile);
     return tile_info->element_type;
 }
 
@@ -67,7 +67,7 @@ uint16_t CityMapGetType(int x, int y)
 
     void *map = (void *)CITY_MAP_BASE;
     uint16_t tile = MAP_REGULAR_TILE(read_tile_sbb(map, x, y));
-    city_tile_info *tile_info = City_Tileset_Entry_Info(tile);
+    const city_tile_info *tile_info = City_Tileset_Entry_Info(tile);
     return tile_info->element_type;
 }
 
@@ -81,7 +81,7 @@ void CityMapGetTypeAndTileUnsafe(int x, int y, uint16_t *tile, uint16_t *type)
 {
     void *map = (void *)CITY_MAP_BASE;
     *tile = MAP_REGULAR_TILE(read_tile_sbb(map, x, y));
-    city_tile_info *tile_info = City_Tileset_Entry_Info(*tile);
+    const city_tile_info *tile_info = City_Tileset_Entry_Info(*tile);
     *type = tile_info->element_type;
 }
 
@@ -272,7 +272,7 @@ void CityMapCheckBuildBridge(int force, int x, int y, uint16_t type,
 
     if (force == 0)
     {
-        building_info *bi = Get_Building_Info(building_type);
+        const building_info *bi = Get_Building_Info(building_type);
         if (MoneyIsThereEnough(bi->price * (*length)) == 0)
         {
             // Exit and play "not enough money" sound
@@ -430,7 +430,7 @@ void CityMapBuildBridge(int force, int *x, int *y, uint16_t type,
 
     if (force == 0)
     {
-        building_info *bi = Get_Building_Info(building_type);
+        const building_info *bi = Get_Building_Info(building_type);
         MoneyReduce(bi->price * length);
     }
 
@@ -443,7 +443,7 @@ typedef struct {
     uint16_t resulting_tile;
 } water_mask;
 
-static water_mask water_mask_table[] = {
+static const water_mask water_mask_table[] = {
     // From more restrictive to less restrictive
 
     // 8 neighbours of this tile.
@@ -527,7 +527,7 @@ void MapUpdateWater(int x, int y)
 
     // Compare with table
 
-    water_mask *wm = &water_mask_table[0];
+    const water_mask *wm = &water_mask_table[0];
     while (1)
     {
         // This loop will always end because the last element of the table will
@@ -552,7 +552,7 @@ int MapDeleteRoadTrainPowerlines(int force, int x, int y)
 
     if (force == 0)
     {
-        building_info *bi = Get_Building_Info(B_Delete);
+        const building_info *bi = Get_Building_Info(B_Delete);
         if (MoneyIsThereEnough(bi->price) == 0)
         {
             // Exit and play "not enough money" sound
@@ -571,7 +571,7 @@ int MapDeleteRoadTrainPowerlines(int force, int x, int y)
 
     if (force == 0)
     {
-        building_info *bi = Get_Building_Info(B_Delete);
+        const building_info *bi = Get_Building_Info(B_Delete);
         MoneyReduce(bi->price);
         // TODO: SFX_Demolish();
     }
@@ -617,7 +617,7 @@ typedef struct {
     int is_vertical;
 } bridge_info;
 
-static bridge_info bridge_tile_info[] = {
+static const bridge_info bridge_tile_info[] = {
     { T_ROAD_TB_BRIDGE, TYPE_HAS_ROAD, 1 },
     { T_ROAD_LR_BRIDGE, TYPE_HAS_ROAD, 0 },
 
@@ -642,7 +642,7 @@ void DrawCityDeleteBridge(int force, int x, int y)
     int is_vertical;
     int type;
 
-    bridge_info *bti = &bridge_tile_info[0];
+    const bridge_info *bti = &bridge_tile_info[0];
     while (1)
     {
         if (bti->tile == tile)
@@ -720,7 +720,7 @@ void DrawCityDeleteBridge(int force, int x, int y)
     if (force == 0)
     {
         // The size is needed to calculate the money to be spent.
-        building_info *delete_info = Get_Building_Info(B_Delete);
+        const building_info *delete_info = Get_Building_Info(B_Delete);
         int32_t base_price = delete_info->price;
         total_price = base_price * length;
 

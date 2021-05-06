@@ -24,7 +24,7 @@ uint16_t City_Tileset_VRAM_Info(uint16_t city_index)
 
 // ----------------------------------------------------------------------------
 
-static city_tile_info city_tileset_info[] = { // TILESET_INFO
+static const city_tile_info city_tileset_info[] = {
     [T_GRASS__FOREST_TL] = { TYPE_FOREST, 0, 0, "Forest" },
     [T_GRASS__FOREST_TC] = { TYPE_FOREST, 0, 0, "Forest" },
     [T_GRASS__FOREST_TR] = { TYPE_FOREST, 0, 0, "Forest" },
@@ -565,7 +565,7 @@ static city_tile_info city_tileset_info[] = { // TILESET_INFO
     [T_RADIATION_WATER] = { TYPE_RADIATION, 0, 0, "Radiation Water" },
 };
 
-city_tile_info *City_Tileset_Entry_Info(uint16_t city_index)
+const city_tile_info *City_Tileset_Entry_Info(uint16_t city_index)
 {
     UGBA_Assert(city_index < city_tileset_map_map_height);
     return &city_tileset_info[city_index];
@@ -573,7 +573,7 @@ city_tile_info *City_Tileset_Entry_Info(uint16_t city_index)
 
 int BuildingIsCoordinateOrigin(uint16_t tile)
 {
-    city_tile_info *info = City_Tileset_Entry_Info(tile);
+    const city_tile_info *info = City_Tileset_Entry_Info(tile);
 
     if ((info->base_x_delta != 0) || (info->base_y_delta != 0))
         return 0;
@@ -583,7 +583,7 @@ int BuildingIsCoordinateOrigin(uint16_t tile)
 
 void BuildingGetCoordinateOrigin(uint16_t tile, int x, int y, int *ox, int *oy)
 {
-    city_tile_info *info = City_Tileset_Entry_Info(tile);
+    const city_tile_info *info = City_Tileset_Entry_Info(tile);
 
     *ox = x + info->base_x_delta;
     *oy = y + info->base_y_delta;

@@ -19,7 +19,7 @@ typedef struct {
     uint16_t resulting_tile;
 } power_line_mask;
 
-static power_line_mask power_line_mask_table[] = {
+static const power_line_mask power_line_mask_table[] = {
     // From more restrictive to less restrictive
 
     // 8 neighbours of this tile.
@@ -175,7 +175,7 @@ void MapTileUpdatePowerLines(int x, int y)
 
     // Compare with table
 
-    power_line_mask *plm = &power_line_mask_table[0];
+    const power_line_mask *plm = &power_line_mask_table[0];
     while (1)
     {
         // This loop will always end because the last element of the table will
@@ -251,7 +251,7 @@ void MapDrawPowerLines(int force, int x, int y)
     {
         // Check if there is enough money
 
-        building_info *bi = Get_Building_Info(B_PowerLines);
+        const building_info *bi = Get_Building_Info(B_PowerLines);
         if (MoneyIsThereEnough(bi->price) == 0)
         {
             // Exit and play "not enough money" sound
@@ -319,7 +319,7 @@ built:
 
     if (force == 0)
     {
-        building_info *bi = Get_Building_Info(B_PowerLines);
+        const building_info *bi = Get_Building_Info(B_PowerLines);
         MoneyReduce(bi->price);
         // TODO: SFX_Build();
     }

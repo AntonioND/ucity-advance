@@ -75,7 +75,7 @@ typedef  enum {
 
 } icon_index;
 
-static int icon_to_building[] = {
+static const int icon_to_building[] = {
     [Icon_Group_Delete] = B_None,
     [Icon_Group_RCI] = B_None,
     [Icon_Group_RoadTrainPower] = B_None,
@@ -133,7 +133,7 @@ typedef struct {
     int icon[Icon_Number_Icons_Per_Groups]; // Pad with Icon_NULL
 } menu_group;
 
-static menu_group menu[] = {
+static const menu_group menu[] = {
 
     [Icon_Group_Delete] =
         {{ Icon_Destroy, Icon_NULL, Icon_NULL }},
@@ -235,7 +235,7 @@ void BuildSelectMenuShow(void)
 
             if (i == selected_group_icon)
             {
-                obj_affine_src objsrc_init[] =
+                const obj_affine_src objsrc_init[] =
                 {
                     { 0.6 * (1 << 8), 0.6 * (1 << 8), 0, 0 }
                 };

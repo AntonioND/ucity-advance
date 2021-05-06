@@ -16,6 +16,6 @@ typedef struct {
 } city_tile_density_info;
 
 // Only the top left tiles of each building has information
-city_tile_density_info *CityTileDensityInfo(uint16_t tile);
+const city_tile_density_info *CityTileDensityInfo(uint16_t tile);
 
 #endif // SIMULATION_BUILDING_DENSITY_H__

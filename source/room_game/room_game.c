@@ -519,7 +519,7 @@ static void Room_Game_Handle_Drift(void)
 void BuildModeUpdateStatusBar(void)
 {
     int building = BuildMenuSelection();
-    building_info *bi = Get_Building_Info(building);
+    const building_info *bi = Get_Building_Info(building);
 
     char str[31];
     str[0] = 0;
@@ -538,7 +538,7 @@ void BuildModeUpdateStatusBar(void)
 void ModifyModeUpdateStatusBar(void)
 {
     int building = BuildMenuSelection();
-    building_info *bi = Get_Building_Info(building);
+    const building_info *bi = Get_Building_Info(building);
 
     char str[31];
     str[0] = 0;
@@ -590,7 +590,7 @@ void Room_Game_Set_Mode(int mode)
         {
             BuildSelectMenuHide();
 
-            building_info *info = Get_Building_Info(BuildMenuSelection());
+            const building_info *info = Get_Building_Info(BuildMenuSelection());
             Cursor_Set_Size(info->width * 8, info->height * 8);
             Cursor_Refresh();
             StatusBarClear();

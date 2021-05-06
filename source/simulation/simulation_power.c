@@ -48,7 +48,7 @@ static void AddPowerToTile(int x, int y)
     // only the top left one has the information about the cost.
 
     uint16_t tile = CityMapGetTile(x, y);
-    city_tile_info *tile_info = City_Tileset_Entry_Info(tile);
+    const city_tile_info *tile_info = City_Tileset_Entry_Info(tile);
 
     if ((tile_info->base_x_delta != 0) || (tile_info->base_y_delta != 0))
     {
@@ -56,7 +56,7 @@ static void AddPowerToTile(int x, int y)
                               y + tile_info->base_y_delta);
     }
 
-    city_tile_density_info *info = CityTileDensityInfo(tile);
+    const city_tile_density_info *info = CityTileDensityInfo(tile);
 
     uint8_t *ptr = &power_map[y * CITY_MAP_WIDTH + x];
 
@@ -152,7 +152,7 @@ static void Simulation_PowerPlantFloodFill(uint16_t base_tile, int x, int y,
     // to have power 0 because the TILE_HANDLED flag doesn't have to be cleared
     // this way.
 
-    building_info *info = Get_BuildingFromBaseTile(base_tile);
+    const building_info *info = Get_BuildingFromBaseTile(base_tile);
 
     for (int j = y; j < (y + info->height); j++)
     {
@@ -343,7 +343,7 @@ void Simulation_PowerDistribution(void)
                 continue;
             }
 
-            building_info *info = Get_BuildingFromBaseTile(tile);
+            const building_info *info = Get_BuildingFromBaseTile(tile);
 
             int total = info->height * info->width;
             int count = 0;

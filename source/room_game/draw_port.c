@@ -166,7 +166,7 @@ void MapDrawPort(int force, int x, int y)
 {
     // Check if there is water surrounding the building
 
-    building_info *building = Get_Building_Info(B_Port);
+    const building_info *building = Get_Building_Info(B_Port);
 
     if (MapCheckSurroundingWater(x, y, building->width, building->height) == 0)
         return;
@@ -189,14 +189,14 @@ void MapDeletePort(int force, int x, int y)
 
     uint16_t tile = CityMapGetTile(x, y);
 
-    city_tile_info *info = City_Tileset_Entry_Info(tile);
+    const city_tile_info *info = City_Tileset_Entry_Info(tile);
 
     int ox = x + info->base_x_delta;
     int oy = y + info->base_y_delta;
 
     uint16_t origin_tile = CityMapGetTile(ox, oy);
 
-    building_info *bi = Get_BuildingFromBaseTile(origin_tile);
+    const building_info *bi = Get_BuildingFromBaseTile(origin_tile);
     int w = bi->width;
     int h = bi->height;
 
@@ -207,7 +207,7 @@ void MapDeletePort(int force, int x, int y)
     if (force == 0)
     {
         // The size is needed to calculate the money to be spent.
-        building_info *delete_info = Get_Building_Info(B_Delete);
+        const building_info *delete_info = Get_Building_Info(B_Delete);
         int32_t base_price = delete_info->price;
         total_price = base_price * w * h;
 

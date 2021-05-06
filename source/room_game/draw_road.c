@@ -19,7 +19,7 @@ typedef struct {
     uint16_t resulting_tile;
 } road_mask;
 
-static road_mask road_mask_table[] = {
+static const road_mask road_mask_table[] = {
     // From more restrictive to less restrictive
 
     // 8 neighbours of this tile.
@@ -138,7 +138,7 @@ void MapTileUpdateRoad(int x, int y)
 
     // Compare with table
 
-    road_mask *rm = &road_mask_table[0];
+    const road_mask *rm = &road_mask_table[0];
     while (1)
     {
         // This loop will always end because the last element of the table will
@@ -214,7 +214,7 @@ void MapDrawRoad(int force, int x, int y)
 
     if (force == 0)
     {
-        building_info *bi = Get_Building_Info(B_Road);
+        const building_info *bi = Get_Building_Info(B_Road);
         if (MoneyIsThereEnough(bi->price) == 0)
         {
             // Exit and play "not enough money" sound
@@ -280,7 +280,7 @@ built:
 
     if (force == 0)
     {
-        building_info *bi = Get_Building_Info(B_Road);
+        const building_info *bi = Get_Building_Info(B_Road);
         MoneyReduce(bi->price);
         // TODO: SFX_Build();
     }

@@ -5,7 +5,7 @@
 #include "simulation/building_density.h"
 #include "room_game/tileset_info.h"
 
-static city_tile_density_info CITY_TILE_DENSITY[] = {
+static const city_tile_density_info CITY_TILE_DENSITY[] = {
     [T_GRASS__FOREST_TL]        = { 0, 0, 0, 12 },
     [T_GRASS__FOREST_TC]        = { 0, 0, 0, 12 },
     [T_GRASS__FOREST_TR]        = { 0, 0, 0, 12 },
@@ -179,7 +179,7 @@ static city_tile_density_info CITY_TILE_DENSITY[] = {
     [T_RADIATION_WATER]         = { 0, 0, 0, 0 },
 };
 
-city_tile_density_info *CityTileDensityInfo(uint16_t tile)
+const city_tile_density_info *CityTileDensityInfo(uint16_t tile)
 {
     return &CITY_TILE_DENSITY[tile];
 }

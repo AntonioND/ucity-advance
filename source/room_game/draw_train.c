@@ -19,7 +19,7 @@ typedef struct {
     uint16_t resulting_tile;
 } train_mask;
 
-static train_mask train_mask_table[] = {
+static const train_mask train_mask_table[] = {
     // From more restrictive to less restrictive
 
     // 8 neighbours of this tile.
@@ -144,7 +144,7 @@ void MapTileUpdateTrain(int x, int y)
 
     // Compare with table
 
-    train_mask *tm = &train_mask_table[0];
+    const train_mask *tm = &train_mask_table[0];
     while (1)
     {
         // This loop will always end because the last element of the table will
@@ -220,7 +220,7 @@ void MapDrawTrain(int force, int x, int y)
 
     if (force == 0)
     {
-        building_info *bi = Get_Building_Info(B_Train);
+        const building_info *bi = Get_Building_Info(B_Train);
         if (MoneyIsThereEnough(bi->price) == 0)
         {
             // Exit and play "not enough money" sound
@@ -288,7 +288,7 @@ built:
 
     if (force == 0)
     {
-        building_info *bi = Get_Building_Info(B_Train);
+        const building_info *bi = Get_Building_Info(B_Train);
         MoneyReduce(bi->price);
         // TODO: SFX_Build();
     }

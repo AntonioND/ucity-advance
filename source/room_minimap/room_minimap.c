@@ -9,6 +9,7 @@
 #include "input_utils.h"
 #include "main.h"
 
+#include "simulation/building_density.h"
 #include "simulation/simulation_happiness.h"
 #include "simulation/simulation_pollution.h"
 #include "simulation/simulation_power.h"
@@ -89,7 +90,7 @@ static void Room_Minimap_Refresh_Icons(void)
         int tile = i * 4 + GRAPH_MENU_ICONS_TILES_INDEX;
         if (i == selected_minimap)
         {
-            obj_affine_src objsrc_init[] =
+            const obj_affine_src objsrc_init[] =
             {
                 { 0.6 * (1 << 8), 0.6 * (1 << 8), 0, 0 }
             };
@@ -288,7 +289,7 @@ static void Draw_Minimap_Overview(void)
 {
     Palettes_Set_White();
 
-    static uint8_t color_array[] = {
+    static const uint8_t color_array[] = {
         [TYPE_FIELD] = C_WHITE,
         [TYPE_FOREST] = C_LIGHT_GREEN,
         [TYPE_WATER] = C_LIGHT_BLUE,
@@ -345,7 +346,7 @@ static void Draw_Minimap_Zone(void)
 {
     Palettes_Set_White();
 
-    static uint8_t color_array[] = {
+    static const uint8_t color_array[] = {
         [TYPE_FIELD] = C_WHITE,
         [TYPE_FOREST] = C_LIGHT_GREEN,
         [TYPE_WATER] = C_LIGHT_BLUE,
@@ -391,7 +392,7 @@ static void Draw_Minimap_TransportMap(void)
 {
     Palettes_Set_White();
 
-    static uint8_t color_array[] = {
+    static const uint8_t color_array[] = {
         [TYPE_FIELD] = C_WHITE,
         [TYPE_FOREST] = C_WHITE,
         [TYPE_WATER] = C_LIGHT_BLUE,
@@ -661,7 +662,7 @@ static void Draw_Minimap_PowerDensity(void)
             }
             else if (TypeHasElectricityExtended(type) & TYPE_HAS_POWER)
             {
-                city_tile_info *tile_info = City_Tileset_Entry_Info(tile);
+                const city_tile_info *tile_info = City_Tileset_Entry_Info(tile);
 
                 if ((tile_info->base_x_delta != 0) ||
                     (tile_info->base_y_delta != 0))
@@ -670,7 +671,7 @@ static void Draw_Minimap_PowerDensity(void)
                                           j + tile_info->base_y_delta);
                 }
 
-                city_tile_density_info *info = CityTileDensityInfo(tile);
+                const city_tile_density_info *info = CityTileDensityInfo(tile);
 
                 int cost = info->energy_cost;
 
@@ -745,7 +746,7 @@ static void Draw_Minimap_Traffic(void)
 
             uint16_t tile = CityMapGetTile(i, j);
 
-            city_tile_info *ti = City_Tileset_Entry_Info(tile);
+            const city_tile_info *ti = City_Tileset_Entry_Info(tile);
 
             int ox = i + ti->base_x_delta;
             int oy = j + ti->base_y_delta;

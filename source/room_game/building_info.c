@@ -9,7 +9,7 @@
 #include "room_game/building_info.h"
 #include "room_game/tileset_info.h"
 
-static building_info buildings_info[] = { // TODO: BUILDING_INFO_STRUCTS_ARRAY
+static const building_info buildings_info[] = {
     // Dummy element. The only thing that matters here is the size.
     [B_None] = { 1, 1, T_DEMOLISHED, 0 }, // Demolished or something...
 
@@ -92,20 +92,20 @@ static building_info buildings_info[] = { // TODO: BUILDING_INFO_STRUCTS_ARRAY
     [B_Delete] = { 1, 1, T_DEMOLISHED, 5 },
 };
 
-building_info *Get_Building_Info(int building_type)
+const building_info *Get_Building_Info(int building_type)
 {
     UGBA_Assert((building_type <= B_LastBuilding) || (building_type == B_Delete));
 
     return &buildings_info[building_type];
 }
 
-building_info *Get_BuildingFromBaseTile(uint16_t tile)
+const building_info *Get_BuildingFromBaseTile(uint16_t tile)
 {
     int elems = sizeof(buildings_info) / sizeof(buildings_info[0]);
 
     for (int i = 0; i < elems; i++)
     {
-        building_info *info = &buildings_info[i];
+        const building_info *info = &buildings_info[i];
         if (info->base_tile == tile)
             return info;
     }

@@ -130,7 +130,7 @@ void Simulation_Pollution(void)
                 BuildingGetCoordinateOrigin(tile, i, j, &ox, &oy);
                 uint16_t base_tile = CityMapGetTile(ox, oy);
 
-                city_tile_density_info *di = CityTileDensityInfo(base_tile);
+                const city_tile_density_info *di = CityTileDensityInfo(base_tile);
                 value = di->pollution_level;
             }
 

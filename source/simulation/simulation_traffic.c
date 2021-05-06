@@ -43,7 +43,7 @@ static uint8_t *TrafficGetBuildingiRemainingDensityPointer(int x, int y)
 {
     uint16_t tile = CityMapGetTile(x, y);
 
-    city_tile_info *ti = City_Tileset_Entry_Info(tile);
+    const city_tile_info *ti = City_Tileset_Entry_Info(tile);
 
     int ox = x + ti->base_x_delta;
     int oy = y + ti->base_y_delta;
@@ -412,7 +412,7 @@ static void Simulation_TrafficHandleSource(int x, int y)
     // be saved to the map.
 
     uint16_t tile = CityMapGetTile(x, y);
-    city_tile_density_info *di = CityTileDensityInfo(tile);
+    const city_tile_density_info *di = CityTileDensityInfo(tile);
 
     // R tiles have population 0. Actual residential buildings have population.
     if (di->population == 0)
@@ -425,14 +425,14 @@ static void Simulation_TrafficHandleSource(int x, int y)
     // Get dimensions of this building
     // -------------------------------
 
-    city_tile_info *ti = City_Tileset_Entry_Info(tile);
+    const city_tile_info *ti = City_Tileset_Entry_Info(tile);
 
     int ox = x + ti->base_x_delta;
     int oy = y + ti->base_y_delta;
 
     uint16_t origin_tile = CityMapGetTile(ox, oy);
 
-    building_info *bi = Get_BuildingFromBaseTile(origin_tile);
+    const building_info *bi = Get_BuildingFromBaseTile(origin_tile);
     int w = bi->width;
     int h = bi->height;
 
@@ -606,7 +606,7 @@ void Simulation_Traffic(void)
 
             if (BuildingIsCoordinateOrigin(tile))
             {
-                city_tile_density_info *info = CityTileDensityInfo(tile);
+                const city_tile_density_info *info = CityTileDensityInfo(tile);
                 traffic_map[j * CITY_MAP_WIDTH + i] = info->population;
             }
         }

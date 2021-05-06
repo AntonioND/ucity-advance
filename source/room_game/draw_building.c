@@ -42,7 +42,7 @@ int MapDrawBuilding(int forced, int type, int x, int y)
     {
         // Check if there is enough money
 
-        building_info *bi = Get_Building_Info(type);
+        const building_info *bi = Get_Building_Info(type);
         if (MoneyIsThereEnough(bi->price) == 0)
         {
             // Exit and play "not enough money" sound
@@ -77,7 +77,7 @@ int MapDrawBuilding(int forced, int type, int x, int y)
 
     // Build building
 
-    building_info *building = Get_Building_Info(type);
+    const building_info *building = Get_Building_Info(type);
 
     int w = building->width;
     int h = building->height;
@@ -100,7 +100,7 @@ int MapDrawBuilding(int forced, int type, int x, int y)
 
     if (forced == 0)
     {
-        building_info *bi = Get_Building_Info(type);
+        const building_info *bi = Get_Building_Info(type);
         MoneyReduce(bi->price);
         // TODO: SFX_Build()
     }
@@ -140,14 +140,14 @@ int MapDeleteBuilding(int forced, int x, int y)
 
     // Check origin of coordinates of the building and get type of building
 
-    city_tile_info *info = City_Tileset_Entry_Info(tile);
+    const city_tile_info *info = City_Tileset_Entry_Info(tile);
 
     int ox = x + info->base_x_delta;
     int oy = y + info->base_y_delta;
 
     uint16_t origin_tile = CityMapGetTile(ox, oy);
 
-    building_info *bi = Get_BuildingFromBaseTile(origin_tile);
+    const building_info *bi = Get_BuildingFromBaseTile(origin_tile);
     int w = bi->width;
     int h = bi->height;
 
@@ -158,7 +158,7 @@ int MapDeleteBuilding(int forced, int x, int y)
     if (forced == 0)
     {
         // The size is needed to calculate the money to be spent.
-        building_info *delete_info = Get_Building_Info(B_Delete);
+        const building_info *delete_info = Get_Building_Info(B_Delete);
         int32_t base_price = delete_info->price;
         total_price = base_price * w * h;
 
@@ -204,7 +204,7 @@ void MapClearDemolishedTile(int forced, int x, int y)
 
     if (forced == 0)
     {
-        building_info *bi = Get_Building_Info(B_Delete);
+        const building_info *bi = Get_Building_Info(B_Delete);
         if (MoneyIsThereEnough(bi->price) == 0)
         {
             // Exit and play "not enough money" sound
@@ -221,7 +221,7 @@ void MapClearDemolishedTile(int forced, int x, int y)
 
     if (forced == 0)
     {
-        building_info *bi = Get_Building_Info(B_Delete);
+        const building_info *bi = Get_Building_Info(B_Delete);
         MoneyReduce(bi->price);
         // TODO: SFX_Clear()
     }
