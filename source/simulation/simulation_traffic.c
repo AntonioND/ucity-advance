@@ -12,6 +12,7 @@
 #include "room_game/tileset_info.h"
 #include "simulation/building_density.h"
 #include "simulation/queue.h"
+#include "simulation/simulation_building_count.h"
 #include "simulation/simulation_happiness.h"
 
 #define TRAFFIC_MAX_LEVEL       (256 / 6) // Max level of adequate traffic
@@ -22,6 +23,7 @@ EWRAM_BSS static uint8_t scratch_map[CITY_MAP_HEIGHT * CITY_MAP_WIDTH];
 
 // Amount of tiles with traffic jams.
 int simulation_traffic_jam_num_tiles;
+int simulation_traffic_jam_num_tiles_percent;
 
 // Remaining density in the residential building being handled at the moment.
 int source_building_remaining_density;
@@ -569,6 +571,99 @@ static void Simulation_TrafficHandleSource(int x, int y)
     // End of this building
 }
 
+static void Simulation_TrafficSetTileOkFlag(void)
+{
+    // - For roads and train, make sure that the traffic is below a certain
+    //   threshold.
+    //
+    // - For buildings, make sure that all people could get out of residential
+    //   zones, and that commercial zones and industrial zones could be reached
+    //   by all people.
+
+    simulation_traffic_jam_num_tiles = 0;
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            uint16_t tile, type;
+            CityMapGetTypeAndTile(i, j, &tile, &type);
+
+            int tile_set_flag = 0;
+
+            if (type & (TYPE_HAS_ROAD | TYPE_HAS_TRAIN))
+            {
+                // Road or train
+
+                int traffic = traffic_map[j * CITY_MAP_WIDTH + i];
+
+                if (traffic >= TRAFFIC_MAX_LEVEL)
+                {
+                    // Tile isn't ok
+
+                    // Count the number of road/train tiles that have too much
+                    // traffic to show warning messages to the player.
+
+                    simulation_traffic_jam_num_tiles++;
+                }
+                else
+                {
+                    // Tile is ok
+                    tile_set_flag = 1;
+                }
+            }
+            else
+            {
+                type &= TYPE_MASK;
+
+                // Check if this is a building or not. If not, set tile as ok.
+                // Also, ignore docks.
+
+                if ((type == TYPE_FIELD) || (type == TYPE_FOREST) ||
+                    (type == TYPE_WATER) || (type == TYPE_DOCK))
+                {
+                    tile_set_flag = 1;
+                }
+                else
+                {
+                    // This is a building, check it
+
+                    int ox, oy;
+                    BuildingGetCoordinateOrigin(tile, i, j, &ox, &oy);
+
+                    // Get remaining population of this building (that couldn't
+                    // find a destination or source)
+                    int value = traffic_map[oy * CITY_MAP_WIDTH + ox];
+
+                    if (value == 0)
+                        tile_set_flag = 1;
+                }
+            }
+
+            if (tile_set_flag)
+                Simulation_HappinessSetFlags(i, j, TILE_OK_TRAFFIC);
+            else
+                Simulation_HappinessResetFlags(i, j, TILE_OK_TRAFFIC);
+        }
+    }
+
+    // Check if traffic is too high
+    // ----------------------------
+
+    building_count_info *bc = Simulation_CountBuildingsGet();
+
+    unsigned int total_tiles = bc->roads + bc->train_tracks;
+
+    simulation_traffic_jam_num_tiles_percent =
+                        (simulation_traffic_jam_num_tiles * 100) / total_tiles;
+
+    if (simulation_traffic_jam_num_tiles_percent > TRAFFIC_JAM_MAX_TILES)
+    {
+        // This message is shown only once per year
+        // TODO: PersistentMessageShow(ID_MSG_TRAFFIC_HIGH);
+    }
+}
+
 void Simulation_Traffic(void)
 {
     // Final traffic density and building handled flags go to traffic_map[],
@@ -693,6 +788,11 @@ void Simulation_Traffic(void)
             }
         }
     }
+
+    // Update happiness of tiles
+    // -------------------------
+
+    Simulation_TrafficSetTileOkFlag();
 }
 
 void Simulation_TrafficRemoveAnimationTiles(void)
