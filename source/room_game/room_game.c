@@ -18,6 +18,7 @@
 #include "room_game/room_game.h"
 #include "room_game/tileset_info.h"
 #include "room_game/status_bar.h"
+#include "simulation/simulation_building_count.h"
 #include "simulation/simulation_traffic.h"
 #include "simulation/simulation_water.h"
 
@@ -308,6 +309,10 @@ void Room_Game_Load(void)
     Cursor_Set_Size(8, 8);
     Cursor_Reset_Position();
     Cursor_Refresh();
+
+    // Refresh some simulation data
+
+    Simulation_CountBuildings();
 }
 
 void Room_Game_Unload(void)
@@ -750,7 +755,10 @@ void Room_Game_SlowVBLHandler(void)
             if (keys & KEY_A)
             {
                 if ((last_build_x != x) || (last_build_y != y))
+                {
                     Building_Build(0, BuildMenuSelection(), x, y);
+                    Simulation_CountBuildings();
+                }
 
                 last_build_x = x;
                 last_build_y = y;
