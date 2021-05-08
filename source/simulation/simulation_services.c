@@ -9,6 +9,10 @@
 
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
+#include "simulation/simulation_happiness.h"
+
+// Min level of adequate service coverage
+#define SERVICE_MIN_LEVEL   (256 / 4)
 
 EWRAM_BSS static uint8_t services_matrix[CITY_MAP_WIDTH * CITY_MAP_HEIGHT];
 
@@ -147,6 +151,128 @@ static void Simulation_ServicesApplyMask(int x, int y)
                 services_matrix[mapy * CITY_MAP_WIDTH + mapx] = 255;
             else
                 services_matrix[mapy * CITY_MAP_WIDTH + mapx] = val;
+        }
+    }
+}
+
+void Simulation_ServicesSetTileOkFlag(void)
+{
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            uint16_t type = CityMapGetType(i, j) & TYPE_MASK;
+
+            if ((type == TYPE_FIELD) || (type == TYPE_FOREST) ||
+                (type == TYPE_WATER) || (type == TYPE_DOCK))
+            {
+                // Ignore non-building tiles. Flag it as ok!
+                Simulation_HappinessSetFlags(i, j, TILE_OK_SERVICES);
+            }
+            else
+            {
+                // Buildings require a level check...
+                int services = services_matrix[j * CITY_MAP_WIDTH + i];
+
+                // Check if there is enough coverage
+                if (services >= SERVICE_MIN_LEVEL)
+                    Simulation_HappinessSetFlags(i, j, TILE_OK_SERVICES);
+                else
+                    Simulation_HappinessResetFlags(i, j, TILE_OK_SERVICES);
+            }
+        }
+    }
+}
+
+// Like Simulation_ServicesSetTileOkFlag(), but can only set to 1 if it was 1
+// before.
+void Simulation_ServicesAddTileOkFlag(void)
+{
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            if ((Simulation_HappinessGetFlags(i, j) & TILE_OK_SERVICES) == 0)
+                continue;
+
+            uint16_t type = CityMapGetType(i, j) & TYPE_MASK;
+
+            if ((type == TYPE_FIELD) || (type == TYPE_FOREST) ||
+                (type == TYPE_WATER) || (type == TYPE_DOCK))
+            {
+                // Ignore non-building tiles. Leave it as ok!
+                continue;
+            }
+            else
+            {
+                // Buildings require a level check...
+                int services = services_matrix[j * CITY_MAP_WIDTH + i];
+
+                // Check if there is enough coverage
+                if (services < SERVICE_MIN_LEVEL)
+                    Simulation_HappinessResetFlags(i, j, TILE_OK_SERVICES);
+            }
+        }
+    }
+}
+
+void Simulation_EducationSetTileOkFlag(void)
+{
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            uint16_t type = CityMapGetType(i, j) & TYPE_MASK;
+
+            if ((type == TYPE_FIELD) || (type == TYPE_FOREST) ||
+                (type == TYPE_WATER) || (type == TYPE_DOCK))
+            {
+                // Ignore non-building tiles. Flag it as ok!
+                Simulation_HappinessSetFlags(i, j, TILE_OK_EDUCATION);
+            }
+            else
+            {
+                // Buildings require a level check...
+                int education = services_matrix[j * CITY_MAP_WIDTH + i];
+
+                // Check if there is enough coverage
+                if (education >= SERVICE_MIN_LEVEL)
+                    Simulation_HappinessSetFlags(i, j, TILE_OK_EDUCATION);
+                else
+                    Simulation_HappinessResetFlags(i, j, TILE_OK_EDUCATION);
+            }
+        }
+    }
+}
+
+// Like Simulation_EducationSetTileOkFlag(), but can only set to 1 if it was 1
+// before.
+void Simulation_EducationAddTileOkFlag(void)
+{
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            if ((Simulation_HappinessGetFlags(i, j) & TILE_OK_EDUCATION) == 0)
+                continue;
+
+            uint16_t type = CityMapGetType(i, j) & TYPE_MASK;
+
+            if ((type == TYPE_FIELD) || (type == TYPE_FOREST) ||
+                (type == TYPE_WATER) || (type == TYPE_DOCK))
+            {
+                // Ignore non-building tiles. Leave it as ok!
+                continue;
+            }
+            else
+            {
+                // Buildings require a level check...
+                int education = services_matrix[j * CITY_MAP_WIDTH + i];
+
+                // Check if there is enough coverage
+                if (education < SERVICE_MIN_LEVEL)
+                    Simulation_HappinessResetFlags(i, j, TILE_OK_EDUCATION);
+            }
         }
     }
 }

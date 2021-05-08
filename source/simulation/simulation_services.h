@@ -13,5 +13,10 @@ void Simulation_ServicesBig(uint16_t source_tile);
 
 uint8_t *Simulation_ServicesGetMap(void);
 
+void Simulation_ServicesSetTileOkFlag(void);
+void Simulation_ServicesAddTileOkFlag(void);
+void Simulation_EducationSetTileOkFlag(void);
+void Simulation_EducationAddTileOkFlag(void);
+
 #endif // SIMULATION_SIMULATION_SERVICES_H__
 
