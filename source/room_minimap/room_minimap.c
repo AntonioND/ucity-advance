@@ -596,9 +596,6 @@ static void Draw_Minimap_PowerGrid(void)
 
     Minimap_Title("Power Grid");
 
-    Simulation_HappinessResetMap();
-    Simulation_PowerDistribution();
-
     uint8_t *map = Simulation_PowerDistributionGetMap();
 
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)
@@ -749,8 +746,6 @@ static void Draw_Minimap_Traffic(void)
 
     Minimap_Title("Traffic");
 
-    Simulation_Traffic();
-
     uint8_t *map = Simulation_TrafficGetMap();
 
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)
@@ -816,8 +811,6 @@ static void Draw_Minimap_Pollution(void)
     Palettes_Set_White();
 
     Minimap_Title("Pollution");
-
-    Simulation_Pollution();
 
     uint8_t *map = Simulation_PollutionGetMap();
 

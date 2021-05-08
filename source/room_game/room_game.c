@@ -19,6 +19,7 @@
 #include "room_game/tileset_info.h"
 #include "room_game/status_bar.h"
 #include "simulation/simulation_building_count.h"
+#include "simulation/simulation_common.h"
 #include "simulation/simulation_traffic.h"
 #include "simulation/simulation_water.h"
 
@@ -636,12 +637,14 @@ void Room_Game_Handle(void)
     {
         case MODE_RUNNING:
         {
+            Simulation_SimulateAll();
             GameAnimateMap();
 
             break;
         }
         case MODE_WATCH:
         {
+            Simulation_SimulateAll();
             GameAnimateMap();
 
             break;

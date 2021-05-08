@@ -228,6 +228,12 @@ void Simulation_PowerDistribution(void)
 {
     memset(power_map, 0, sizeof(power_map));
 
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+            Simulation_HappinessResetFlags(i, j, TILE_OK_POWER);
+    }
+
     int month = DateGetMonth();
 
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)

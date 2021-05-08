@@ -6,6 +6,11 @@
 
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
+#include "room_game/tileset_info.h"
+#include "simulation/simulation_pollution.h"
+#include "simulation/simulation_power.h"
+#include "simulation/simulation_services.h"
+#include "simulation/simulation_traffic.h"
 
 //EWRAM_BSS
 static uint8_t type_matrix[CITY_MAP_WIDTH * CITY_MAP_HEIGHT];
@@ -27,9 +32,65 @@ uint8_t *TypeMatrixGet(void)
     return &type_matrix[0];
 }
 
-#if 0
 void Simulation_SimulateAll(void)
 {
+    // First, get data from last frame and build new buildings or destroy
+    // them (if there haven't been changes since the previous step!)
+    // depending on the tile ok flags map. In the first iteration step the
+    // flags should be 0, so this can be called as well.
+
+    // TODO: Simulation_CreateBuildings();
+
+    // Now, simulate this new map. First, power distribution, as it will be
+    // needed for other simulations
+
+    Simulation_PowerDistribution();
+
+    // After knowing the power distribution, the rest of the simulations can
+    // be done.
+
+    Simulation_Traffic();
+
+    // Simulate services, like police and firemen. They depend on the power
+    // simulation, as they can't work without electricity, so handle this
+    // after simulating the power grid.
+
     Simulation_Services(T_POLICE_DEPT_CENTER);
+    Simulation_ServicesSetTileOkFlag();
+
+    if (1) // TODO: if (city_class >= CLASS_VILLAGE)
+    {
+        // Ignore if the city is too small
+
+        Simulation_Services(T_FIRE_DEPT_CENTER);
+        Simulation_ServicesAddTileOkFlag();
+
+        Simulation_Services(T_HOSPITAL_CENTER);
+        Simulation_ServicesAddTileOkFlag();
+    }
+
+    Simulation_Services(T_SCHOOL_CENTER);
+    Simulation_EducationSetTileOkFlag();
+
+    if (1) // TODO: if (city_class >= CLASS_VILLAGE)
+    {
+        Simulation_ServicesBig(T_SCHOOL_CENTER);
+        Simulation_EducationAddTileOkFlag();
+    }
+
+    // After simulating traffic, power, etc, simulate pollution
+
+    Simulation_Pollution();
+
+    // After simulating, flag buildings to be created or demolished.
+
+    // TODO: Simulation_FlagCreateBuildings()
+
+    // Calculate total population and other statistics
+
+    // TODO: Simulation_CalculateStatistics()
+
+    // Calculate RCI graph
+
+    // TODO: Simulation_CalculateRCIDemand()
 }
-#endif

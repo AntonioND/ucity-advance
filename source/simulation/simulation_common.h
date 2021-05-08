@@ -8,4 +8,6 @@
 void TypeMatrixRefresh(void);
 uint8_t *TypeMatrixGet(void);
 
+void Simulation_SimulateAll(void);
+
 #endif // SIMULATION_SIMULATION_COMMON_H__
