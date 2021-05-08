@@ -836,6 +836,180 @@ static void Draw_Minimap_Pollution(void)
     Palettes_Set_Colors();
 }
 
+static void Draw_Minimap_Happiness(void)
+{
+    Palettes_Set_White();
+
+    // The needed flags must be a subset of the desired ones
+    typedef struct {
+        unsigned int desired;
+        unsigned int needed;
+    } flags_info;
+
+#define FPOW    TILE_OK_POWER
+#define FSER    TILE_OK_SERVICES
+#define FEDU    TILE_OK_EDUCATION
+#define FPOL    TILE_OK_POLLUTION
+#define FTRA    TILE_OK_TRAFFIC
+
+    const flags_info flags[] = {
+        [TYPE_FIELD] = { 0, 0 }, // Not buildings, don't care...
+        [TYPE_FOREST] = { 0, 0 },
+        [TYPE_WATER] = { 0, 0 },
+        [TYPE_RESIDENTIAL] = { FPOW | FSER | FEDU | FPOL | FTRA, FPOW | FPOL | FTRA },
+        [TYPE_INDUSTRIAL] = { FPOW | FSER | FTRA, FPOW | FTRA },
+        [TYPE_COMMERCIAL] = { FPOW | FSER | FPOL | FTRA, FPOW | FPOL | FTRA },
+        [TYPE_POLICE_DEPT] = { FPOW | FSER | FPOL | FTRA, FPOL },
+        [TYPE_FIRE_DEPT] = { FPOW | FSER | FPOL | FTRA, FPOL },
+        [TYPE_HOSPITAL] = { FPOW | FSER | FPOL | FTRA, FPOL },
+        [TYPE_PARK] = { FPOW | FSER | FPOL | FTRA, FPOL },
+        [TYPE_STADIUM] = { FPOW | FSER | FPOL | FTRA, FPOW | FPOL },
+        [TYPE_SCHOOL] = { FPOW | FSER | FPOL | FTRA, FPOW | FPOL },
+        [TYPE_HIGH_SCHOOL] = { FPOW | FSER | FPOL | FTRA, FPOW | FPOL },
+        [TYPE_UNIVERSITY] = { FPOW | FSER | FPOL | FTRA, FPOW | FPOL },
+        [TYPE_MUSEUM] = { FPOW | FSER | FPOL | FTRA, FPOW | FPOL },
+        [TYPE_LIBRARY] = { FPOW | FSER | FPOL | FTRA, FPOW | FPOL },
+        [TYPE_AIRPORT] = { FPOW | FSER | FTRA, FPOW | FSER },
+        [TYPE_PORT] = { FPOW | FSER | FTRA, FPOW | FSER },
+        [TYPE_DOCK] = { FPOW | FSER, FPOL },
+        [TYPE_POWER_PLANT] = { FSER | FTRA, 0 },
+        [TYPE_FIRE] = { 0, 0 }, //  - Placeholder, never used.
+        [TYPE_RADIATION] = { 0, 0 },
+    };
+
+    Minimap_Title("Happiness");
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            int color;
+
+            uint16_t type = CityMapGetType(i, j);
+            uint16_t type_masked = type & TYPE_MASK;
+
+            unsigned int tile_flags = Simulation_HappinessGetFlags(i, j);
+
+            unsigned int desired, needed;
+
+            if (type & (TYPE_HAS_ROAD | TYPE_HAS_TRAIN))
+            {
+                desired = TILE_OK_TRAFFIC;
+                needed = TILE_OK_TRAFFIC;
+            }
+            else if (type & TYPE_HAS_POWER)
+            {
+                desired = TILE_OK_POWER;
+                needed = TILE_OK_POWER;
+            }
+            else if ((type == TYPE_FIELD) || (type  == TYPE_FOREST) ||
+                     (type  == TYPE_WATER) || (type  == TYPE_DOCK))
+            {
+                desired = 0;
+                needed = 0;
+            }
+            else
+            {
+                desired = flags[type_masked].desired;
+                needed = flags[type_masked].needed;
+            }
+
+            if (needed == 0)
+            {
+                color = C_WHITE;
+            }
+            else
+            {
+                if ((tile_flags & desired) == desired)
+                    color = C_GREEN;
+                else if ((tile_flags & needed) == needed)
+                    color = C_YELLOW;
+                else
+                    color = C_RED;
+            }
+
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, color);
+        }
+    }
+
+    Palettes_Set_Colors();
+}
+
+#if 0
+
+        push    hl
+
+            ld      hl,.needed_flags_info
+            ld      e,a
+            ld      d,0
+            add     hl,de
+            add     hl,de
+            ld      a,[hl+]
+            ld      b,a ; b = desired flags
+            ld      c,[hl] ; c = needed flags
+
+        pop     hl
+
+.check_flags:
+
+        ; Register B = desired flags. Register C = needed flags
+
+        ld      a,BANK_CITY_MAP_FLAGS
+        ld      [rSVBK],a
+
+        ld      a,[hl] ; get flags
+        and     a,TILE_OK_MASK
+
+        ld      d,a ; save flags in D
+
+        ; Check if we have the needed flags
+        and     a,c
+        cp      a,c
+
+        ld      a,d ; restore flags
+
+        jr      z,.needed_flags_ok
+
+            ; Needed flags not ok
+            ld      a,C_RED
+            jr      .paint_tile
+
+.needed_flags_ok:
+
+        ; Check if we have the desired flag
+        and     a,b
+        cp      a,b
+        jr      z,.desired_flags_ok
+
+            ; Desired flags not ok
+            ld      a,C_YELLOW
+            jr      .paint_tile
+
+.desired_flags_ok:
+
+        ; Desired and needed flags ok
+        ld      a,C_GREEN
+        ;jr      .paint_tile
+
+.paint_tile:
+
+        ld      b,a
+        ld      c,a
+        ld      d,a
+
+        call    APA_SetColors ; a,b,c,d = color (0 to 3)
+        LONG_CALL   APA_PixelStreamPlot2x2
+
+
+
+
+; Flags: Power | Services | Education | Pollution | Traffic
+
+
+;###############################################################################
+
+#endif
+
 static void Draw_Minimap_Selected(void)
 {
     switch (selected_minimap)
@@ -879,7 +1053,9 @@ static void Draw_Minimap_Selected(void)
         case MINIMAP_SELECTION_POLLUTION:
             Draw_Minimap_Pollution();
             break;
-        //case MINIMAP_SELECTION_HAPPINESS:
+        case MINIMAP_SELECTION_HAPPINESS:
+            Draw_Minimap_Happiness();
+            break;
         default:
             UGBA_Assert(0);
             break;
