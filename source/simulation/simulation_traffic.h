@@ -8,6 +8,7 @@
 #include <stdint.h>
 
 uint8_t *Simulation_TrafficGetMap(void);
+int Simulation_TrafficGetTrafficJamPercent(void);
 
 void Simulation_Traffic(void);
 

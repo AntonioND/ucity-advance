@@ -11,6 +11,7 @@
 #include "main.h"
 #include "room_game/room_game.h"
 #include "room_minimap/room_minimap.h"
+#include "simulation/simulation_common.h"
 
 // Assets
 
@@ -337,6 +338,7 @@ int main(int argc, char *argv[])
     //UMOD_Song_Play(SONG_KAOS_OCH_DEKADENS_MOD);
 
     DateReset();
+    Simulation_SetFirstStep();
 
     Load_City_Data(test_map_map, 9, 9);
 

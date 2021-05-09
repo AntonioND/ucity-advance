@@ -28,6 +28,11 @@ int pollution_total;
 // Percentage of pollution
 int pollution_total_percent;
 
+int Simulation_PollutionGetTotal(void)
+{
+    return pollution_total;
+}
+
 uint8_t *Simulation_PollutionGetMap(void)
 {
     return &scratch_map_1[0];

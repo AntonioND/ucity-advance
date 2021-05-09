@@ -35,6 +35,11 @@ static int min(int a, int b)
     return b;
 }
 
+int Simulation_TrafficGetTrafficJamPercent(void)
+{
+    return simulation_traffic_jam_num_tiles_percent;
+}
+
 uint8_t *Simulation_TrafficGetMap(void)
 {
     return &traffic_map[0];

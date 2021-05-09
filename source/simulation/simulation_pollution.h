@@ -8,6 +8,8 @@
 #include <stdint.h>
 
 uint8_t *Simulation_PollutionGetMap(void);
+int Simulation_PollutionGetTotal(void);
+
 void Simulation_Pollution(void);
 
 #endif // SIMULATION_SIMULATION_POLLUTION_H__
