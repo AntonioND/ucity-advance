@@ -325,6 +325,8 @@ void Room_Game_Unload(void)
 
 static void Room_Game_Draw_RCI_Bars(void)
 {
+    // TODO: Actually implement this
+
     char RCI[4] = { 0 };
 
     RCI[0] = 144 + 0;
