@@ -30,8 +30,12 @@
 
 // ----------------------------------------------------------------------------
 
+static int simulation_enabled;
+static int animation_enabled;
 static int frames_left_to_simulate = 0;
 #define MIN_FRAMES_PER_DATE_STEP    60
+
+static volatile int main_loop_is_busy;
 
 // ----------------------------------------------------------------------------
 
@@ -320,7 +324,13 @@ void Room_Game_Load(void)
 
     Simulation_CountBuildings();
 
+    // Initialize room state
+
     frames_left_to_simulate = 0;
+    simulation_enabled = 1;
+    animation_enabled = 1;
+
+    main_loop_is_busy = 1;
 }
 
 void Room_Game_Unload(void)
@@ -649,8 +659,20 @@ void Room_Game_Handle(void)
             if (frames_left_to_simulate == 0)
             {
                 frames_left_to_simulate = MIN_FRAMES_PER_DATE_STEP;
-                Simulation_SimulateAll();
-                GameAnimateMap();
+
+                if (simulation_enabled)
+                {
+                    main_loop_is_busy = 1;
+                    Simulation_SimulateAll();
+                }
+
+                if (animation_enabled)
+                {
+                    main_loop_is_busy = 1;
+                    GameAnimateMap();
+                }
+
+                main_loop_is_busy = 0;
             }
 
             break;
@@ -660,8 +682,20 @@ void Room_Game_Handle(void)
             if (frames_left_to_simulate == 0)
             {
                 frames_left_to_simulate = MIN_FRAMES_PER_DATE_STEP;
-                Simulation_SimulateAll();
-                GameAnimateMap();
+
+                if (simulation_enabled)
+                {
+                    main_loop_is_busy = 1;
+                    Simulation_SimulateAll();
+                }
+
+                if (animation_enabled)
+                {
+                    main_loop_is_busy = 1;
+                    GameAnimateMap();
+                }
+
+                main_loop_is_busy = 0;
             }
 
             break;
@@ -694,8 +728,11 @@ void Room_Game_FastVBLHandler(void)
         {
             Room_Game_Handle_Scroll();
 
-            if (frames_left_to_simulate > 0)
-                frames_left_to_simulate--;
+            if (simulation_enabled)
+            {
+                if (frames_left_to_simulate > 0)
+                    frames_left_to_simulate--;
+            }
 
             break;
         }
@@ -703,8 +740,11 @@ void Room_Game_FastVBLHandler(void)
         {
             Room_Game_Handle_Scroll_Fast();
 
-            if (frames_left_to_simulate > 0)
-                frames_left_to_simulate--;
+            if (simulation_enabled)
+            {
+                if (frames_left_to_simulate > 0)
+                    frames_left_to_simulate--;
+            }
 
             break;
         }
@@ -773,25 +813,30 @@ void Room_Game_SlowVBLHandler(void)
         case MODE_MODIFY_MAP:
         {
             if (keys_released & KEY_B)
+            {
                 Room_Game_Set_Mode(MODE_RUNNING);
+                Simulation_CountBuildings();
+            }
             else if (keys_pressed & KEY_SELECT)
+            {
                 Room_Game_Set_Mode(MODE_SELECT_BUILDING);
+            }
 
             int x = (mapx + curx) / 8;
             int y = (mapy + cury) / 8;
 
-            if (keys & KEY_A)
+            if (main_loop_is_busy == 0)
             {
-                if ((last_build_x != x) || (last_build_y != y))
+                if (keys & KEY_A)
                 {
-                    Building_Build(0, BuildMenuSelection(), x, y);
-                    Simulation_CountBuildings();
+                    if ((last_build_x != x) || (last_build_y != y))
+                        Building_Build(0, BuildMenuSelection(), x, y);
+
+                    last_build_x = x;
+                    last_build_y = y;
+
+                    ModifyModeUpdateStatusBar();
                 }
-
-                last_build_x = x;
-                last_build_y = y;
-
-                ModifyModeUpdateStatusBar();
             }
 
             break;
