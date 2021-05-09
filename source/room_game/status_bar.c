@@ -14,7 +14,7 @@
 
 #define TEXT_PALETTE        (14)
 #define TEXT_TILES_BASE     MEM_BG_TILES_BLOCK_ADDR(2)
-#define TEXT_MAP_BASE       MEM_BG_MAP_BLOCK_ADDR(20)
+#define TEXT_MAP_BASE       MEM_BG_MAP_BLOCK_ADDR(24)
 
 static int status_bar_position = STATUS_BAR_UP;
 static int status_bar_hidden = 1;
@@ -28,6 +28,10 @@ void StatusBarLoad(void)
     SWI_CpuSet_Copy16(textTiles, (void *)TEXT_TILES_BASE, textTilesLen);
 
     // Load the map
+
+    uint32_t zero = 0;
+    SWI_CpuSet_Fill32(&zero, (void *)TEXT_MAP_BASE, 32 * 32 * sizeof(uint16_t));
+
     StatusBarPrint(0, 0, "                              ");
     StatusBarPrint(0, 1, "                              ");
 
