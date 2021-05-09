@@ -30,6 +30,11 @@
 
 // ----------------------------------------------------------------------------
 
+static int frames_left_to_simulate = 0;
+#define MIN_FRAMES_PER_DATE_STEP    60
+
+// ----------------------------------------------------------------------------
+
 // Must be a power of 2
 #define ANIMATION_TRANSPORT_COUNT_FRAMES    4
 
@@ -314,6 +319,8 @@ void Room_Game_Load(void)
     // Refresh some simulation data
 
     Simulation_CountBuildings();
+
+    frames_left_to_simulate = 0;
 }
 
 void Room_Game_Unload(void)
@@ -639,15 +646,23 @@ void Room_Game_Handle(void)
     {
         case MODE_RUNNING:
         {
-            Simulation_SimulateAll();
-            GameAnimateMap();
+            if (frames_left_to_simulate == 0)
+            {
+                frames_left_to_simulate = MIN_FRAMES_PER_DATE_STEP;
+                Simulation_SimulateAll();
+                GameAnimateMap();
+            }
 
             break;
         }
         case MODE_WATCH:
         {
-            Simulation_SimulateAll();
-            GameAnimateMap();
+            if (frames_left_to_simulate == 0)
+            {
+                frames_left_to_simulate = MIN_FRAMES_PER_DATE_STEP;
+                Simulation_SimulateAll();
+                GameAnimateMap();
+            }
 
             break;
         }
@@ -678,11 +693,19 @@ void Room_Game_FastVBLHandler(void)
         case MODE_RUNNING:
         {
             Room_Game_Handle_Scroll();
+
+            if (frames_left_to_simulate > 0)
+                frames_left_to_simulate--;
+
             break;
         }
         case MODE_WATCH:
         {
             Room_Game_Handle_Scroll_Fast();
+
+            if (frames_left_to_simulate > 0)
+                frames_left_to_simulate--;
+
             break;
         }
         case MODE_SELECT_BUILDING:
