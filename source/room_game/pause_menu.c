@@ -8,19 +8,23 @@
 
 #include "room_game/status_bar.h"
 
+// Assets
+
+#include "maps/pause_menu_bg.h"
+
 #define MENU_MAP_BASE       (TEXT_MAP_BASE + (32 * 32 * 2))
 
 void PauseMenuLoad(void)
 {
     // Load the map
 
-    // TODO: Load actual map
+    for (size_t i = 0; i < (pause_menu_bg_map_size / 2); i++)
+    {
+        const uint16_t *src = (const uint16_t *)pause_menu_bg_map;
+        uint16_t *dst = (void *)MENU_MAP_BASE;
 
-    uint32_t fill = ' ';
-    fill = (fill << 24) | (fill << 16) | (fill << 8) | (fill << 0);
-    int height = (GBA_SCREEN_H / 8) - 2;
-    SWI_CpuSet_Fill32(&fill, (void *)MENU_MAP_BASE,
-                      32 * height * sizeof(uint16_t));
+        dst[i] =  MAP_REGULAR_TILE(src[i]) | MAP_REGULAR_PALETTE(TEXT_PALETTE);
+    }
 
     // Setup background
 
