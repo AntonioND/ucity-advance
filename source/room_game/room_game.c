@@ -851,6 +851,16 @@ void Room_Game_SlowVBLHandler(void)
                 }
             }
 
+            if ((keys & KEY_A) == 0)
+            {
+                // Let player build again on the same place after releasing the
+                // button. This is useful to demolish a building and then clear
+                // the tile to turn it to field, or to remove RCI tiles after
+                // demolishing RCI buildings.
+                last_build_x = -1;
+                last_build_y = -1;
+            }
+
             break;
         }
         case MODE_PAUSE_MENU:
