@@ -15,6 +15,7 @@
 #include "room_game/building_info.h"
 #include "room_game/build_menu.h"
 #include "room_game/draw_building.h"
+#include "room_game/pause_menu.h"
 #include "room_game/room_game.h"
 #include "room_game/tileset_info.h"
 #include "room_game/status_bar.h"
@@ -154,6 +155,7 @@ typedef enum {
     MODE_WATCH,
     MODE_SELECT_BUILDING,
     MODE_MODIFY_MAP,
+    MODE_PAUSE_MENU,
 } room_game_mode;
 
 static room_game_mode current_mode;
@@ -294,50 +296,6 @@ static void Load_Cursor_Graphics(void)
     SWI_CpuSet_Copy16(cursorTiles, (void *)CURSOR_TILES_BASE, cursorTilesLen);
 
     Cursor_Set_Position(48, 48);
-}
-
-void Room_Game_Load(void)
-{
-    Game_Clear_Screen();
-
-    BuildSelectMenuLoadGfx();
-    StatusBarLoad();
-    StatusBarShow();
-    Load_Cursor_Graphics();
-
-    // Load background
-    // ===============
-
-    Load_City_Graphics();
-
-    DISP_ModeSet(0);
-    DISP_Object1DMappingEnable(1);
-    DISP_LayersEnable(0, 1, 1, 0, 1);
-
-    // Prepare cursor
-
-    Cursor_Set_Size(8, 8);
-    Cursor_Reset_Position();
-    Cursor_Refresh();
-
-    // Refresh some simulation data
-
-    Simulation_CountBuildings();
-
-    // Initialize room state
-
-    frames_left_to_simulate = 0;
-    simulation_enabled = 1;
-    animation_enabled = 1;
-
-    main_loop_is_busy = 1;
-}
-
-void Room_Game_Unload(void)
-{
-    Cursor_Hide();
-
-    Game_Clear_Screen();
 }
 
 static void Room_Game_Draw_RCI_Bars(void)
@@ -626,6 +584,12 @@ void Room_Game_Set_Mode(int mode)
             last_build_y = -1;
             break;
         }
+        case MODE_PAUSE_MENU:
+        {
+            Cursor_Hide();
+            PauseMenuLoad();
+            break;
+        }
         default:
         {
             UGBA_Assert(0);
@@ -648,6 +612,54 @@ void ViewModeUpdateStatusBar(void)
     StatusBarPrint(0, 1, str);
 
     Room_Game_Draw_RCI_Bars();
+}
+
+// ----------------------------------------------------------------------------
+
+void Room_Game_Load(void)
+{
+    Game_Clear_Screen();
+
+    BuildSelectMenuLoadGfx();
+    StatusBarLoad();
+    StatusBarShow();
+    Load_Cursor_Graphics();
+
+    // Load background
+    // ===============
+
+    Load_City_Graphics();
+
+    DISP_ModeSet(0);
+    DISP_Object1DMappingEnable(1);
+    DISP_LayersEnable(0, 1, 1, 0, 1);
+
+    // Prepare cursor
+
+    Cursor_Set_Size(8, 8);
+    Cursor_Reset_Position();
+    Cursor_Refresh();
+
+    // Refresh some simulation data
+
+    Simulation_CountBuildings();
+
+    // Initialize room state
+
+    frames_left_to_simulate = 0;
+    simulation_enabled = 1;
+    animation_enabled = 1;
+
+    main_loop_is_busy = 1;
+
+    Room_Game_Set_Mode(MODE_RUNNING);
+}
+
+void Room_Game_Unload(void)
+{
+    Cursor_Hide();
+
+    Game_Clear_Screen();
 }
 
 void Room_Game_Handle(void)
@@ -786,7 +798,7 @@ void Room_Game_SlowVBLHandler(void)
 
             if (keys_released & KEY_START)
             {
-                Game_Room_Prepare_Switch(ROOM_MINIMAP);
+                Room_Game_Set_Mode(MODE_PAUSE_MENU);
                 return;
             }
 
@@ -837,6 +849,22 @@ void Room_Game_SlowVBLHandler(void)
 
                     ModifyModeUpdateStatusBar();
                 }
+            }
+
+            break;
+        }
+        case MODE_PAUSE_MENU:
+        {
+            if (keys_released & (KEY_B | KEY_START))
+            {
+                Room_Game_Set_Mode(MODE_RUNNING);
+                return;
+            }
+
+            if (keys_released & KEY_A)
+            {
+                Game_Room_Prepare_Switch(ROOM_MINIMAP);
+                return;
             }
 
             break;

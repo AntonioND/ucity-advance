@@ -12,10 +12,6 @@
 
 #include "graphics/text.h"
 
-#define TEXT_PALETTE        (14)
-#define TEXT_TILES_BASE     MEM_BG_TILES_BLOCK_ADDR(2)
-#define TEXT_MAP_BASE       MEM_BG_MAP_BLOCK_ADDR(24)
-
 static int status_bar_position = STATUS_BAR_UP;
 static int status_bar_hidden = 1;
 
@@ -51,6 +47,10 @@ void StatusBarClear(void)
 
 static void StatusBarRefresh(void)
 {
+    // Setup background
+    BG_RegularInit(1, BG_REGULAR_256x256, BG_16_COLORS,
+                   TEXT_TILES_BASE, TEXT_MAP_BASE);
+
     if (status_bar_hidden)
     {
         BG_RegularScrollSet(1, 0, 0);
