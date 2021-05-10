@@ -53,14 +53,14 @@ static void StatusBarRefresh(void)
 {
     if (status_bar_hidden)
     {
-        BG_RegularScrollSet(1, 0, 16);
+        BG_RegularScrollSet(1, 0, 0);
     }
     else
     {
         if (status_bar_position == STATUS_BAR_UP)
-            BG_RegularScrollSet(1, 0, 0);
+            BG_RegularScrollSet(1, 0, -16);
         else if (status_bar_position == STATUS_BAR_DOWN)
-            BG_RegularScrollSet(1, 0, -(GBA_SCREEN_H - 16));
+            BG_RegularScrollSet(1, 0, -GBA_SCREEN_H);
     }
 }
 
@@ -89,7 +89,7 @@ void StatusBarHide(void)
 
 void StatusBarPrint(int x, int y, const char *text)
 {
-    uintptr_t addr = TEXT_MAP_BASE + (y * 32 + x) * 2;
+    uintptr_t addr = TEXT_MAP_BASE + ((y + 30) * 32 + x) * 2;
 
     while (1)
     {
