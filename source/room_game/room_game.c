@@ -33,7 +33,7 @@
 
 static int simulation_enabled;
 static int animation_enabled;
-static int frames_left_to_simulate = 0;
+static int frames_left_to_step = 0;
 #define MIN_FRAMES_PER_DATE_STEP    60
 
 static volatile int main_loop_is_busy;
@@ -646,7 +646,7 @@ void Room_Game_Load(void)
 
     // Initialize room state
 
-    frames_left_to_simulate = 0;
+    frames_left_to_step = 0;
     simulation_enabled = 1;
     animation_enabled = 1;
 
@@ -668,47 +668,47 @@ void Room_Game_Handle(void)
     {
         case MODE_RUNNING:
         {
-            if (frames_left_to_simulate == 0)
+            if (simulation_enabled)
             {
-                frames_left_to_simulate = MIN_FRAMES_PER_DATE_STEP;
-
-                if (simulation_enabled)
+                if (frames_left_to_step == 0)
                 {
+                    frames_left_to_step = MIN_FRAMES_PER_DATE_STEP;
+
                     main_loop_is_busy = 1;
                     Simulation_SimulateAll();
                 }
-
-                if (animation_enabled)
-                {
-                    main_loop_is_busy = 1;
-                    GameAnimateMap();
-                }
-
-                main_loop_is_busy = 0;
             }
+
+            if (animation_enabled)
+            {
+                main_loop_is_busy = 1;
+                GameAnimateMap();
+            }
+
+            main_loop_is_busy = 0;
 
             break;
         }
         case MODE_WATCH:
         {
-            if (frames_left_to_simulate == 0)
+            if (simulation_enabled)
             {
-                frames_left_to_simulate = MIN_FRAMES_PER_DATE_STEP;
-
-                if (simulation_enabled)
+                if (frames_left_to_step == 0)
                 {
+                    frames_left_to_step = MIN_FRAMES_PER_DATE_STEP;
+
                     main_loop_is_busy = 1;
                     Simulation_SimulateAll();
                 }
-
-                if (animation_enabled)
-                {
-                    main_loop_is_busy = 1;
-                    GameAnimateMap();
-                }
-
-                main_loop_is_busy = 0;
             }
+
+            if (animation_enabled)
+            {
+                main_loop_is_busy = 1;
+                GameAnimateMap();
+            }
+
+            main_loop_is_busy = 0;
 
             break;
         }
@@ -718,6 +718,18 @@ void Room_Game_Handle(void)
         }
         case MODE_MODIFY_MAP:
         {
+            break;
+        }
+        case MODE_PAUSE_MENU:
+        {
+            if (animation_enabled)
+            {
+                main_loop_is_busy = 1;
+                GameAnimateMap();
+            }
+
+            main_loop_is_busy = 0;
+
             break;
         }
         default:
@@ -740,11 +752,8 @@ void Room_Game_FastVBLHandler(void)
         {
             Room_Game_Handle_Scroll();
 
-            if (simulation_enabled)
-            {
-                if (frames_left_to_simulate > 0)
-                    frames_left_to_simulate--;
-            }
+            if (frames_left_to_step > 0)
+                frames_left_to_step--;
 
             break;
         }
@@ -752,11 +761,8 @@ void Room_Game_FastVBLHandler(void)
         {
             Room_Game_Handle_Scroll_Fast();
 
-            if (simulation_enabled)
-            {
-                if (frames_left_to_simulate > 0)
-                    frames_left_to_simulate--;
-            }
+            if (frames_left_to_step > 0)
+                frames_left_to_step--;
 
             break;
         }
@@ -767,6 +773,13 @@ void Room_Game_FastVBLHandler(void)
         case MODE_MODIFY_MAP:
         {
             Room_Game_Handle_Scroll();
+            break;
+        }
+        case MODE_PAUSE_MENU:
+        {
+            if (frames_left_to_step > 0)
+                frames_left_to_step--;
+
             break;
         }
         default:

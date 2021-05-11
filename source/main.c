@@ -289,7 +289,7 @@ IWRAM_CODE ARM_CODE void Master_VBL_Handler(void)
 
     nested_vbl_handler = 1;
 
-    // Update keys here
+    // Update keys here. Input handling should be done in the slow VBL handler.
 
     KEYS_Update();
     Key_Autorepeat_Update();
