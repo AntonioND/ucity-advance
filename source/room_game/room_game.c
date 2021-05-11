@@ -174,7 +174,10 @@ void Load_City_Data(const void *map, int scx, int scy)
     copy_map_to_sbb(map, (void *)CITY_MAP_BASE,
                     CITY_MAP_HEIGHT, CITY_MAP_WIDTH);
 
-    BG_RegularScrollSet(2, scx * 8, scy * 8);
+    mapx = scx * 8;
+    mapy = scy * 8;
+
+    BG_RegularScrollSet(2, mapx, mapy);
 }
 
 void Load_City_Graphics(void)
@@ -633,6 +636,8 @@ void Room_Game_Load(void)
     DISP_ModeSet(0);
     DISP_Object1DMappingEnable(1);
     DISP_LayersEnable(0, 1, 1, 0, 1);
+
+    BG_RegularScrollSet(2, mapx, mapy);
 
     // Prepare cursor
 
