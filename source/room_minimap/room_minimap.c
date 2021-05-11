@@ -112,7 +112,7 @@ static void Room_Minimap_Refresh_Icons(void)
 
 static void Minimap_Title(const char *text)
 {
-    char full_title[16];
+    char full_title[20];
     memset(full_title, ' ', sizeof(full_title));
 
     size_t l = strlen(text);
@@ -123,7 +123,7 @@ static void Minimap_Title(const char *text)
 
     uintptr_t addr = BG_FRAME_MAP_BASE + ((30 - sizeof(full_title)) / 2) * 2;
 
-    for (int i = 0; i < 16; i++)
+    for (size_t i = 0; i < sizeof(full_title); i++)
     {
         int c = full_title[i];
 
