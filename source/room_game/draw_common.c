@@ -139,6 +139,18 @@ void CityMapDrawTile(uint16_t tile, int x, int y)
     write_tile_sbb(vram_info, map, x, y);
 }
 
+void CityMapDrawTilePreserveFlip(uint16_t tile, int x, int y)
+{
+    void *map = (void *)CITY_MAP_BASE;
+    uint16_t *ptr = get_pointer_sbb(map, x, y);
+
+    uint16_t vram_info = City_Tileset_VRAM_Info(tile);
+
+    uint16_t mask = MAP_REGULAR_HFLIP | MAP_REGULAR_VFLIP;
+
+    *ptr = (*ptr & mask) | vram_info;
+}
+
 void CityMapToggleHFlip(int x, int y)
 {
     void *map = (void *)CITY_MAP_BASE;

@@ -781,15 +781,18 @@ void Simulation_Traffic(void)
             // 8 bits to 2
             int traffic_level = value >> 6;
 
+            // When drawing, preserve flip. If not, if the animation happens too
+            // close to the traffic simulation, the flip will disappear, and the
+            // animation steps will look irregular.
             if ((tile == T_ROAD_TB) || (tile == T_ROAD_TB_1) ||
                 (tile == T_ROAD_TB_2) || (tile == T_ROAD_TB_3))
             {
-                CityMapDrawTile(T_ROAD_TB + traffic_level, i, j);
+                CityMapDrawTilePreserveFlip(T_ROAD_TB + traffic_level, i, j);
             }
             else if ((tile == T_ROAD_LR) || (tile == T_ROAD_LR_1) ||
                      (tile == T_ROAD_LR_2) || (tile == T_ROAD_LR_3))
             {
-                CityMapDrawTile(T_ROAD_LR + traffic_level, i, j);
+                CityMapDrawTilePreserveFlip(T_ROAD_LR + traffic_level, i, j);
             }
         }
     }

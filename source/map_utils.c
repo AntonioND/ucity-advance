@@ -30,7 +30,7 @@ void copy_map_to_sbb(const void *source, void *dest, int width, int height)
     }
 }
 
-static uint16_t *get_pointer_sbb(void *map, int x, int y)
+uint16_t *get_pointer_sbb(void *map, int x, int y)
 {
     uint16_t *ptr = (uint16_t *)map;
 
