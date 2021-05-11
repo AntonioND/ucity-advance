@@ -884,10 +884,26 @@ void Room_Game_SlowVBLHandler(void)
                 return;
             }
 
-            if (keys_released & KEY_A)
+            pause_menu_options option = PauseMenuHandleInput();
+            switch (option)
             {
-                Game_Room_Prepare_Switch(ROOM_MINIMAP);
-                return;
+                //case PAUSE_MENU_BUDGET:
+                //case PAUSE_MENU_BANK:
+                case PAUSE_MENU_MINIMAPS:
+                    Game_Room_Prepare_Switch(ROOM_MINIMAP);
+                    return;
+                //case PAUSE_MENU_GRAPHS:
+                //case PAUSE_MENU_CITY_STATS:
+                //case PAUSE_MENU_OPTIONS:
+                //case PAUSE_MENU_PAUSE:
+                //case PAUSE_MENU_SAVE_GAME:
+                //case PAUSE_MENU_MAIN_MENU:
+                case PAUSE_MENU_INVALID_OPTION:
+                    // Nothing to do
+                    break;
+                default:
+                    UGBA_Assert(0);
+                    break;
             }
 
             break;
