@@ -84,6 +84,17 @@ pause_menu_options PauseMenuHandleInput(void)
     return PAUSE_MENU_INVALID_OPTION;
 }
 
+void PauseMenuDrawPauseResume(int pause)
+{
+    int y = cursor_y_coordinates[PAUSE_MENU_PAUSE] + (32 - 30);
+    int x = 10;
+
+    if (pause)
+        StatusBarPrint(x, y, "Pause ");
+    else
+        StatusBarPrint(x, y, "Resume");
+}
+
 void PauseMenuLoad(void)
 {
     // Load the map

@@ -591,6 +591,7 @@ void Room_Game_Set_Mode(int mode)
         {
             Cursor_Hide();
             PauseMenuLoad();
+            PauseMenuDrawPauseResume(simulation_enabled);
             break;
         }
         default:
@@ -900,7 +901,10 @@ void Room_Game_SlowVBLHandler(void)
                 //case PAUSE_MENU_GRAPHS:
                 //case PAUSE_MENU_CITY_STATS:
                 //case PAUSE_MENU_OPTIONS:
-                //case PAUSE_MENU_PAUSE:
+                case PAUSE_MENU_PAUSE:
+                    simulation_enabled ^= 1;
+                    PauseMenuDrawPauseResume(simulation_enabled);
+                    break;
                 //case PAUSE_MENU_SAVE_GAME:
                 //case PAUSE_MENU_MAIN_MENU:
                 case PAUSE_MENU_INVALID_OPTION:

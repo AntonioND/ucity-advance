@@ -25,6 +25,8 @@ typedef enum {
 } pause_menu_options;
 
 void PauseMenuLoad(void);
+void PauseMenuDrawPauseResume(int pause);
+
 pause_menu_options PauseMenuHandleInput(void);
 
 #endif // ROOM_GAME_PAUSE_MENU_H__
