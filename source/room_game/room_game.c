@@ -21,6 +21,7 @@
 #include "room_game/status_bar.h"
 #include "simulation/simulation_building_count.h"
 #include "simulation/simulation_common.h"
+#include "simulation/simulation_fire.h"
 #include "simulation/simulation_traffic.h"
 #include "simulation/simulation_water.h"
 
@@ -56,6 +57,16 @@ int animation_countdown; // This goes from 0 to ANIMATION_COUNT_FRAMES_xxxxx
 int game_animations_disabled = 0;
 
 int simulation_disaster_mode = 0;
+
+int Room_Game_IsInDisasterMode(void)
+{
+    return simulation_disaster_mode;
+}
+
+void Room_Game_SetDisasterMode(int enabled)
+{
+    simulation_disaster_mode = enabled;
+}
 
 static void GameAnimateMapVBLFastHandle(void)
 {
@@ -118,7 +129,7 @@ static void GameAnimateMap(void)
 
         if (animation_has_to_update_map)
         {
-            //Simulation_FireAnimate();
+            Simulation_FireAnimate();
             Simulation_WaterAnimate();
 
             animation_has_to_update_map = 0;
@@ -174,6 +185,14 @@ void Load_City_Data(const void *map, int scx, int scy)
     copy_map_to_sbb(map, (void *)CITY_MAP_BASE,
                     CITY_MAP_HEIGHT, CITY_MAP_WIDTH);
 
+    mapx = scx * 8;
+    mapy = scy * 8;
+
+    BG_RegularScrollSet(2, mapx, mapy);
+}
+
+void Room_Game_Request_Scroll(int scx, int scy)
+{
     mapx = scx * 8;
     mapy = scy * 8;
 

@@ -94,8 +94,8 @@ static const city_tile_density_info CITY_TILE_DENSITY[] = {
     [T_POWER_LINES_TLB]         = { 0, 1, 0, 12 },
     [T_POWER_LINES_TLR]         = { 0, 1, 0, 12 },
     [T_POWER_LINES_TLRB]        = { 0, 1, 0, 12 },
-    [T_POWER_LINES_TB_BRIDGE]   = { 0, 1, 0, 12 }, // This is the only bridge
-    [T_POWER_LINES_LR_BRIDGE]   = { 0, 1, 0, 12 }, // that can burn.
+    [T_POWER_LINES_TB_BRIDGE]   = { 0, 1, 0, 0 },
+    [T_POWER_LINES_LR_BRIDGE]   = { 0, 1, 0, 0 },
 
     [T_POLICE_DEPT]             = { 1 * 9, 1, 0, 12 },
     [T_FIRE_DEPT]               = { 1 * 9, 1, 0, 6 },

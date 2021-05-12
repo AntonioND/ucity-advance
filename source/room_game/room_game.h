@@ -116,6 +116,11 @@ void Room_Game_Load(void);
 void Room_Game_Unload(void);
 void Room_Game_Handle(void);
 
+void Room_Game_Request_Scroll(int scx, int scy);
+
+int Room_Game_IsInDisasterMode(void);
+void Room_Game_SetDisasterMode(int enabled);
+
 void BuildModeUpdateStatusBar(void);
 
 void Room_Game_FastVBLHandler(void);

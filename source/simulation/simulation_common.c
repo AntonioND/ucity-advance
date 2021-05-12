@@ -9,6 +9,7 @@
 #include "room_game/room_game.h"
 #include "room_game/tileset_info.h"
 #include "simulation/simulation_create_buildings.h"
+#include "simulation/simulation_fire.h"
 #include "simulation/simulation_pollution.h"
 #include "simulation/simulation_power.h"
 #include "simulation/simulation_services.h"
@@ -43,6 +44,14 @@ void Simulation_SetFirstStep(void)
 
 void Simulation_SimulateAll(void)
 {
+    // Simulate disasters if in disaster mode
+
+    if (Room_Game_IsInDisasterMode())
+    {
+        Simulation_Fire();
+        return;
+    }
+
     // First, get data from last frame and build new buildings or destroy
     // them (if there haven't been changes since the previous step!)
     // depending on the tile ok flags map. In the first iteration step the
@@ -143,4 +152,24 @@ void Simulation_SimulateAll(void)
             // TODO: Simulation_ApplyBudgetAndTaxes();
         }
     }
+
+    // Start disasters if there isn't one active
+
+    // TODO: Check if a disaster has been requested
+
+    // TODO: if (disasters_enabled)
+    {
+        Simulation_FireTryStart(0);
+        // TODO: Simulation_MeltdownTryStart(0);
+    }
+
+    // Remove radiation
+
+    // TODO: Simulation_Radiation()
+
+    // Handle historical records
+
+    // TODO: GraphHandleRecords()
+
+    // End of this simulation step
 }
