@@ -65,6 +65,10 @@ typedef enum {
     MINIMAP_SELECTION_HAPPINESS,
 
     MINIMAP_SELECTION_MAX = MINIMAP_SELECTION_HAPPINESS,
+
+    // This map can't be selected normally. It is used during disasters mode,
+    // and it is the only one that can be seen.
+    MINIMAP_SELECTION_FIRES,
 } minimap_type;
 
 static minimap_type selected_minimap;
@@ -917,80 +921,56 @@ static void Draw_Minimap_Happiness(void)
     Palettes_Set_Colors();
 }
 
-#if 0
+static void Draw_Minimap_Fires(void)
+{
+    Palettes_Set_White();
 
-        push    hl
+    static const uint8_t color_array[] = {
+        [TYPE_FIELD] = C_WHITE,
+        [TYPE_FOREST] = C_LIGHT_GREEN,
+        [TYPE_WATER] = C_LIGHT_BLUE,
+        [TYPE_RESIDENTIAL] = C_GREY,
+        [TYPE_INDUSTRIAL] = C_GREY,
+        [TYPE_COMMERCIAL] = C_GREY,
+        [TYPE_POLICE_DEPT] = C_GREY,
+        [TYPE_FIRE_DEPT] = C_GREY,
+        [TYPE_HOSPITAL] = C_GREY,
+        [TYPE_PARK] = C_GREY,
+        [TYPE_STADIUM] = C_GREY,
+        [TYPE_SCHOOL] = C_GREY,
+        [TYPE_HIGH_SCHOOL] = C_GREY,
+        [TYPE_UNIVERSITY] = C_GREY,
+        [TYPE_MUSEUM] = C_GREY,
+        [TYPE_LIBRARY] = C_GREY,
+        [TYPE_AIRPORT] = C_GREY,
+        [TYPE_PORT] = C_GREY,
+        [TYPE_DOCK] = C_LIGHT_BLUE,
+        [TYPE_POWER_PLANT] = C_GREY,
+        [TYPE_FIRE] = C_RED,
+        [TYPE_RADIATION] = C_WHITE,
+    };
 
-            ld      hl,.needed_flags_info
-            ld      e,a
-            ld      d,0
-            add     hl,de
-            add     hl,de
-            ld      a,[hl+]
-            ld      b,a ; b = desired flags
-            ld      c,[hl] ; c = needed flags
+    Minimap_Title("Fires");
 
-        pop     hl
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            uint16_t type = CityMapGetType(i, j);
 
-.check_flags:
+            int color;
 
-        ; Register B = desired flags. Register C = needed flags
+            if ((type & TYPE_HAS_POWER) && ((type & TYPE_MASK) == TYPE_FIELD))
+                color = C_GREY;
+            else
+                color = color_array[type & TYPE_MASK];
 
-        ld      a,BANK_CITY_MAP_FLAGS
-        ld      [rSVBK],a
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, j, color);
+        }
+    }
 
-        ld      a,[hl] ; get flags
-        and     a,TILE_OK_MASK
-
-        ld      d,a ; save flags in D
-
-        ; Check if we have the needed flags
-        and     a,c
-        cp      a,c
-
-        ld      a,d ; restore flags
-
-        jr      z,.needed_flags_ok
-
-            ; Needed flags not ok
-            ld      a,C_RED
-            jr      .paint_tile
-
-.needed_flags_ok:
-
-        ; Check if we have the desired flag
-        and     a,b
-        cp      a,b
-        jr      z,.desired_flags_ok
-
-            ; Desired flags not ok
-            ld      a,C_YELLOW
-            jr      .paint_tile
-
-.desired_flags_ok:
-
-        ; Desired and needed flags ok
-        ld      a,C_GREEN
-        ;jr      .paint_tile
-
-.paint_tile:
-
-        ld      b,a
-        ld      c,a
-        ld      d,a
-
-        call    APA_SetColors ; a,b,c,d = color (0 to 3)
-        LONG_CALL   APA_PixelStreamPlot2x2
-
-
-
-
-; Flags: Power | Services | Education | Pollution | Traffic
-
-
-;###############################################################################
-
-#endif
+    Palettes_Set_Colors();
+}
 
 static void Draw_Minimap_Selected(void)
 {
@@ -1037,6 +1017,9 @@ static void Draw_Minimap_Selected(void)
             break;
         case MINIMAP_SELECTION_HAPPINESS:
             Draw_Minimap_Happiness();
+            break;
+        case MINIMAP_SELECTION_FIRES:
+            Draw_Minimap_Fires();
             break;
         default:
             UGBA_Assert(0);
@@ -1146,7 +1129,10 @@ void Room_Minimap_Load(void)
     DISP_Object1DMappingEnable(1);
     DISP_LayersEnable(0, 1, 1, 0, 1);
 
-    selected_minimap = MINIMAP_SELECTION_OVERVIEW;
+    if (Room_Game_IsInDisasterMode())
+        selected_minimap = MINIMAP_SELECTION_FIRES;
+    else
+        selected_minimap = MINIMAP_SELECTION_OVERVIEW;
 
     Room_Minimap_Set_Watching_Mode();
 
@@ -1167,11 +1153,15 @@ void Room_Minimap_Handle(void)
     {
         case MODE_WATCHING:
         {
-            int left = Key_Autorepeat_Pressed_Left();
-            int right = Key_Autorepeat_Pressed_Right();
+            // Only let the user change the map if not in disaster mode
+            if (Room_Game_IsInDisasterMode() == 0)
+            {
+                int left = Key_Autorepeat_Pressed_Left();
+                int right = Key_Autorepeat_Pressed_Right();
 
-            if (left || right)
-                Room_Minimap_Set_Selecting_Mode();
+                if (left || right)
+                    Room_Minimap_Set_Selecting_Mode();
+            }
 
             if (keys_released & (KEY_START | KEY_B))
             {
