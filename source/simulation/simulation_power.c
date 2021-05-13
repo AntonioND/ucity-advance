@@ -44,18 +44,9 @@ static void AddPowerToTile(int x, int y)
         return;
     }
 
-    // If not, give power. All the tiles of one building have the same cost, but
-    // only the top left one has the information about the cost.
+    // If not, give power
 
     uint16_t tile = CityMapGetTile(x, y);
-    const city_tile_info *tile_info = City_Tileset_Entry_Info(tile);
-
-    if ((tile_info->base_x_delta != 0) || (tile_info->base_y_delta != 0))
-    {
-        tile = CityMapGetTile(x + tile_info->base_x_delta,
-                              y + tile_info->base_y_delta);
-    }
-
     const city_tile_density_info *info = CityTileDensityInfo(tile);
 
     uint8_t *ptr = &power_map[y * CITY_MAP_WIDTH + x];

@@ -659,15 +659,6 @@ static void Draw_Minimap_PowerDensity(void)
             }
             else if (TypeHasElectricityExtended(type) & TYPE_HAS_POWER)
             {
-                const city_tile_info *tile_info = City_Tileset_Entry_Info(tile);
-
-                if ((tile_info->base_x_delta != 0) ||
-                    (tile_info->base_y_delta != 0))
-                {
-                    tile = CityMapGetTile(i + tile_info->base_x_delta,
-                                          j + tile_info->base_y_delta);
-                }
-
                 const city_tile_density_info *info = CityTileDensityInfo(tile);
 
                 int cost = info->energy_cost;
@@ -707,15 +698,6 @@ static void Draw_Minimap_PopulationDensity(void)
 
             uint16_t tile, type;
             CityMapGetTypeAndTile(i, j, &tile, &type);
-
-            const city_tile_info *tile_info = City_Tileset_Entry_Info(tile);
-
-            if ((tile_info->base_x_delta != 0) ||
-                (tile_info->base_y_delta != 0))
-            {
-                tile = CityMapGetTile(i + tile_info->base_x_delta,
-                                      j + tile_info->base_y_delta);
-            }
 
             const city_tile_density_info *info = CityTileDensityInfo(tile);
 

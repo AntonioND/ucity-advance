@@ -198,12 +198,7 @@ void Simulation_Pollution(void)
             else
             {
                 // Read pollution level array
-
-                int ox, oy;
-                BuildingGetCoordinateOrigin(tile, i, j, &ox, &oy);
-                uint16_t base_tile = CityMapGetTile(ox, oy);
-
-                const city_tile_density_info *di = CityTileDensityInfo(base_tile);
+                const city_tile_density_info *di = CityTileDensityInfo(tile);
                 value = di->pollution_level;
             }
 
