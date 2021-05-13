@@ -503,38 +503,46 @@ void MapUpdateWater(int x, int y)
     // 5 6 7
 
     uint8_t flags = 0;
-    uint16_t aux_type;;
+    uint16_t tile, type;
 
-    aux_type = CityMapGetType(x - 1, y - 1) & TYPE_MASK;
-    if ((aux_type == TYPE_WATER) || (aux_type == TYPE_DOCK))
+    CityMapGetTypeAndTile(x - 1, y - 1, &tile, &type);
+    type &= TYPE_MASK;
+    if ((type == TYPE_WATER) || (type == TYPE_DOCK) || (tile == T_RADIATION_WATER))
         flags |= 1 << 0;
 
-    aux_type = CityMapGetType(x, y - 1) & TYPE_MASK;
-    if ((aux_type == TYPE_WATER) || (aux_type == TYPE_DOCK))
+    CityMapGetTypeAndTile(x, y - 1, &tile, &type);
+    type &= TYPE_MASK;
+    if ((type == TYPE_WATER) || (type == TYPE_DOCK) || (tile == T_RADIATION_WATER))
         flags |= 1 << 1;
 
-    aux_type = CityMapGetType(x + 1, y - 1) & TYPE_MASK;
-    if ((aux_type == TYPE_WATER) || (aux_type == TYPE_DOCK))
+    CityMapGetTypeAndTile(x + 1, y - 1, &tile, &type);
+    type &= TYPE_MASK;
+    if ((type == TYPE_WATER) || (type == TYPE_DOCK) || (tile == T_RADIATION_WATER))
         flags |= 1 << 2;
 
-    aux_type = CityMapGetType(x - 1, y) & TYPE_MASK;
-    if ((aux_type == TYPE_WATER) || (aux_type == TYPE_DOCK))
+    CityMapGetTypeAndTile(x - 1, y, &tile, &type);
+    type &= TYPE_MASK;
+    if ((type == TYPE_WATER) || (type == TYPE_DOCK) || (tile == T_RADIATION_WATER))
         flags |= 1 << 3;
 
-    aux_type = CityMapGetType(x + 1, y) & TYPE_MASK;
-    if ((aux_type == TYPE_WATER) || (aux_type == TYPE_DOCK))
+    CityMapGetTypeAndTile(x + 1, y, &tile, &type);
+    type &= TYPE_MASK;
+    if ((type == TYPE_WATER) || (type == TYPE_DOCK) || (tile == T_RADIATION_WATER))
         flags |= 1 << 4;
 
-    aux_type = CityMapGetType(x - 1, y + 1) & TYPE_MASK;
-    if ((aux_type == TYPE_WATER) || (aux_type == TYPE_DOCK))
+    CityMapGetTypeAndTile(x - 1, y + 1, &tile, &type);
+    type &= TYPE_MASK;
+    if ((type == TYPE_WATER) || (type == TYPE_DOCK) || (tile == T_RADIATION_WATER))
         flags |= 1 << 5;
 
-    aux_type = CityMapGetType(x, y + 1) & TYPE_MASK;
-    if ((aux_type == TYPE_WATER) || (aux_type == TYPE_DOCK))
+    CityMapGetTypeAndTile(x, y + 1, &tile, &type);
+    type &= TYPE_MASK;
+    if ((type == TYPE_WATER) || (type == TYPE_DOCK) || (tile == T_RADIATION_WATER))
         flags |= 1 << 6;
 
-    aux_type = CityMapGetType(x + 1, y + 1) & TYPE_MASK;
-    if ((aux_type == TYPE_WATER) || (aux_type == TYPE_DOCK))
+    CityMapGetTypeAndTile(x + 1, y + 1, &tile, &type);
+    type &= TYPE_MASK;
+    if ((type == TYPE_WATER) || (type == TYPE_DOCK) || (tile == T_RADIATION_WATER))
         flags |= 1 << 7;
 
     // Compare with table

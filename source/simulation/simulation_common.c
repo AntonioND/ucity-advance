@@ -10,6 +10,7 @@
 #include "room_game/tileset_info.h"
 #include "simulation/simulation_create_buildings.h"
 #include "simulation/simulation_fire.h"
+#include "simulation/simulation_meltdown.h"
 #include "simulation/simulation_pollution.h"
 #include "simulation/simulation_power.h"
 #include "simulation/simulation_services.h"
@@ -160,12 +161,12 @@ void Simulation_SimulateAll(void)
     // TODO: if (disasters_enabled)
     {
         Simulation_FireTryStart(0);
-        // TODO: Simulation_MeltdownTryStart(0);
+        Simulation_MeltdownTryStart(0);
     }
 
     // Remove radiation
 
-    // TODO: Simulation_Radiation()
+    Simulation_Radiation();
 
     // Handle historical records
 

@@ -46,6 +46,9 @@ static const building_info buildings_info[] = {
     [B_PowerPlantSolar] = { 4, 4, T_POWER_PLANT_SOLAR, 5000 },
     [B_PowerPlantNuclear] = { 4, 4, T_POWER_PLANT_NUCLEAR, 10000 },
     [B_PowerPlantFusion] = { 4, 4, T_POWER_PLANT_FUSION, 20000 },
+    // If the size of the nuclear power plant changes, edit the first few lines
+    // of Simulation_RadiationSpread() in simulation/simulation_meltdown.c to
+    // fix the center coordinates of the building.
 
     [B_ResidentialS1A] = { 1, 1, T_RESIDENTIAL_S1_A, 0 },
     [B_ResidentialS1B] = { 1, 1, T_RESIDENTIAL_S1_B, 0 },

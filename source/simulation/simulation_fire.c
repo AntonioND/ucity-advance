@@ -14,6 +14,7 @@
 #include "room_game/tileset_info.h"
 #include "simulation/building_density.h"
 #include "simulation/simulation_building_count.h"
+#include "simulation/simulation_meltdown.h"
 #include "simulation/simulation_traffic.h"
 
 // The count saturates to 31 - 1. The number of fire stations used for the
@@ -39,6 +40,9 @@ void MapDeleteBuildingFire(int x, int y)
     uint16_t tile, type;
     CityMapGetTypeAndTile(x, y, &tile, &type);
 
+    if ((type & TYPE_MASK) == TYPE_WATER)
+        return;
+
     const city_tile_info *info = City_Tileset_Entry_Info(tile);
 
     int ox = x + info->base_x_delta;
@@ -62,9 +66,13 @@ void MapDeleteBuildingFire(int x, int y)
     // Handle nuclear power plant radiation
     // ------------------------------------
 
-    // If the building is a nuclear power plant, spread radiation around it.
-    // This can call recursively to the function we are in right now!
-    // TODO: Simulation_RadiationSpread(ox, oy)
+    if (origin_tile == T_POWER_PLANT_NUCLEAR)
+    {
+        // If the building is a nuclear power plant, spread radiation around it.
+        // This can call recursively to the function we are in right now!
+
+        Simulation_RadiationSpread(ox, oy);
+    }
 
     // Replace building by fire
     // ------------------------
@@ -72,9 +80,7 @@ void MapDeleteBuildingFire(int x, int y)
     for (int j = oy; j < (oy + h); j++)
     {
         for (int i = ox; i < (ox + w); i++)
-        {
             CityMapDrawTile(T_FIRE_1, i, j);
-        }
     }
 }
 
