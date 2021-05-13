@@ -115,14 +115,19 @@ void Cursor_Refresh(void)
     OBJ_PrioritySet(67, 1);
 }
 
-void Load_Cursor_Graphics(int pal_index, void *tiles_base, int tiles_index)
+void Load_Cursor_Graphics(void *tiles_base, int tiles_index)
 {
-    // Load the palettes
-    VRAM_OBJPalette16Copy(cursorPal, cursorPalLen, pal_index);
+    Cursor_Hide();
 
     // Load the tiles
     SWI_CpuSet_Copy16(cursorTiles, tiles_base, cursorTilesLen);
 
-    cursor_palette = pal_index;
     cursor_tiles_index = tiles_index;
+}
+
+void Load_Cursor_Palette(int pal_index)
+{
+    cursor_palette = pal_index;
+
+    VRAM_OBJPalette16Copy(cursorPal, cursorPalLen, pal_index);
 }

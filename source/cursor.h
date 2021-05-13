@@ -18,6 +18,7 @@ void Cursor_Get_Size(int *w, int *h);
 
 void Cursor_Refresh(void);
 
-void Load_Cursor_Graphics(int pal_index, void *tiles_base, int tiles_index);
+void Load_Cursor_Graphics(void *tiles_base, int tiles_index);
+void Load_Cursor_Palette(int pal_index);
 
 #endif // CURSOR_H__

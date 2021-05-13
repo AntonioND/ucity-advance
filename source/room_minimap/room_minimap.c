@@ -6,9 +6,9 @@
 
 #include <ugba/ugba.h>
 
+#include "cursor.h"
 #include "input_utils.h"
 #include "main.h"
-
 #include "simulation/building_density.h"
 #include "simulation/simulation_happiness.h"
 #include "simulation/simulation_pollution.h"
@@ -1029,6 +1029,8 @@ static void Draw_Minimap_Selected(void)
 
 static void Room_Minimap_Set_Watching_Mode(void)
 {
+    Cursor_Refresh();
+
     current_mode = MODE_WATCHING;
 
     for (int i = 0; i < 14; i++)
@@ -1043,6 +1045,8 @@ static void Room_Minimap_Set_Selecting_Mode(void)
     current_mode = MODE_SELECTING;
 
     Room_Minimap_Refresh_Icons();
+
+    Cursor_Hide();
 }
 
 void Room_Minimap_Load(void)
@@ -1092,15 +1096,27 @@ void Room_Minimap_Load(void)
         }
     }
 
+    // Load cursor graphics
+
+#define CURSOR_PALETTE      (15)
+#define CURSOR_TILES_BASE   MEM_BG_TILES_BLOCK_ADDR(4)
+#define CURSOR_TILES_INDEX  (0)
+
+    Load_Cursor_Graphics((void *)CURSOR_TILES_BASE, CURSOR_TILES_INDEX);
+
     // Setup background
+
     BG_AffineInit(2, BG_AFFINE_128x128,
                   FRAMEBUFFER_TILES_BASE, FRAMEBUFFER_MAP_BASE, 0);
 
-    int x = -((GBA_SCREEN_W - 128) / 2) / 2;
-    int y = -(24 / 2);
+    const int bgdstx = (GBA_SCREEN_W - 128) / 2;
+    const int bgdsty = 24;
+
+    const int bgx = -((bgdstx / 2) << 8);
+    const int bgy = -((bgdsty / 2) << 8);
 
     bg_affine_src bg_src_start = {
-        x << 8, y << 8,
+        bgx, bgy,
         0, 0,
         1 << 7, 1 << 7,
         0
@@ -1110,18 +1126,17 @@ void Room_Minimap_Load(void)
     SWI_BgAffineSet(&bg_src_start, &bg_dst, 1);
     BG_AffineTransformSet(2, &bg_dst);
 
-    // Load palettes
-    // -------------
+    // Setup cursor
 
-    // Load icon palettes
-    VRAM_OBJPalette16Copy(minimap_menu_tiles_pal, minimap_menu_tiles_pal_size,
-                          GRAPH_MENU_ICONS_PALETTE);
+    int x, y;
+    Room_Game_GetCurrentScroll(&x, &y);
 
-    // Load frame palettes
-    SWI_CpuSet_Copy16(minimap_frame_tiles_pal, &MEM_PALETTE_BG[BG_FRAME_PALETTE],
-                      minimap_frame_tiles_pal_size);
+    int curx = ((x / 8) * 2) + bgdstx;
+    int cury = ((y / 8) * 2) + bgdsty;
 
-    MEM_PALETTE_BG[0] = RGB15(31, 31, 31);
+    Cursor_Set_Position(curx, cury);
+    Cursor_Set_Size((GBA_SCREEN_W / 8) * 2, (GBA_SCREEN_H / 8) * 2);
+    Cursor_Refresh();
 
     // Setup display mode
 
@@ -1137,6 +1152,21 @@ void Room_Minimap_Load(void)
     Room_Minimap_Set_Watching_Mode();
 
     Draw_Minimap_Selected();
+
+    // Load palettes
+    // -------------
+
+    // Load icon palettes
+    VRAM_OBJPalette16Copy(minimap_menu_tiles_pal, minimap_menu_tiles_pal_size,
+                          GRAPH_MENU_ICONS_PALETTE);
+
+    // Load frame palettes
+    SWI_CpuSet_Copy16(minimap_frame_tiles_pal, &MEM_PALETTE_BG[BG_FRAME_PALETTE],
+                      minimap_frame_tiles_pal_size);
+
+    Load_Cursor_Palette(CURSOR_PALETTE);
+
+    MEM_PALETTE_BG[0] = RGB15(31, 31, 31);
 }
 
 void Room_Minimap_Unload(void)
@@ -1153,6 +1183,9 @@ void Room_Minimap_Handle(void)
     {
         case MODE_WATCHING:
         {
+            Cursor_Update();
+            Cursor_Refresh();
+
             // Only let the user change the map if not in disaster mode
             if (Room_Game_IsInDisasterMode() == 0)
             {

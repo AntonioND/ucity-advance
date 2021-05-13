@@ -179,6 +179,12 @@ static int scrolly = 0;
 static int last_build_x = -1;
 static int last_build_y = -1;
 
+void Room_Game_GetCurrentScroll(int *x, int *y)
+{
+    *x = mapx;
+    *y = mapy;
+}
+
 void Load_City_Data(const void *map, int scx, int scy)
 {
     // Load the map
@@ -218,10 +224,11 @@ static void Room_Game_Load_Cursor_Graphics(void)
 #define CURSOR_TILES_BASE   MEM_BG_TILES_BLOCK_ADDR(5)
 #define CURSOR_TILES_INDEX  (512)
 
-    Load_Cursor_Graphics(CURSOR_PALETTE,
-                         (void *)CURSOR_TILES_BASE, CURSOR_TILES_INDEX);
+    Load_Cursor_Graphics((void *)CURSOR_TILES_BASE, CURSOR_TILES_INDEX);
 
     Cursor_Set_Position(48, 48);
+
+    Load_Cursor_Palette(CURSOR_PALETTE);
 }
 
 static void Room_Game_Draw_RCI_Bars(void)
