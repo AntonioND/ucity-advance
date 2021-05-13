@@ -6,6 +6,7 @@
 
 #include <ugba/ugba.h>
 
+#include "cursor.h"
 #include "date.h"
 #include "input_utils.h"
 #include "main.h"
@@ -27,7 +28,6 @@
 
 // Assets
 
-#include "graphics/cursor.h"
 #include "maps/city_tileset.h"
 
 // ----------------------------------------------------------------------------
@@ -212,110 +212,14 @@ void Load_City_Graphics(void)
                    CITY_TILES_BASE, CITY_MAP_BASE);
 }
 
+static void Room_Game_Load_Cursor_Graphics(void)
+{
 #define CURSOR_PALETTE      (15)
 #define CURSOR_TILES_BASE   MEM_BG_TILES_BLOCK_ADDR(5)
 #define CURSOR_TILES_INDEX  (512)
 
-static int curx = (GBA_SCREEN_W / 2) - 8;
-static int cury = (GBA_SCREEN_H / 2) - 8;
-static int curw = 8;
-static int curh = 8;
-static int curframe = 0;
-
-static void Cursor_Reset_Position(void)
-{
-    int offsetx = curw / 2;
-    if ((offsetx % 8) != 0)
-        offsetx += 4;
-
-    int offsety = curh / 2;
-    if ((offsety % 8) != 0)
-        offsety += 4;
-
-    curx = (GBA_SCREEN_W / 2) - offsetx;
-    cury = (GBA_SCREEN_H / 2) - offsety;
-}
-
-static void Cursor_Set_Position(int x, int y)
-{
-    curx = x;
-    cury = y;
-}
-
-static void Cursor_Hide(void)
-{
-    OBJ_RegularInit(64, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
-    OBJ_RegularEnableSet(64, 0);
-    OBJ_RegularInit(65, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
-    OBJ_RegularEnableSet(65, 0);
-    OBJ_RegularInit(66, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
-    OBJ_RegularEnableSet(66, 0);
-    OBJ_RegularInit(67, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
-    OBJ_RegularEnableSet(67, 0);
-}
-
-static void Cursor_Update(void)
-{
-    curframe++;
-    if (curframe == 30)
-        curframe = 0;
-}
-
-static void Cursor_Set_Size(int w, int h)
-{
-    curw = w;
-    curh = h;
-
-    // Make sure that the cursor doesn't go outside of the screen
-
-    if ((curx + curw) > GBA_SCREEN_W)
-        curx = GBA_SCREEN_W - curw;
-
-    if ((cury + curh) > GBA_SCREEN_H)
-        cury = GBA_SCREEN_H - curh;
-}
-
-static void Cursor_Refresh(void)
-{
-    int add = 0;
-    if (curframe >= 15)
-        add = 1;
-
-    int x = curx;
-    int y = cury;
-
-    OBJ_RegularInit(64, x - 4 - add, y - 4 - add,
-                    OBJ_SIZE_8x8, OBJ_16_COLORS,
-                    CURSOR_PALETTE, CURSOR_TILES_INDEX);
-    OBJ_PrioritySet(64, 1);
-
-    OBJ_RegularInit(65, x + curw - 4 + add, y - 4 - add,
-                    OBJ_SIZE_8x8, OBJ_16_COLORS,
-                    CURSOR_PALETTE, CURSOR_TILES_INDEX);
-    OBJ_RegularHFlipSet(65, 1);
-    OBJ_PrioritySet(65, 1);
-
-    OBJ_RegularInit(66, x - 4 - add, y + curh - 4 + add,
-                    OBJ_SIZE_8x8, OBJ_16_COLORS,
-                    CURSOR_PALETTE, CURSOR_TILES_INDEX);
-    OBJ_RegularVFlipSet(66, 1);
-    OBJ_PrioritySet(66, 1);
-
-    OBJ_RegularInit(67, x + curw - 4 + add, y + curh - 4 + add,
-                    OBJ_SIZE_8x8, OBJ_16_COLORS,
-                    CURSOR_PALETTE, CURSOR_TILES_INDEX);
-    OBJ_RegularHFlipSet(67, 1);
-    OBJ_RegularVFlipSet(67, 1);
-    OBJ_PrioritySet(67, 1);
-}
-
-static void Load_Cursor_Graphics(void)
-{
-    // Load the palettes
-    VRAM_OBJPalette16Copy(cursorPal, cursorPalLen, CURSOR_PALETTE);
-
-    // Load the tiles
-    SWI_CpuSet_Copy16(cursorTiles, (void *)CURSOR_TILES_BASE, cursorTilesLen);
+    Load_Cursor_Graphics(CURSOR_PALETTE,
+                         (void *)CURSOR_TILES_BASE, CURSOR_TILES_INDEX);
 
     Cursor_Set_Position(48, 48);
 }
@@ -346,6 +250,10 @@ static void Room_Game_Handle_Scroll(void)
     const int cur_win_x_max = GBA_SCREEN_W - 8 * 4;
     const int cur_win_y_min = 8 * 4;
     const int cur_win_y_max = GBA_SCREEN_H - 8 * 4;
+
+    int curx, cury, curw, curh;
+    Cursor_Get_Position(&curx, &cury);
+    Cursor_Get_Size(&curw, &curh);
 
     if (scrolly == 0)
     {
@@ -646,7 +554,7 @@ void Room_Game_Load(void)
     BuildSelectMenuLoadGfx();
     StatusBarLoad();
     StatusBarShow();
-    Load_Cursor_Graphics();
+    Room_Game_Load_Cursor_Graphics();
 
     // Load background
     // ===============
@@ -871,6 +779,9 @@ void Room_Game_SlowVBLHandler(void)
             {
                 Room_Game_Set_Mode(MODE_SELECT_BUILDING);
             }
+
+            int curx, cury;
+            Cursor_Get_Position(&curx, &cury);
 
             int x = (mapx + curx) / 8;
             int y = (mapy + cury) / 8;
