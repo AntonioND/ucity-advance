@@ -631,12 +631,6 @@ void Room_Game_Handle(void)
                 }
             }
 
-            if (animation_enabled)
-            {
-                main_loop_is_busy = 1;
-                GameAnimateMap();
-            }
-
             main_loop_is_busy = 0;
 
             break;
@@ -654,12 +648,6 @@ void Room_Game_Handle(void)
                 }
             }
 
-            if (animation_enabled)
-            {
-                main_loop_is_busy = 1;
-                GameAnimateMap();
-            }
-
             main_loop_is_busy = 0;
 
             break;
@@ -674,14 +662,6 @@ void Room_Game_Handle(void)
         }
         case MODE_PAUSE_MENU:
         {
-            if (animation_enabled)
-            {
-                main_loop_is_busy = 1;
-                GameAnimateMap();
-            }
-
-            main_loop_is_busy = 0;
-
             break;
         }
         default:
@@ -767,12 +747,18 @@ void Room_Game_SlowVBLHandler(void)
                 return;
             }
 
+            if (animation_enabled)
+                GameAnimateMap();
+
             break;
         }
         case MODE_WATCH:
         {
             if (keys_released & KEY_B)
                 Room_Game_Set_Mode(MODE_RUNNING);
+
+            if (animation_enabled)
+                GameAnimateMap();
 
             break;
         }
@@ -876,6 +862,9 @@ void Room_Game_SlowVBLHandler(void)
                     UGBA_Assert(0);
                     break;
             }
+
+            if (animation_enabled)
+                GameAnimateMap();
 
             break;
         }
