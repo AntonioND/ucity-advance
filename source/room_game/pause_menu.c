@@ -139,6 +139,14 @@ static void PauseMenuDrawOptions(void)
 
     StatusBarPrint(9, 4 + (32 - 30), "Animations:");
     StatusBarPrint(9, 8 + (32 - 30), "Music:");
+
+    int x = menu_entry[OPTIONS_ANIMATIONS_ENABLE].x;
+    int y = menu_entry[OPTIONS_ANIMATIONS_ENABLE].y + (32 - 30);
+
+    if (Room_Game_AreAnimationsEnabled())
+        StatusBarPrint(x, y, "Disable");
+    else
+        StatusBarPrint(x, y, "Enable ");
 }
 
 void PauseMenuDraw(void)
@@ -302,12 +310,19 @@ static pause_menu_options PauseMenuHandleInputOptions(void)
         }
     }
 
+    uint16_t keys_pressed = KEYS_Pressed();
     uint16_t keys_released = KEYS_Released();
 
     if (keys_released & KEY_B)
     {
         PauseMenuSetSubmenu(PAUSE_SUBMENU_MAIN, PAUSE_MENU_OPTIONS);
         return PAUSE_MENU_INVALID_OPTION;
+    }
+
+    if (keys_pressed & KEY_A)
+    {
+        if (selected_option == OPTIONS_ANIMATIONS_ENABLE)
+            return OPTIONS_ANIMATIONS_ENABLE;
     }
 
     return PAUSE_MENU_INVALID_OPTION;

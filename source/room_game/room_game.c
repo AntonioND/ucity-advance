@@ -68,6 +68,13 @@ void Room_Game_SetDisasterMode(int enabled)
     simulation_disaster_mode = enabled;
 }
 
+int Room_Game_AreAnimationsEnabled(void)
+{
+    if (game_animations_disabled)
+        return 0;
+    return 1;
+}
+
 static void GameAnimateMapVBLFastHandle(void)
 {
     if (game_animations_disabled)
@@ -856,8 +863,11 @@ void Room_Game_SlowVBLHandler(void)
                 //case DISASTERS_START_FIRE: // TODO
                 //case DISASTERS_MELTDOWN: // TODO
 
-                //case OPTIONS_ANIMATIONS_ENABLE:
-                //case OPTIONS_MUSIC_ENABLE:
+                case OPTIONS_ANIMATIONS_ENABLE:
+                    game_animations_disabled ^= 1;
+                    PauseMenuDraw();
+                    break;
+                //case OPTIONS_MUSIC_ENABLE: // TODO
 
                 case PAUSE_MENU_INVALID_OPTION:
                     // Nothing to do
