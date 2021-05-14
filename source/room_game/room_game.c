@@ -185,6 +185,11 @@ void Room_Game_GetCurrentScroll(int *x, int *y)
     *y = mapy;
 }
 
+int Room_Game_IsSimulationEnabled(void)
+{
+    return simulation_enabled;
+}
+
 void Load_City_Data(const void *map, int scx, int scy)
 {
     // Load the map
@@ -525,7 +530,7 @@ void Room_Game_Set_Mode(int mode)
         {
             Cursor_Hide();
             PauseMenuLoad();
-            PauseMenuDrawPauseResume(simulation_enabled);
+            PauseMenuDraw();
             break;
         }
         default:
@@ -821,29 +826,39 @@ void Room_Game_SlowVBLHandler(void)
         }
         case MODE_PAUSE_MENU:
         {
-            if (keys_released & (KEY_B | KEY_START))
-            {
-                Room_Game_Set_Mode(MODE_RUNNING);
-                return;
-            }
-
             pause_menu_options option = PauseMenuHandleInput();
             switch (option)
             {
-                //case PAUSE_MENU_BUDGET:
-                //case PAUSE_MENU_BANK:
+                // TODO: Implement remaining elements of the menu
+
+                //case PAUSE_MENU_BUDGET: // TODO
+                //case PAUSE_MENU_BANK: // TODO
                 case PAUSE_MENU_MINIMAPS:
                     Game_Room_Prepare_Switch(ROOM_MINIMAP);
                     return;
-                //case PAUSE_MENU_GRAPHS:
-                //case PAUSE_MENU_CITY_STATS:
+                //case PAUSE_MENU_GRAPHS: // TODO
+                //case PAUSE_MENU_CITY_STATS: // TODO
+                // The following two are handled in PauseMenuHandleInput()
+                //case PAUSE_MENU_DISASTERS:
                 //case PAUSE_MENU_OPTIONS:
                 case PAUSE_MENU_PAUSE:
                     simulation_enabled ^= 1;
-                    PauseMenuDrawPauseResume(simulation_enabled);
+                    PauseMenuDraw();
                     break;
-                //case PAUSE_MENU_SAVE_GAME:
-                //case PAUSE_MENU_MAIN_MENU:
+                //case PAUSE_MENU_SAVE_GAME: // TODO
+                //case PAUSE_MENU_MAIN_MENU: // TODO
+
+                case PAUSE_MENU_EXIT:
+                    Room_Game_Set_Mode(MODE_RUNNING);
+                    break;
+
+                //case DISASTERS_ENABLE: // TODO
+                //case DISASTERS_START_FIRE: // TODO
+                //case DISASTERS_MELTDOWN: // TODO
+
+                //case OPTIONS_ANIMATIONS_ENABLE:
+                //case OPTIONS_MUSIC_ENABLE:
+
                 case PAUSE_MENU_INVALID_OPTION:
                     // Nothing to do
                     break;

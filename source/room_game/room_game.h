@@ -112,6 +112,8 @@
 
 void Room_Game_GetCurrentScroll(int *x, int *y);
 
+int Room_Game_IsSimulationEnabled(void);
+
 void Load_City_Data(const void *map, int scx, int scy);
 
 void Room_Game_Load(void);

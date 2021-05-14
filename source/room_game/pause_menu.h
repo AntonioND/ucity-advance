@@ -6,6 +6,11 @@
 #define ROOM_GAME_PAUSE_MENU_H__
 
 typedef enum {
+    PAUSE_MENU_INVALID_OPTION,
+    PAUSE_MENU_EXIT,
+
+    // Main pause menu
+
     PAUSE_MENU_MIN,
 
     PAUSE_MENU_BUDGET = PAUSE_MENU_MIN,
@@ -13,6 +18,7 @@ typedef enum {
     PAUSE_MENU_MINIMAPS,
     PAUSE_MENU_GRAPHS,
     PAUSE_MENU_CITY_STATS,
+    PAUSE_MENU_DISASTERS,
     PAUSE_MENU_OPTIONS,
     PAUSE_MENU_PAUSE,
 
@@ -21,11 +27,35 @@ typedef enum {
 
     PAUSE_MENU_MAX = PAUSE_MENU_MAIN_MENU,
 
-    PAUSE_MENU_INVALID_OPTION,
+    // Submenu: Disasters
+
+    DISASTERS_MENU_MIN,
+
+    DISASTERS_ENABLE = DISASTERS_MENU_MIN,
+    DISASTERS_START_FIRE,
+    DISASTERS_MELTDOWN,
+
+    DISASTERS_MENU_MAX = DISASTERS_MELTDOWN,
+
+    // Submenu: Options
+
+    OPTIONS_MENU_MIN,
+
+    OPTIONS_ANIMATIONS_ENABLE = OPTIONS_MENU_MIN,
+    OPTIONS_MUSIC_ENABLE,
+
+    OPTIONS_MENU_MAX = OPTIONS_MUSIC_ENABLE,
+
 } pause_menu_options;
 
+typedef enum {
+    PAUSE_SUBMENU_MAIN,
+    PAUSE_SUBMENU_DISASTERS,
+    PAUSE_SUBMENU_OPTIONS,
+} pause_menu_submenus;
+
 void PauseMenuLoad(void);
-void PauseMenuDrawPauseResume(int pause);
+void PauseMenuDraw(void);
 
 pause_menu_options PauseMenuHandleInput(void);
 
