@@ -16,6 +16,7 @@
 #include "room_game/building_info.h"
 #include "room_game/build_menu.h"
 #include "room_game/draw_building.h"
+#include "room_game/notification_box.h"
 #include "room_game/pause_menu.h"
 #include "room_game/room_game.h"
 #include "room_game/tileset_info.h"
@@ -572,33 +573,45 @@ void Room_Game_Load(void)
 {
     Game_Clear_Screen();
 
+    // Load tiles
+    // ----------
+
     BuildSelectMenuLoadGfx();
     StatusBarLoad();
     StatusBarShow();
     Room_Game_Load_Cursor_Graphics();
 
-    // Load background
-    // ===============
+    // Load notification box
+    // ---------------------
+
+    Notification_Box_Load();
+
+    // Load city background
+    // ---------------
 
     Load_City_Graphics();
 
-    DISP_ModeSet(0);
-    DISP_Object1DMappingEnable(1);
-    DISP_LayersEnable(0, 1, 1, 0, 1);
-
     BG_RegularScrollSet(2, mapx, mapy);
 
+    /// Setup display
+    //---------------
+
+    DISP_ModeSet(0);
+    DISP_Object1DMappingEnable(1);
+    DISP_LayersEnable(1, 1, 1, 0, 1);
+
     // Prepare cursor
+    // --------------
 
     Cursor_Set_Size(8, 8);
     Cursor_Reset_Position();
     Cursor_Refresh();
 
-    // Refresh some simulation data
-
-    Simulation_CountBuildings();
-
     // Initialize room state
+    // ---------------------
+
+    // Refresh some simulation data
+    Simulation_CountBuildings();
 
     frames_left_to_step = 0;
     simulation_enabled = 1;

@@ -54,6 +54,7 @@ tools/build/png2maps/png2maps \
     ${OUT_DIR}/maps/ \
     maps/minimap_frame_tiles.png \
     maps/minimap_frame_bg.png \
+    maps/notification_bg.png \
     maps/pause_menu_bg.png
 
 # Convert other graphics
