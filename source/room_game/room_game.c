@@ -606,6 +606,9 @@ void Room_Game_Load(void)
 
     main_loop_is_busy = 1;
 
+    Simulation_DisastersSetEnabled(1);
+    Simulation_RequestDisaster(REQUESTED_DISASTER_NONE);
+
     Room_Game_Set_Mode(MODE_RUNNING);
 }
 
@@ -845,9 +848,19 @@ void Room_Game_SlowVBLHandler(void)
                     Room_Game_Set_Mode(MODE_RUNNING);
                     break;
 
-                //case DISASTERS_ENABLE: // TODO
-                //case DISASTERS_START_FIRE: // TODO
-                //case DISASTERS_MELTDOWN: // TODO
+                case DISASTERS_ENABLE:
+                {
+                    int new_value = Simulation_AreDisastersEnabled() ^ 1;
+                    Simulation_DisastersSetEnabled(new_value);
+                    PauseMenuDraw();
+                    break;
+                }
+                case DISASTERS_START_FIRE:
+                    Simulation_RequestDisaster(REQUESTED_DISASTER_FIRE);
+                    break;
+                case DISASTERS_MELTDOWN:
+                    Simulation_RequestDisaster(REQUESTED_DISASTER_MELTDOWN);
+                    break;
 
                 case OPTIONS_ANIMATIONS_ENABLE:
                     animations_disabled ^= 1;

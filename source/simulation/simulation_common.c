@@ -8,6 +8,7 @@
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
 #include "room_game/tileset_info.h"
+#include "simulation/simulation_common.h"
 #include "simulation/simulation_create_buildings.h"
 #include "simulation/simulation_fire.h"
 #include "simulation/simulation_meltdown.h"
@@ -18,6 +19,32 @@
 
 //EWRAM_BSS
 static uint8_t type_matrix[CITY_MAP_WIDTH * CITY_MAP_HEIGHT];
+
+// ----------------------------------------------------------------------------
+
+static int disasters_enabled;
+
+void Simulation_DisastersSetEnabled(int enable)
+{
+    disasters_enabled = enable;
+}
+
+int Simulation_AreDisastersEnabled(void)
+{
+    return disasters_enabled;
+}
+
+static requested_disaster_type requested_disaster;
+
+void Simulation_RequestDisaster(requested_disaster_type type)
+{
+    if (requested_disaster != REQUESTED_DISASTER_NONE)
+        return;
+
+    requested_disaster = type;
+}
+
+// ----------------------------------------------------------------------------
 
 void TypeMatrixRefresh(void)
 {
@@ -156,12 +183,15 @@ void Simulation_SimulateAll(void)
 
     // Start disasters if there isn't one active
 
-    // TODO: Check if a disaster has been requested
+    int force_fire = (requested_disaster == REQUESTED_DISASTER_FIRE);
+    int force_meltdown = (requested_disaster == REQUESTED_DISASTER_MELTDOWN);
 
-    // TODO: if (disasters_enabled)
+    if (force_fire || force_meltdown || disasters_enabled)
     {
-        Simulation_FireTryStart(0);
-        Simulation_MeltdownTryStart(0);
+        Simulation_FireTryStart(force_fire);
+        Simulation_MeltdownTryStart(force_meltdown);
+
+        requested_disaster = REQUESTED_DISASTER_NONE;
     }
 
     // Remove radiation

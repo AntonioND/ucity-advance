@@ -10,6 +10,7 @@
 #include "room_game/pause_menu.h"
 #include "room_game/room_game.h"
 #include "room_game/status_bar.h"
+#include "simulation/simulation_common.h"
 
 // Assets
 
@@ -124,6 +125,14 @@ static void PauseMenuDrawDisasters(void)
     }
 
     StatusBarPrint(9, 4 + (32 - 30), "Disasters:");
+
+    int x = menu_entry[DISASTERS_ENABLE].x;
+    int y = menu_entry[DISASTERS_ENABLE].y + (32 - 30);
+
+    if (Simulation_AreDisastersEnabled())
+        StatusBarPrint(x, y, "Disable");
+    else
+        StatusBarPrint(x, y, "Enable ");
 }
 
 static void PauseMenuDrawOptions(void)
@@ -278,12 +287,23 @@ static pause_menu_options PauseMenuHandleInputDisasters(void)
         }
     }
 
+    uint16_t keys_pressed = KEYS_Pressed();
     uint16_t keys_released = KEYS_Released();
 
     if (keys_released & KEY_B)
     {
         PauseMenuSetSubmenu(PAUSE_SUBMENU_MAIN, PAUSE_MENU_DISASTERS);
         return PAUSE_MENU_INVALID_OPTION;
+    }
+
+    if (keys_pressed & KEY_A)
+    {
+        if (selected_option == DISASTERS_START_FIRE)
+            return DISASTERS_START_FIRE;
+        else if (selected_option == DISASTERS_MELTDOWN)
+            return DISASTERS_MELTDOWN;
+        else if (selected_option == DISASTERS_ENABLE)
+            return DISASTERS_ENABLE;
     }
 
     return PAUSE_MENU_INVALID_OPTION;
