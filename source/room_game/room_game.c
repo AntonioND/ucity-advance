@@ -32,11 +32,17 @@
 
 // ----------------------------------------------------------------------------
 
-static int simulation_enabled;
-static int animation_enabled;
+static int simulation_enabled = 1;
+static int animations_disabled = 0;
+
+// Frames left for a simulation step
 static int frames_left_to_step = 0;
 #define MIN_FRAMES_PER_DATE_STEP    60
 
+// This is set to 1 when in disaster mode
+static int simulation_disaster_mode = 0;
+
+// This is set to 1 when the main loop isn't done with a simulation step
 static volatile int main_loop_is_busy;
 
 // ----------------------------------------------------------------------------
@@ -54,10 +60,6 @@ int animation_has_to_update_transport;
 int animation_has_to_update_map;
 int animation_countdown; // This goes from 0 to ANIMATION_COUNT_FRAMES_xxxxx
 
-int game_animations_disabled = 0;
-
-int simulation_disaster_mode = 0;
-
 int Room_Game_IsInDisasterMode(void)
 {
     return simulation_disaster_mode;
@@ -70,14 +72,14 @@ void Room_Game_SetDisasterMode(int enabled)
 
 int Room_Game_AreAnimationsEnabled(void)
 {
-    if (game_animations_disabled)
+    if (animations_disabled)
         return 0;
     return 1;
 }
 
 static void GameAnimateMapVBLFastHandle(void)
 {
-    if (game_animations_disabled)
+    if (animations_disabled)
         return;
 
     if (simulation_disaster_mode)
@@ -127,7 +129,7 @@ static void GameAnimateMapVBLFastHandle(void)
 
 static void GameAnimateMap(void)
 {
-    if (game_animations_disabled)
+    if (animations_disabled)
         return;
 
     if (simulation_disaster_mode)
@@ -600,7 +602,7 @@ void Room_Game_Load(void)
 
     frames_left_to_step = 0;
     simulation_enabled = 1;
-    animation_enabled = 1;
+    animations_disabled = 0;
 
     main_loop_is_busy = 1;
 
@@ -747,8 +749,7 @@ void Room_Game_SlowVBLHandler(void)
                 return;
             }
 
-            if (animation_enabled)
-                GameAnimateMap();
+            GameAnimateMap();
 
             break;
         }
@@ -757,8 +758,7 @@ void Room_Game_SlowVBLHandler(void)
             if (keys_released & KEY_B)
                 Room_Game_Set_Mode(MODE_RUNNING);
 
-            if (animation_enabled)
-                GameAnimateMap();
+            GameAnimateMap();
 
             break;
         }
@@ -850,7 +850,7 @@ void Room_Game_SlowVBLHandler(void)
                 //case DISASTERS_MELTDOWN: // TODO
 
                 case OPTIONS_ANIMATIONS_ENABLE:
-                    game_animations_disabled ^= 1;
+                    animations_disabled ^= 1;
                     PauseMenuDraw();
                     break;
                 //case OPTIONS_MUSIC_ENABLE: // TODO
@@ -863,8 +863,7 @@ void Room_Game_SlowVBLHandler(void)
                     break;
             }
 
-            if (animation_enabled)
-                GameAnimateMap();
+            GameAnimateMap();
 
             break;
         }
