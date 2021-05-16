@@ -9,6 +9,7 @@
 #include "date.h"
 #include "input_utils.h"
 #include "main.h"
+#include "money.h"
 #include "room_game/room_game.h"
 #include "room_minimap/room_minimap.h"
 #include "simulation/simulation_common.h"
@@ -337,6 +338,7 @@ int main(int argc, char *argv[])
 
     //UMOD_Song_Play(SONG_KAOS_OCH_DEKADENS_MOD);
 
+    MoneySet(99999999);
     DateReset();
     Simulation_SetFirstStep();
 

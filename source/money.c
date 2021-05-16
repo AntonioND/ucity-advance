@@ -4,7 +4,12 @@
 
 #include <stdint.h>
 
-static int32_t global_money = 99999999;
+static int32_t global_money = 0;
+
+void MoneySet(int32_t money)
+{
+    global_money = money;
+}
 
 int MoneyIsThereEnough(int32_t cost)
 {

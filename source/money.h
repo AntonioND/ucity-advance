@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 
+void MoneySet(int32_t money);
 int MoneyIsThereEnough(int32_t cost);
 void MoneyReduce(int32_t cost);
 int32_t MoneyGet(void);
