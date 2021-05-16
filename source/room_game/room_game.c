@@ -23,6 +23,7 @@
 #include "room_game/tileset_info.h"
 #include "room_game/status_bar.h"
 #include "simulation/simulation_building_count.h"
+#include "simulation/simulation_calculate_stats.h"
 #include "simulation/simulation_common.h"
 #include "simulation/simulation_fire.h"
 #include "simulation/simulation_traffic.h"
@@ -250,13 +251,16 @@ static void Room_Game_Load_Cursor_Graphics(void)
 
 static void Room_Game_Draw_RCI_Bars(void)
 {
-    // TODO: Actually implement this
+    int r, c, i;
+    Simulation_GetDemandRCI(&r, &c, &i);
+
+    // TODO: Remove magic numbers
 
     char RCI[4] = { 0 };
 
-    RCI[0] = 144 + 0;
-    RCI[1] = 160 + 6;
-    RCI[2] = 176 + 2;
+    RCI[0] = 144 + r;
+    RCI[1] = 160 + c;
+    RCI[2] = 176 + i;
     StatusBarPrint(27, 0, RCI);
 
     RCI[0] = 128;

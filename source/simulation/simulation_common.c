@@ -8,6 +8,7 @@
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
 #include "room_game/tileset_info.h"
+#include "simulation/simulation_calculate_stats.h"
 #include "simulation/simulation_common.h"
 #include "simulation/simulation_create_buildings.h"
 #include "simulation/simulation_fire.h"
@@ -134,11 +135,11 @@ void Simulation_SimulateAll(void)
 
     // Calculate total population and other statistics
 
-    // TODO: Simulation_CalculateStatistics()
+    Simulation_CalculateStatistics();
 
     // Calculate RCI graph
 
-    // TODO: Simulation_CalculateRCIDemand()
+    Simulation_CalculateRCIDemand();
 
     // Update date, apply budget, etc.
     // Note: Only if this is not the first iteration step! The first iteration
@@ -165,6 +166,10 @@ void Simulation_SimulateAll(void)
             // Increment technology level
 
             // TODO : Simulation_AdvanceTechnology();
+
+            // Reset yearly messages
+
+            // TODO: PersistentYearlyMessagesReset()
         }
 
         // Check if this is the start of a quarter (January, April, July or
