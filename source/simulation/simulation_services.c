@@ -288,9 +288,10 @@ void Simulation_Services(uint16_t source_tile)
         {
             if (CityMapGetTile(i, j) == source_tile)
             {
-                // TODO: If no power, ignore this building
-                // TILE_OK_POWER_BIT
-                Simulation_ServicesApplyMask(i, j);
+                // If there is no power, ignore this building
+                uint8_t flags = Simulation_HappinessGetFlags(i, j);
+                if (flags & TILE_OK_POWER)
+                    Simulation_ServicesApplyMask(i, j);
             }
         }
     }
@@ -698,9 +699,10 @@ void Simulation_ServicesBig(uint16_t source_tile)
         {
             if (CityMapGetTile(i, j) == source_tile)
             {
-                // TODO: If no power, ignore this building
-                // TILE_OK_POWER_BIT
-                Simulation_ServicesApplyMaskBig(i, j);
+                // If there is no power, ignore this building
+                uint8_t flags = Simulation_HappinessGetFlags(i, j);
+                if (flags & TILE_OK_POWER)
+                    Simulation_ServicesApplyMaskBig(i, j);
             }
         }
     }
