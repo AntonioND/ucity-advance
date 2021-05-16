@@ -11,6 +11,7 @@
 #include "room_game/draw_building.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
+#include "room_game/text_messages.h"
 #include "room_game/tileset_info.h"
 #include "simulation/building_density.h"
 #include "simulation/simulation_building_count.h"
@@ -160,7 +161,7 @@ void Simulation_FireTryStart(int force)
 
     MapDeleteBuildingFire(fire_x, fire_y);
 
-    // TODO: MessageRequestAdd(ID_MSG_FIRE_INITED)
+    MessageQueueAdd(ID_MSG_FIRE_INITED);
 
     int scx = fire_x - ((GBA_SCREEN_W / 2) / 8);
     if (scx < 0)

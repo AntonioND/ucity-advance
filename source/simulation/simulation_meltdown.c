@@ -10,6 +10,7 @@
 #include "room_game/draw_building.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
+#include "room_game/text_messages.h"
 #include "room_game/tileset_info.h"
 #include "simulation/building_density.h"
 #include "simulation/simulation_building_count.h"
@@ -181,7 +182,7 @@ void Simulation_MeltdownTryStart(int force)
             // that the building is a nuclear power plant.
             MapDeleteBuildingFire(i, j);
 
-            // TODO: MessageRequestAdd(ID_MSG_NUCLEAR_MELTDOWN);
+            MessageQueueAdd(ID_MSG_NUCLEAR_MELTDOWN);
 
             int scx = i - ((GBA_SCREEN_W / 2) / 8);
             if (scx < 0)
