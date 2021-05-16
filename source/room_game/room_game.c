@@ -19,6 +19,7 @@
 #include "room_game/notification_box.h"
 #include "room_game/pause_menu.h"
 #include "room_game/room_game.h"
+#include "room_game/text_messages.h"
 #include "room_game/tileset_info.h"
 #include "room_game/status_bar.h"
 #include "simulation/simulation_building_count.h"
@@ -174,6 +175,7 @@ static void GameAnimateMap(void)
 typedef enum {
     MODE_RUNNING,
     MODE_WATCH,
+    MODE_SHOW_NOTIFICATION,
     MODE_SELECT_BUILDING,
     MODE_MODIFY_MAP,
     MODE_PAUSE_MENU,
@@ -511,6 +513,12 @@ void Room_Game_Set_Mode(int mode)
             StatusBarHide();
             break;
         }
+        case MODE_SHOW_NOTIFICATION:
+        {
+            StatusBarHide();
+            Notification_Box_Show();
+            break;
+        }
         case MODE_SELECT_BUILDING:
         {
             Cursor_Hide();
@@ -638,6 +646,15 @@ void Room_Game_Handle(void)
     {
         case MODE_RUNNING:
         {
+            // If there are pending messages, don't start simulation step
+            if (MessageQueueIsEmpty() == 0)
+            {
+                Notification_Box_Clear();
+                Notification_Box_Print(0, 0, MessageQueueGet());
+                Room_Game_Set_Mode(MODE_SHOW_NOTIFICATION);
+                break;
+            }
+
             if (simulation_enabled)
             {
                 if (frames_left_to_step == 0)
@@ -655,6 +672,15 @@ void Room_Game_Handle(void)
         }
         case MODE_WATCH:
         {
+            // If there are pending messages, don't start simulation step
+            if (MessageQueueIsEmpty() == 0)
+            {
+                Notification_Box_Clear();
+                Notification_Box_Print(0, 0, MessageQueueGet());
+                Room_Game_Set_Mode(MODE_SHOW_NOTIFICATION);
+                break;
+            }
+
             if (simulation_enabled)
             {
                 if (frames_left_to_step == 0)
@@ -668,6 +694,10 @@ void Room_Game_Handle(void)
 
             main_loop_is_busy = 0;
 
+            break;
+        }
+        case MODE_SHOW_NOTIFICATION:
+        {
             break;
         }
         case MODE_SELECT_BUILDING:
@@ -714,6 +744,10 @@ void Room_Game_FastVBLHandler(void)
             if (frames_left_to_step > 0)
                 frames_left_to_step--;
 
+            break;
+        }
+        case MODE_SHOW_NOTIFICATION:
+        {
             break;
         }
         case MODE_SELECT_BUILDING:
@@ -775,6 +809,24 @@ void Room_Game_SlowVBLHandler(void)
                 Room_Game_Set_Mode(MODE_RUNNING);
 
             GameAnimateMap();
+
+            break;
+        }
+        case MODE_SHOW_NOTIFICATION:
+        {
+            if (keys_released & KEY_A)
+            {
+                if (MessageQueueIsEmpty() == 0)
+                {
+                    Notification_Box_Clear();
+                    Notification_Box_Print(0, 0, MessageQueueGet());
+                }
+                else
+                {
+                    Notification_Box_Hide();
+                    Room_Game_Set_Mode(MODE_RUNNING);
+                }
+            }
 
             break;
         }

@@ -10,4 +10,7 @@ void Notification_Box_Hide(void);
 
 void Notification_Box_Load(void);
 
+void Notification_Box_Clear(void);
+void Notification_Box_Print(int x, int y, const char *text);
+
 #endif // ROOM_GAME_NOTIFICATION_BOX_H__
