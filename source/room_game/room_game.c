@@ -26,6 +26,7 @@
 #include "simulation/simulation_calculate_stats.h"
 #include "simulation/simulation_common.h"
 #include "simulation/simulation_fire.h"
+#include "simulation/simulation_technology.h"
 #include "simulation/simulation_traffic.h"
 #include "simulation/simulation_water.h"
 
@@ -839,9 +840,23 @@ void Room_Game_SlowVBLHandler(void)
             BuildMenuHandleInput();
 
             if (keys_released & KEY_B)
+            {
                 Room_Game_Set_Mode(MODE_RUNNING);
+            }
             else if (keys_released & KEY_A)
-                Room_Game_Set_Mode(MODE_MODIFY_MAP);
+            {
+                int building = BuildMenuSelection();
+
+                if (CityStats_IsBuildingAvailable(building) &&
+                    Technology_IsBuildingAvailable(building))
+                {
+                    Room_Game_Set_Mode(MODE_MODIFY_MAP);
+                }
+                else
+                {
+                    // TODO: SFX_WrongSelection()
+                }
+            }
 
             break;
         }

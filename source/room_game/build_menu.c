@@ -11,6 +11,8 @@
 #include "room_game/status_bar.h"
 #include "room_game/tileset_info.h"
 #include "room_game/building_info.h"
+#include "simulation/simulation_calculate_stats.h"
+#include "simulation/simulation_technology.h"
 
 // Assets
 
@@ -230,6 +232,12 @@ void BuildSelectMenuShow(void)
             if (icon == Icon_NULL)
                 continue;
 
+            int building = icon_to_building[icon];
+
+            if ((CityStats_IsBuildingAvailable(building) == 0) ||
+                (Technology_IsBuildingAvailable(building) == 0))
+                continue;
+
             int icon_base_tile = menu[group].icon[i] * 4;
             int pal = building_menu_map_map[icon_base_tile] >> 12;
 
@@ -343,8 +351,14 @@ void BuildMenuHandleInput(void)
             int icon = menu[selected_group].icon[selected_group_icon + 1];
             if (icon != Icon_NULL)
             {
-                selected_group_icon++;
-                update = 1;
+                int building = icon_to_building[icon];
+
+                if (CityStats_IsBuildingAvailable(building) &&
+                    Technology_IsBuildingAvailable(building))
+                {
+                    selected_group_icon++;
+                    update = 1;
+                }
             }
         }
     }
