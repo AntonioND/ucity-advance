@@ -45,6 +45,16 @@ static int graph_value_r;
 static int graph_value_c;
 static int graph_value_i;
 
+int Simulation_GetCityClass(void)
+{
+    return city_class;
+}
+
+uint32_t Simulation_GetTotalPopulation(void)
+{
+    return population_total;
+}
+
 void Simulation_GetDemandRCI(int *r, int *c, int *i)
 {
     *r = graph_value_r;

@@ -7,9 +7,11 @@
 #include <ugba/ugba.h>
 
 #include "input_utils.h"
+#include "text_utils.h"
 #include "room_game/pause_menu.h"
 #include "room_game/room_game.h"
 #include "room_game/status_bar.h"
+#include "simulation/simulation_calculate_stats.h"
 #include "simulation/simulation_common.h"
 
 // Assets
@@ -161,6 +163,24 @@ static void PauseMenuDrawOptions(void)
 void PauseMenuDraw(void)
 {
     PauseMenuClear();
+
+    // Print settlement class
+
+    const char *city_class_name[] = {
+        [CLASS_VILLAGE]     = "   Village",
+        [CLASS_TOWN]        = "      Town",
+        [CLASS_CITY]        = "      City",
+        [CLASS_METROPOLIS]  = "Metropolis",
+        [CLASS_CAPITAL]     = "   Capital",
+    };
+    const char *name = city_class_name[Simulation_GetCityClass()];
+    StatusBarPrint(11, 1 + (32 - 30), name);
+
+    // Print population
+
+    char pop_str[31];
+    Print_Integer_Decimal_Right(pop_str, 11, Simulation_GetTotalPopulation());
+    StatusBarPrint(11, 0 + (32 - 30), pop_str);
 
     if (selected_submenu == PAUSE_SUBMENU_MAIN)
     {

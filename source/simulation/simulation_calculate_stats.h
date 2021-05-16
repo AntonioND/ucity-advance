@@ -5,6 +5,10 @@
 #ifndef SIMULATION_SIMULATION_CALCULATE_STATS_H__
 #define SIMULATION_SIMULATION_CALCULATE_STATS_H__
 
+int Simulation_GetCityClass(void);
+
+uint32_t Simulation_GetTotalPopulation(void);
+
 void Simulation_GetDemandRCI(int *r, int *c, int *i);
 
 void Simulation_CalculateRCIDemand(void);
