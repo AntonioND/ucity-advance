@@ -105,7 +105,9 @@ void Simulation_SimulateAll(void)
     Simulation_Services(T_POLICE_DEPT_CENTER);
     Simulation_ServicesSetTileOkFlag();
 
-    if (1) // TODO: if (city_class >= CLASS_VILLAGE)
+    int city_class = Simulation_GetCityClass();
+
+    if (city_class >= CLASS_VILLAGE)
     {
         // Ignore if the city is too small
 
@@ -119,7 +121,7 @@ void Simulation_SimulateAll(void)
     Simulation_Services(T_SCHOOL_CENTER);
     Simulation_EducationSetTileOkFlag();
 
-    if (1) // TODO: if (city_class >= CLASS_VILLAGE)
+    if (city_class >= CLASS_VILLAGE)
     {
         Simulation_ServicesBig(T_SCHOOL_CENTER);
         Simulation_EducationAddTileOkFlag();
