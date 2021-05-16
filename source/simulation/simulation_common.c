@@ -16,6 +16,7 @@
 #include "simulation/simulation_pollution.h"
 #include "simulation/simulation_power.h"
 #include "simulation/simulation_services.h"
+#include "simulation/simulation_technology.h"
 #include "simulation/simulation_traffic.h"
 
 //EWRAM_BSS
@@ -167,7 +168,7 @@ void Simulation_SimulateAll(void)
 
             // Increment technology level
 
-            // TODO : Simulation_AdvanceTechnology();
+            Simulation_AdvanceTechnology();
 
             // Reset yearly messages
 
