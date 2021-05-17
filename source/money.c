@@ -24,6 +24,11 @@ void MoneyReduce(int32_t cost)
     global_money -= cost;
 }
 
+void MoneyAdd(int32_t amount)
+{
+    global_money += amount;
+}
+
 int32_t MoneyGet(void)
 {
     return global_money;

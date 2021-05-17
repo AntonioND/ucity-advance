@@ -14,6 +14,7 @@
 #include "simulation/simulation_create_buildings.h"
 #include "simulation/simulation_fire.h"
 #include "simulation/simulation_meltdown.h"
+#include "simulation/simulation_money.h"
 #include "simulation/simulation_pollution.h"
 #include "simulation/simulation_power.h"
 #include "simulation/simulation_services.h"
@@ -185,8 +186,8 @@ void Simulation_SimulateAll(void)
 
             // Calculate and apply budget
 
-            // TODO: Simulation_CalculateBudgetAndTaxes();
-            // TODO: Simulation_ApplyBudgetAndTaxes();
+            Simulation_CalculateBudgetAndTaxes();
+            Simulation_ApplyBudgetAndTaxes();
         }
     }
 

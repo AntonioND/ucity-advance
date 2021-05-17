@@ -10,6 +10,7 @@
 void MoneySet(int32_t money);
 int MoneyIsThereEnough(int32_t cost);
 void MoneyReduce(int32_t cost);
+void MoneyAdd(int32_t amount);
 int32_t MoneyGet(void);
 
 #endif // MONEY_H__
