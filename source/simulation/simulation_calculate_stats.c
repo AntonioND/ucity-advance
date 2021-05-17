@@ -8,6 +8,7 @@
 #include "room_game/building_info.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
+#include "room_game/text_messages.h"
 #include "room_game/tileset_info.h"
 #include "simulation/building_density.h"
 #include "simulation/simulation_building_count.h"
@@ -158,7 +159,7 @@ static void Simulation_CalculateCityType(void)
     if (population_total < POPULATION_TOWN)
         return;
 
-    // TODO: PersistentMessageShow(ID_MSG_CLASS_TOWN);
+    PersistentMessageShow(ID_MSG_CLASS_TOWN);
     city_class = CLASS_TOWN;
 
     // Upgrade to city if enough population and there are libraries
@@ -169,7 +170,7 @@ static void Simulation_CalculateCityType(void)
     if ((city_services_flags & CITY_HAS_LIBRARY) == 0)
         return;
 
-    // TODO: PersistentMessageShow(ID_MSG_CLASS_CITY);
+    PersistentMessageShow(ID_MSG_CLASS_CITY);
     city_class = CLASS_CITY;
 
     // Upgrade to metropolis if there is enough population and there are
@@ -184,7 +185,7 @@ static void Simulation_CalculateCityType(void)
     if ((city_services_flags & metropolis_flags) != metropolis_flags)
         return;
 
-    // TODO: PersistentMessageShow(ID_MSG_CLASS_METROPOLIS);
+    PersistentMessageShow(ID_MSG_CLASS_METROPOLIS);
     city_class = CLASS_METROPOLIS;
 
     // Upgrade to capital if there is enough population and there are airports
@@ -198,7 +199,7 @@ static void Simulation_CalculateCityType(void)
     if ((city_services_flags & capital_flags) != capital_flags)
         return;
 
-    // TODO: PersistentMessageShow(ID_MSG_CLASS_CAPITAL);
+    PersistentMessageShow(ID_MSG_CLASS_CAPITAL);
     city_class = CLASS_CAPITAL;
 }
 

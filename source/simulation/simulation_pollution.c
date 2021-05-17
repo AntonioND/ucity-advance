@@ -10,6 +10,7 @@
 #include "room_game/building_info.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
+#include "room_game/text_messages.h"
 #include "room_game/tileset_info.h"
 #include "simulation/building_density.h"
 #include "simulation/simulation_happiness.h"
@@ -232,7 +233,7 @@ void Simulation_Pollution(void)
     if (pollution_total > 0x030000)
     {
         // This message is shown only once per year
-        // TODO : PersistentMessageShow(ID_MSG_POLLUTION_HIGH);
+        PersistentMessageShow(ID_MSG_POLLUTION_HIGH);
     }
 
     // Set flags

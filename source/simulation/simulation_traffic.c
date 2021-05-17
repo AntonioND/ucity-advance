@@ -9,6 +9,7 @@
 #include "room_game/building_info.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
+#include "room_game/text_messages.h"
 #include "room_game/tileset_info.h"
 #include "simulation/building_density.h"
 #include "simulation/queue.h"
@@ -665,7 +666,7 @@ static void Simulation_TrafficSetTileOkFlag(void)
     if (simulation_traffic_jam_num_tiles_percent > TRAFFIC_JAM_MAX_TILES)
     {
         // This message is shown only once per year
-        // TODO: PersistentMessageShow(ID_MSG_TRAFFIC_HIGH);
+        PersistentMessageShow(ID_MSG_TRAFFIC_HIGH);
     }
 }
 

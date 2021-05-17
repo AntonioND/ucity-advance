@@ -6,6 +6,9 @@
 
 #include "room_game/text_messages.h"
 
+static uint8_t persistent_msg_flags[BYTES_SAVE_PERSISTENT_MSG];
+
+// TODO: Adjust messages for the new size of the text box
 static const char *msg_text[] = {
     [ID_MSG_EMPTY] =
         "",
@@ -118,4 +121,29 @@ int MessageQueueIsEmpty(void)
         return 0;
 
     return 1;
+}
+
+// The message ID should be a valid persistent message ID
+void PersistentMessageShow(message_ids id)
+{
+    // Message IDs start at 1, so subtract 1.
+
+    int which_byte = (id - 1) / 8;
+    int which_bit = (id - 1) % 8;
+    uint8_t bit_mask = 1 << which_bit;
+
+    // If this message has already been shown, don't show it again
+
+    if (persistent_msg_flags[which_byte] & bit_mask)
+        return;
+
+    persistent_msg_flags[which_byte] |= bit_mask;
+
+    MessageQueueAdd(id);
+}
+
+void PersistentYearlyMessagesReset(void)
+{
+    for (int i = 0; i < (ID_MSG_RESET_YEAR_NUM / 8); i++)
+        persistent_msg_flags[i] = 0;
 }

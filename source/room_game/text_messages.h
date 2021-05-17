@@ -38,10 +38,13 @@ typedef enum {
 
 // Number of bytes needed to store a flag for each persistent message. Rounded
 // up to 8 bits.
-#define BYTES_SAVE_PERSISTENT_MSG EQU   ((ID_MSG_PERSISTENT_NUM + 7) / 8)
+#define BYTES_SAVE_PERSISTENT_MSG   ((ID_MSG_PERSISTENT_NUM + 7) / 8)
 
 void MessageQueueAdd(int id);
 const char *MessageQueueGet(void);
 int MessageQueueIsEmpty(void);
+
+void PersistentMessageShow(message_ids id);
+void PersistentYearlyMessagesReset(void);
 
 #endif // ROOM_GAME_TEXT_MESSAGES_H__

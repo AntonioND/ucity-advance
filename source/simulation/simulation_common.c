@@ -7,6 +7,7 @@
 #include "date.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
+#include "room_game/text_messages.h"
 #include "room_game/tileset_info.h"
 #include "simulation/simulation_calculate_stats.h"
 #include "simulation/simulation_common.h"
@@ -172,7 +173,7 @@ void Simulation_SimulateAll(void)
 
             // Reset yearly messages
 
-            // TODO: PersistentYearlyMessagesReset()
+            PersistentYearlyMessagesReset();
         }
 
         // Check if this is the start of a quarter (January, April, July or
