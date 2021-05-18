@@ -911,7 +911,9 @@ void Room_Game_SlowVBLHandler(void)
             {
                 // TODO: Implement remaining elements of the menu
 
-                //case PAUSE_MENU_BUDGET: // TODO
+                case PAUSE_MENU_BUDGET:
+                    Game_Room_Prepare_Switch(ROOM_BUDGET);
+                    break;
                 //case PAUSE_MENU_BANK: // TODO
                 case PAUSE_MENU_MINIMAPS:
                     Game_Room_Prepare_Switch(ROOM_MINIMAP);

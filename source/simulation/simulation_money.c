@@ -7,20 +7,28 @@
 #include "room_game/room_game.h"
 #include "room_game/text_messages.h"
 #include "room_game/tileset_info.h"
+#include "simulation/simulation_money.h"
 
 // Max amount of money per tile * tiles in map = 99 * 64 * 64 = 175890
 
-static int32_t taxes_rci; // Residential, commercial, industrial
-static int32_t taxes_other; // Stadium, airport, seaport
-static int32_t budget_police;
-static int32_t budget_firemen;
-static int32_t budget_healthcare; // Hospital, park
-static int32_t budget_education; // Schools, university, museum, library
-static int32_t budget_transport; // Road, train tracks
+static budget_info budget;
 
-static int32_t budget_result;
+static int tax_percentage;
 
-static uint32_t tax_percentage;
+budget_info *Simulation_BudgetGet(void)
+{
+    return &budget;
+}
+
+int Simulation_TaxPercentageGet(void)
+{
+    return tax_percentage;
+}
+
+void Simulation_TaxPercentageSet(int value)
+{
+    tax_percentage = value;
+}
 
 // Number of quarters with negative budgets and negative funds
 static int negative_budget_count;
@@ -573,28 +581,28 @@ static int city_tile_money_cost[] = {
 };
 
 static int32_t *tile_money_destination[] = {
-    [TYPE_FIELD] = &budget_transport,   // Roads, train tracks, power lines
-    [TYPE_FOREST] = &taxes_other,       // Placeholder, unused
-    [TYPE_WATER] = &budget_transport,   // Bridges
-    [TYPE_RESIDENTIAL] = &taxes_rci,
-    [TYPE_INDUSTRIAL] = &taxes_rci,
-    [TYPE_COMMERCIAL] = &taxes_rci,
-    [TYPE_POLICE_DEPT] = &budget_police,
-    [TYPE_FIRE_DEPT] = &budget_firemen,
-    [TYPE_HOSPITAL] = &budget_healthcare,
-    [TYPE_PARK] = &budget_healthcare,
-    [TYPE_STADIUM] = &taxes_other,
-    [TYPE_SCHOOL] = &budget_education,
-    [TYPE_HIGH_SCHOOL] = &budget_education,
-    [TYPE_UNIVERSITY] = &budget_education,
-    [TYPE_MUSEUM] = &budget_education,
-    [TYPE_LIBRARY] = &budget_education,
-    [TYPE_AIRPORT] = &taxes_other,
-    [TYPE_PORT] = &taxes_other,
-    [TYPE_DOCK] = &taxes_other,
-    [TYPE_POWER_PLANT] = &taxes_other,      // Placeholder, unused
-    [TYPE_FIRE] = &taxes_other, // Placeholder, unused
-    [TYPE_RADIATION] = &taxes_other, // Placeholder, unused
+    [TYPE_FIELD] = &(budget.budget_transport), // Roads, train tracks, power lines
+    [TYPE_FOREST] = &(budget.taxes_other), // Placeholder, unused
+    [TYPE_WATER] = &(budget.budget_transport), // Bridges
+    [TYPE_RESIDENTIAL] = &(budget.taxes_residential),
+    [TYPE_INDUSTRIAL] = &(budget.taxes_commercial),
+    [TYPE_COMMERCIAL] = &(budget.taxes_industrial),
+    [TYPE_POLICE_DEPT] = &(budget.budget_police),
+    [TYPE_FIRE_DEPT] = &(budget.budget_firemen),
+    [TYPE_HOSPITAL] = &(budget.budget_healthcare),
+    [TYPE_PARK] = &(budget.budget_healthcare),
+    [TYPE_STADIUM] = &(budget.taxes_other),
+    [TYPE_SCHOOL] = &(budget.budget_education),
+    [TYPE_HIGH_SCHOOL] = &(budget.budget_education),
+    [TYPE_UNIVERSITY] = &(budget.budget_education),
+    [TYPE_MUSEUM] = &(budget.budget_education),
+    [TYPE_LIBRARY] = &(budget.budget_education),
+    [TYPE_AIRPORT] = &(budget.taxes_other),
+    [TYPE_PORT] = &(budget.taxes_other),
+    [TYPE_DOCK] = &(budget.taxes_other),
+    [TYPE_POWER_PLANT] = &(budget.taxes_other), // Placeholder, unused
+    [TYPE_FIRE] = &(budget.taxes_other), // Placeholder, unused
+    [TYPE_RADIATION] = &(budget.taxes_other), // Placeholder, unused
 };
 
 void Simulation_CalculateBudgetAndTaxes(void)
@@ -602,13 +610,15 @@ void Simulation_CalculateBudgetAndTaxes(void)
     // Clear variables
     // ---------------
 
-    taxes_rci = 0;
-    taxes_other = 0;
-    budget_police = 0;
-    budget_firemen = 0;
-    budget_healthcare = 0;
-    budget_education = 0;
-    budget_transport = 0;
+    budget.taxes_residential = 0;
+    budget.taxes_commercial = 0;
+    budget.taxes_industrial = 0;
+    budget.taxes_other = 0;
+    budget.budget_police = 0;
+    budget.budget_firemen = 0;
+    budget.budget_healthcare = 0;
+    budget.budget_education = 0;
+    budget.budget_transport = 0;
 
     // Calculate taxes and budget
     // --------------------------
@@ -634,23 +644,26 @@ void Simulation_CalculateBudgetAndTaxes(void)
 
     // 10% = base cost => Final cost = base cost * tax / 10
 
-    taxes_rci = (taxes_rci * tax_percentage) / 20;
-    taxes_other = (taxes_other * tax_percentage) / 20;
+    budget.taxes_residential = (budget.taxes_residential * tax_percentage) / 20;
+    budget.taxes_commercial = (budget.taxes_commercial * tax_percentage) / 20;
+    budget.taxes_industrial = (budget.taxes_industrial * tax_percentage) / 20;
+    budget.taxes_other = (budget.taxes_other * tax_percentage) / 20;
 
     // Calculate total budget
     // ----------------------
 
-    budget_result =
+    budget.budget_result =
         // Add RCI and other taxes
-        + taxes_rci
-        + taxes_other
+        + budget.taxes_residential
+        + budget.taxes_commercial
+        + budget.taxes_industrial
+        + budget.taxes_other
         // Pay police, firemen, healthcare, education and transport
-        - budget_police
-        - budget_firemen
-        - budget_healthcare
-        - budget_education
-        - budget_transport;
-
+        - budget.budget_police
+        - budget.budget_firemen
+        - budget.budget_healthcare
+        - budget.budget_education
+        - budget.budget_transport;
 
     // Pay loans
 
@@ -659,12 +672,11 @@ void Simulation_CalculateBudgetAndTaxes(void)
     //    budget_result -= loan_payments_amount;
 }
 
-
 void Simulation_ApplyBudgetAndTaxes(void)
 {
     // Add temp variable to original amount of money
 
-    MoneyAdd(budget_result);
+    MoneyAdd(budget.budget_result);
 
     // Reduce number of remaining loan payments
 
@@ -686,7 +698,7 @@ void Simulation_ApplyBudgetAndTaxes(void)
     }
     else
     {
-        if (budget_result > 0)
+        if (budget.budget_result > 0)
         {
             negative_budget_count = 0;
         }

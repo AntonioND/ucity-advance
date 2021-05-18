@@ -5,11 +5,14 @@
 #ifndef MAIN_H__
 #define MAIN_H__
 
-#define ROOM_INVALID    (0)
-#define ROOM_GAME       (1)
-#define ROOM_MINIMAP    (2)
+typedef enum {
+    ROOM_INVALID,
+    ROOM_GAME,
+    ROOM_MINIMAP,
+    ROOM_BUDGET,
+} room_type;
 
-void Game_Room_Prepare_Switch(int new_room);
+void Game_Room_Prepare_Switch(room_type new_room);
 
 void Game_Clear_Screen(void);
 

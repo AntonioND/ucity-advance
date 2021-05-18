@@ -10,9 +10,11 @@
 #include "input_utils.h"
 #include "main.h"
 #include "money.h"
+#include "room_budget/room_budget.h"
 #include "room_game/room_game.h"
 #include "room_minimap/room_minimap.h"
 #include "simulation/simulation_common.h"
+#include "simulation/simulation_money.h"
 
 // Assets
 
@@ -42,8 +44,8 @@ void Game_Clear_Screen(void)
 
 // ----------------------------------------------------------------------------
 
-static int next_room = ROOM_INVALID;
-static int current_room = ROOM_INVALID;
+static room_type next_room = ROOM_INVALID;
+static room_type current_room = ROOM_INVALID;
 
 #define SWITCH_IDLE             0
 #define SWITCH_LEAVING_ROOM     1
@@ -81,11 +83,12 @@ static void Game_Room_Load(int room)
         case ROOM_GAME:
             Room_Game_Load();
             break;
-
         case ROOM_MINIMAP:
             Room_Minimap_Load();
             break;
-
+        case ROOM_BUDGET:
+            Room_Budget_Load();
+            break;
         default:
             UGBA_Assert(0);
             return;
@@ -153,7 +156,7 @@ static void Game_Room_Update_Switch(void)
     }
 }
 
-void Game_Room_Prepare_Switch(int new_room)
+void Game_Room_Prepare_Switch(room_type new_room)
 {
     // If another change has been requested, skip this new change
     if (switch_mode != SWITCH_IDLE)
@@ -169,8 +172,8 @@ void Game_Room_Prepare_Switch(int new_room)
 
 static void Game_Room_DoSwitch(void)
 {
-    int unload_room = current_room;
-    int load_room = next_room;
+    room_type unload_room = current_room;
+    room_type load_room = next_room;
 
     // Make sure that the interrupt handler of this room isn't called again
     current_room = ROOM_INVALID;
@@ -203,11 +206,12 @@ static void Game_Room_Handle_Current(void)
         case ROOM_GAME:
             Room_Game_Handle();
             break;
-
         case ROOM_MINIMAP:
             Room_Minimap_Handle();
             break;
-
+        case ROOM_BUDGET:
+            Room_Budget_Handle();
+            break;
         default:
             UGBA_Assert(0);
             return;
@@ -340,6 +344,7 @@ int main(int argc, char *argv[])
 
     MoneySet(99999999);
     DateReset();
+    Simulation_TaxPercentageSet(10);
     Simulation_SetFirstStep();
 
     Load_City_Data(test_map_map, 9, 9);
