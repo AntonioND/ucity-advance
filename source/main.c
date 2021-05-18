@@ -63,11 +63,12 @@ static void Game_Room_Unload(int room)
         case ROOM_GAME:
             Room_Game_Unload();
             break;
-
         case ROOM_MINIMAP:
             Room_Minimap_Unload();
             break;
-
+        case ROOM_BUDGET:
+            Room_Budget_Unload();
+            break;
         default:
             UGBA_Assert(0);
             return;
