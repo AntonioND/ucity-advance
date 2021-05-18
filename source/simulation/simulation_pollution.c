@@ -24,14 +24,19 @@ EWRAM_BSS uint8_t scratch_map_1[CITY_MAP_WIDTH * CITY_MAP_HEIGHT];
 EWRAM_BSS uint8_t scratch_map_2[CITY_MAP_WIDTH * CITY_MAP_HEIGHT];
 
 // Total pollution in the city. Max value = 255 * 64 * 64
-int pollution_total;
+static int pollution_total;
 
 // Percentage of pollution
-int pollution_total_percent;
+static int pollution_total_percent;
 
 int Simulation_PollutionGetTotal(void)
 {
     return pollution_total;
+}
+
+int Simulation_PollutionGetPercentage(void)
+{
+    return pollution_total_percent;
 }
 
 uint8_t *Simulation_PollutionGetMap(void)

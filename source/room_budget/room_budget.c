@@ -96,7 +96,8 @@ void Room_Budget_Load(void)
     // Update room state
     // -----------------
 
-    // Refresh information
+    // Refresh information. This is only calculated once every quarter, so it
+    // may not be up to date.
 
     Simulation_CalculateBudgetAndTaxes();
 

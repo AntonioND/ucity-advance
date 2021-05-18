@@ -55,6 +55,7 @@ tools/build/png2maps/png2maps \
     maps/minimap_frame_tiles.png \
     maps/minimap_frame_bg.png \
     maps/budget_menu_bg.png \
+    maps/city_stats_bg.png \
     maps/notification_bg.png \
     maps/pause_menu_bg.png
 

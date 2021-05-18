@@ -51,6 +51,19 @@ int Simulation_GetCityClass(void)
     return city_class;
 }
 
+const char *Simulation_GetCityClassString(void)
+{
+    const char *city_class_name[] = {
+        [CLASS_VILLAGE]     = "   Village",
+        [CLASS_TOWN]        = "      Town",
+        [CLASS_CITY]        = "      City",
+        [CLASS_METROPOLIS]  = "Metropolis",
+        [CLASS_CAPITAL]     = "   Capital",
+    };
+
+    return city_class_name[city_class];
+}
+
 uint32_t Simulation_GetTotalPopulation(void)
 {
     return population_total;
@@ -61,6 +74,13 @@ void Simulation_GetDemandRCI(int *r, int *c, int *i)
     *r = graph_value_r;
     *c = graph_value_c;
     *i = graph_value_i;
+}
+
+void Simulation_GetRCIAreasTotal(int *r, int *c, int *i)
+{
+    *r = residential_area_empty + residential_area_used;
+    *c = commercial_area_empty + commercial_area_used;
+    *i = industrial_area_empty + industrial_area_used;
 }
 
 static int Simulation_CalculateDemand(uint32_t used, uint32_t empty)

@@ -919,7 +919,9 @@ void Room_Game_SlowVBLHandler(void)
                     Game_Room_Prepare_Switch(ROOM_MINIMAP);
                     return;
                 //case PAUSE_MENU_GRAPHS: // TODO
-                //case PAUSE_MENU_CITY_STATS: // TODO
+                case PAUSE_MENU_CITY_STATS:
+                    Game_Room_Prepare_Switch(ROOM_CITY_STATS);
+                    return;
                 // The following two are handled in PauseMenuHandleInput()
                 //case PAUSE_MENU_DISASTERS:
                 //case PAUSE_MENU_OPTIONS:

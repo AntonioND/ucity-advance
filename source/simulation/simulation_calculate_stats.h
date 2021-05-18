@@ -6,10 +6,13 @@
 #define SIMULATION_SIMULATION_CALCULATE_STATS_H__
 
 int Simulation_GetCityClass(void);
+const char *Simulation_GetCityClassString(void);
 
 uint32_t Simulation_GetTotalPopulation(void);
 
 void Simulation_GetDemandRCI(int *r, int *c, int *i);
+
+void Simulation_GetRCIAreasTotal(int *r, int *c, int *i);
 
 void Simulation_CalculateRCIDemand(void);
 void Simulation_CalculateStatistics(void);

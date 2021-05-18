@@ -166,15 +166,7 @@ void PauseMenuDraw(void)
 
     // Print settlement class
 
-    const char *city_class_name[] = {
-        [CLASS_VILLAGE]     = "   Village",
-        [CLASS_TOWN]        = "      Town",
-        [CLASS_CITY]        = "      City",
-        [CLASS_METROPOLIS]  = "Metropolis",
-        [CLASS_CAPITAL]     = "   Capital",
-    };
-    const char *name = city_class_name[Simulation_GetCityClass()];
-    StatusBarPrint(11, 1 + (32 - 30), name);
+    StatusBarPrint(11, 1 + (32 - 30), Simulation_GetCityClassString());
 
     // Print population
 

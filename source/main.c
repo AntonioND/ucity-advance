@@ -11,6 +11,7 @@
 #include "main.h"
 #include "money.h"
 #include "room_budget/room_budget.h"
+#include "room_city_stats/room_city_stats.h"
 #include "room_game/room_game.h"
 #include "room_minimap/room_minimap.h"
 #include "simulation/simulation_common.h"
@@ -69,6 +70,9 @@ static void Game_Room_Unload(int room)
         case ROOM_BUDGET:
             Room_Budget_Unload();
             break;
+        case ROOM_CITY_STATS:
+            Room_City_Stats_Unload();
+            break;
         default:
             UGBA_Assert(0);
             return;
@@ -89,6 +93,9 @@ static void Game_Room_Load(int room)
             break;
         case ROOM_BUDGET:
             Room_Budget_Load();
+            break;
+        case ROOM_CITY_STATS:
+            Room_City_Stats_Load();
             break;
         default:
             UGBA_Assert(0);
@@ -212,6 +219,9 @@ static void Game_Room_Handle_Current(void)
             break;
         case ROOM_BUDGET:
             Room_Budget_Handle();
+            break;
+        case ROOM_CITY_STATS:
+            Room_City_Stats_Handle();
             break;
         default:
             UGBA_Assert(0);

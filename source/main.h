@@ -10,6 +10,7 @@ typedef enum {
     ROOM_GAME,
     ROOM_MINIMAP,
     ROOM_BUDGET,
+    ROOM_CITY_STATS,
 } room_type;
 
 void Game_Room_Prepare_Switch(room_type new_room);
