@@ -21,6 +21,8 @@
 #define BG_BUDGET_TILES_BASE            MEM_BG_TILES_BLOCK_ADDR(3)
 #define BG_BUDGET_MAP_BASE              MEM_BG_MAP_BLOCK_ADDR(28)
 
+static int original_tax_percentage;
+
 static void Room_Budget_Print(int x, int y, const char *text)
 {
     uintptr_t addr = BG_BUDGET_MAP_BASE + (y * 32 + x) * 2;
@@ -116,6 +118,11 @@ void Room_Budget_Load(void)
                       minimap_frame_tiles_pal_size);
 
     MEM_PALETTE_BG[0] = RGB15(31, 31, 31);
+
+    // Initialize state
+    // ----------------
+
+    original_tax_percentage = Simulation_TaxPercentageGet();
 }
 
 void Room_Budget_Unload(void)
@@ -127,8 +134,16 @@ void Room_Budget_Handle(void)
 {
     uint16_t keys_released = KEYS_Released();
 
-    if (keys_released & (KEY_START | KEY_B))
+    if (keys_released & KEY_B)
     {
+        // Restore the value that was there before opening the room
+        Simulation_TaxPercentageSet(original_tax_percentage);
+        Game_Room_Prepare_Switch(ROOM_GAME);
+        return;
+    }
+    else if (keys_released & KEY_A)
+    {
+        // Exit and save the new percentage
         Game_Room_Prepare_Switch(ROOM_GAME);
         return;
     }
