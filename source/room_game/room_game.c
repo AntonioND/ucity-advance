@@ -819,7 +819,7 @@ void Room_Game_SlowVBLHandler(void)
         }
         case MODE_SHOW_NOTIFICATION:
         {
-            if (keys_released & KEY_A)
+            if (keys_pressed & KEY_A)
             {
                 if (MessageQueueIsEmpty() == 0)
                 {

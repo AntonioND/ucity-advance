@@ -176,9 +176,9 @@ void Room_City_Stats_Unload(void)
 void Room_City_Stats_Handle(void)
 {
     uint16_t keys_held = KEYS_Held();
-    uint16_t keys_released = KEYS_Released();
+    uint16_t keys_pressed = KEYS_Pressed();
 
-    if (keys_released & KEY_B)
+    if (keys_pressed & KEY_B)
     {
         Game_Room_Prepare_Switch(ROOM_GAME);
         return;

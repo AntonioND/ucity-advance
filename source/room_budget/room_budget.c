@@ -133,16 +133,16 @@ void Room_Budget_Unload(void)
 
 void Room_Budget_Handle(void)
 {
-    uint16_t keys_released = KEYS_Released();
+    uint16_t keys_pressed = KEYS_Pressed();
 
-    if (keys_released & KEY_B)
+    if (keys_pressed & KEY_B)
     {
         // Restore the value that was there before opening the room
         Simulation_TaxPercentageSet(original_tax_percentage);
         Game_Room_Prepare_Switch(ROOM_GAME);
         return;
     }
-    else if (keys_released & KEY_A)
+    else if (keys_pressed & KEY_A)
     {
         // Exit and save the new percentage
         Game_Room_Prepare_Switch(ROOM_GAME);
