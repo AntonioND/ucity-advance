@@ -7,6 +7,7 @@
 #include "input_utils.h"
 #include "main.h"
 #include "text_utils.h"
+#include "room_bank/room_bank.h"
 #include "simulation/simulation_calculate_stats.h"
 #include "simulation/simulation_money.h"
 
@@ -69,7 +70,11 @@ static void Room_Budget_Draw(void)
     Room_Budget_Print(18, 14, str);
     Print_Integer_Decimal_Right(str, 11, budget->budget_transport);
     Room_Budget_Print(18, 15, str);
-    // TODO: Loans
+    // Loans
+    int payments, amount;
+    Room_Bank_Get_Loan(&payments, &amount);
+    Print_Integer_Decimal_Right(str, 11, amount);
+    Room_Budget_Print(18, 16, str);
 
     Print_Integer_Decimal_Right(str, 11, budget->budget_result);
     Room_Budget_Print(18, 18, str);

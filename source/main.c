@@ -10,6 +10,7 @@
 #include "input_utils.h"
 #include "main.h"
 #include "money.h"
+#include "room_bank/room_bank.h"
 #include "room_budget/room_budget.h"
 #include "room_city_stats/room_city_stats.h"
 #include "room_game/room_game.h"
@@ -67,6 +68,9 @@ static void Game_Room_Unload(int room)
         case ROOM_MINIMAP:
             Room_Minimap_Unload();
             break;
+        case ROOM_BANK:
+            Room_Bank_Unload();
+            break;
         case ROOM_BUDGET:
             Room_Budget_Unload();
             break;
@@ -90,6 +94,9 @@ static void Game_Room_Load(int room)
             break;
         case ROOM_MINIMAP:
             Room_Minimap_Load();
+            break;
+        case ROOM_BANK:
+            Room_Bank_Load();
             break;
         case ROOM_BUDGET:
             Room_Budget_Load();
@@ -216,6 +223,9 @@ static void Game_Room_Handle_Current(void)
             break;
         case ROOM_MINIMAP:
             Room_Minimap_Handle();
+            break;
+        case ROOM_BANK:
+            Room_Bank_Handle();
             break;
         case ROOM_BUDGET:
             Room_Budget_Handle();
@@ -357,6 +367,7 @@ int main(int argc, char *argv[])
     DateReset();
     Simulation_TaxPercentageSet(10);
     Simulation_SetFirstStep();
+    Room_Bank_Set_Loan(0, 0);
 
     Load_City_Data(test_map_map, 9, 9);
 

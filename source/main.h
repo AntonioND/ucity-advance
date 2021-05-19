@@ -9,6 +9,7 @@ typedef enum {
     ROOM_INVALID,
     ROOM_GAME,
     ROOM_MINIMAP,
+    ROOM_BANK,
     ROOM_BUDGET,
     ROOM_CITY_STATS,
 } room_type;

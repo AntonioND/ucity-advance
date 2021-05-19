@@ -20,8 +20,6 @@
 #include "maps/city_stats_bg.h"
 #include "maps/minimap_frame_tiles.h"
 
-#define TAX_PERCENTAGE_MAX              20
-
 #define BG_CITY_STATS_PALETTE           (0)
 #define BG_CITY_STATS_TILES_BASE        MEM_BG_TILES_BLOCK_ADDR(3)
 #define BG_CITY_STATS_MAP_BASE          MEM_BG_MAP_BLOCK_ADDR(28)

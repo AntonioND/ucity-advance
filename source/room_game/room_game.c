@@ -914,7 +914,9 @@ void Room_Game_SlowVBLHandler(void)
                 case PAUSE_MENU_BUDGET:
                     Game_Room_Prepare_Switch(ROOM_BUDGET);
                     break;
-                //case PAUSE_MENU_BANK: // TODO
+                case PAUSE_MENU_BANK:
+                    Game_Room_Prepare_Switch(ROOM_BANK);
+                    return;
                 case PAUSE_MENU_MINIMAPS:
                     Game_Room_Prepare_Switch(ROOM_MINIMAP);
                     return;

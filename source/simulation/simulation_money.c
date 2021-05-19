@@ -3,6 +3,7 @@
 // Copyright (c) 2021 Antonio Niño Díaz
 
 #include "money.h"
+#include "room_bank/room_bank.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
 #include "room_game/text_messages.h"
@@ -667,9 +668,11 @@ void Simulation_CalculateBudgetAndTaxes(void)
 
     // Pay loans
 
-    // TODO
-    //if (loan_remaining_payments > 0)
-    //    budget_result -= loan_payments_amount;
+    int payments, amount;
+    Room_Bank_Get_Loan(&payments, &amount);
+
+    if (payments > 0)
+        budget.budget_result -= amount;
 }
 
 void Simulation_ApplyBudgetAndTaxes(void)
@@ -680,15 +683,19 @@ void Simulation_ApplyBudgetAndTaxes(void)
 
     // Reduce number of remaining loan payments
 
-    // TODO
-    //if (loan_remaining_payments > 0)
-    //{
-    //    loan_remaining_payments--;
-    //    if (loan_remaining_payments == 0)
-    //    {
-    //        MessageQueueAdd(ID_MSG_FINISHED_LOAN);
-    //    }
-    //}
+    int payments, amount;
+    Room_Bank_Get_Loan(&payments, &amount);
+
+    if (payments > 0)
+    {
+        payments--;
+        if (payments == 0)
+        {
+            MessageQueueAdd(ID_MSG_FINISHED_LOAN);
+        }
+
+        Room_Bank_Set_Loan(payments, amount);
+    }
 
     // Check if money is negative to warn the user
 
@@ -716,9 +723,7 @@ void Simulation_ApplyBudgetAndTaxes(void)
             }
             else
             {
-#if 0
-                // TODO: Enable this
-                if (loan_remaining_payments > 0)
+                if (payments > 0)
                 {
                     PersistentMessageShow(ID_MSG_MONEY_NEGATIVE_CANT_LOAN);
                 }
@@ -726,7 +731,6 @@ void Simulation_ApplyBudgetAndTaxes(void)
                 {
                     PersistentMessageShow(ID_MSG_MONEY_NEGATIVE_CAN_LOAN);
                 }
-#endif
             }
         }
     }
