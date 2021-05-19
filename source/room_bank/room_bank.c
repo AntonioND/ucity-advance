@@ -87,8 +87,6 @@ static void Room_Bank_Print(int x, int y, const char *text)
 
 static void Room_Bank_Draw(void)
 {
-    char str[31];
-
     if (loan_remaining_payments > 0)
     {
         // There is a pre-existing loan
