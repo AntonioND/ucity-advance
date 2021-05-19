@@ -15,6 +15,7 @@
 #include "room_game/tileset_info.h"
 #include "simulation/simulation_happiness.h"
 #include "simulation/simulation_pollution.h"
+#include "simulation/simulation_money.h"
 #include "simulation/simulation_traffic.h"
 
 // ----------------------------------------------------------------------------
@@ -575,7 +576,7 @@ void Simulation_CreateBuildings(void)
     // The probability of creating and destroying buildings depend on the amount
     // of taxes.
 
-    int index = 10; // TODO: tax_percentage
+    int index = Simulation_TaxPercentageGet();
 
     // Penalize if pollution is high
     // Max value = 255 * 64 * 64 = 0x0FF000
