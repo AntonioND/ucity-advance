@@ -287,6 +287,10 @@ IWRAM_CODE ARM_CODE void Master_VBL_Handler(void)
     if (current_dma_buffer == 0)
         SOUND_DMA_Retrigger_AB();
 
+    // This key update can be asynchronous from the other update
+
+    Key_Autorepeat_Update();
+
     // Do critical animations
 
     if (current_room == ROOM_GAME)
@@ -318,7 +322,6 @@ IWRAM_CODE ARM_CODE void Master_VBL_Handler(void)
     // Update keys here. Input handling should be done in the slow VBL handler.
 
     KEYS_Update();
-    Key_Autorepeat_Update();
 
     // Handle things that can take longer than a frame
 
