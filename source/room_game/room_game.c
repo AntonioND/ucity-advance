@@ -13,6 +13,7 @@
 #include "money.h"
 #include "map_utils.h"
 #include "text_utils.h"
+#include "room_bank/room_bank.h"
 #include "room_game/building_info.h"
 #include "room_game/build_menu.h"
 #include "room_game/draw_building.h"
@@ -26,6 +27,7 @@
 #include "simulation/simulation_calculate_stats.h"
 #include "simulation/simulation_common.h"
 #include "simulation/simulation_fire.h"
+#include "simulation/simulation_money.h"
 #include "simulation/simulation_technology.h"
 #include "simulation/simulation_traffic.h"
 #include "simulation/simulation_water.h"
@@ -204,11 +206,14 @@ int Room_Game_IsSimulationEnabled(void)
     return simulation_enabled;
 }
 
-void Load_City_Data(const void *map, int scx, int scy)
+static void Load_City_Data(const void *map, int scx, int scy)
 {
-    // Load the map
-    copy_map_to_sbb(map, (void *)CITY_MAP_BASE,
-                    CITY_MAP_HEIGHT, CITY_MAP_WIDTH);
+    if (map)
+    {
+        // Load the map
+        copy_map_to_sbb(map, (void *)CITY_MAP_BASE,
+                        CITY_MAP_HEIGHT, CITY_MAP_WIDTH);
+    }
 
     mapx = scx * 8;
     mapy = scy * 8;
@@ -980,4 +985,23 @@ void Room_Game_SlowVBLHandler(void)
             break;
         }
     }
+}
+
+void Room_Game_Load_City(const void *map, int scroll_x, int scroll_y)
+{
+    Load_City_Data(map, scroll_x, scroll_y);
+    Simulation_SetFirstStep();
+}
+
+void Room_Game_Set_City_Date(int month, int year)
+{
+    DateSet(month, year);
+}
+
+void Room_Game_Set_City_Economy(int money_amount, int tax_percentage,
+                                int loan_payments, int payment_amount)
+{
+    MoneySet(money_amount);
+    Simulation_TaxPercentageSet(tax_percentage);
+    Room_Bank_Set_Loan(loan_payments, payment_amount);
 }

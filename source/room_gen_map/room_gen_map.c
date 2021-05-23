@@ -295,6 +295,12 @@ void Room_Generate_Map_Handle(void)
         {
             if (map_is_generated)
             {
+                // Setup initial game state
+                int scx = (CITY_MAP_WIDTH - (GBA_SCREEN_W / 8)) / 2;
+                int scy = (CITY_MAP_HEIGHT - (GBA_SCREEN_H / 8)) / 2;
+                Room_Game_Load_City(NULL, scx, scy);
+                Room_Game_Set_City_Date(0, 1950);
+                Room_Game_Set_City_Economy(20000, 10, 0, 0);
                 Game_Room_Prepare_Switch(ROOM_GAME);
                 return;
             }

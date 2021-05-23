@@ -7,11 +7,13 @@
 #include "input_utils.h"
 #include "main.h"
 #include "text_utils.h"
+#include "room_game/room_game.h"
 
 // Assets
 
 #include "maps/main_menu_bg.h"
 #include "maps/minimap_frame_tiles.h"
+#include "maps/test_map.h"
 
 #define BG_MAIN_MENU_PALETTE                (0)
 #define BG_MAIN_MENU_TILES_BASE             MEM_BG_TILES_BLOCK_ADDR(3)
@@ -112,6 +114,10 @@ void Room_Main_Menu_Handle(void)
     {
         if (selected_option == LOAD_SCENARIO)
         {
+            // TODO: Move this somewhere else
+            Room_Game_Load_City(test_map_map, 9, 9);
+            Room_Game_Set_City_Date(0, 1950);
+            Room_Game_Set_City_Economy(99999999, 10, 0, 0);
             Game_Room_Prepare_Switch(ROOM_GAME);
             return;
         }

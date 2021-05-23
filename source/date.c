@@ -47,11 +47,6 @@ void DateSet(int month, int year)
     date_year = year;
 }
 
-void DateReset(void)
-{
-    DateSet(0, 1950);
-}
-
 // 0 = January, 11 = December
 int DateGetMonth(void)
 {

@@ -18,14 +18,11 @@
 #include "room_input/room_input.h"
 #include "room_main_menu/room_main_menu.h"
 #include "room_minimap/room_minimap.h"
-#include "simulation/simulation_common.h"
-#include "simulation/simulation_money.h"
 
 // Assets
 
 #include "audio/umod_pack_bin.h"
 #include "audio/umod_pack_info.h"
-#include "maps/test_map.h"
 
 void Game_Clear_Screen(void)
 {
@@ -395,15 +392,6 @@ int main(int argc, char *argv[])
     Sound_Init();
 
     //UMOD_Song_Play(SONG_KAOS_OCH_DEKADENS_MOD);
-
-    // TODO: This has to be initialized somewhere else
-    MoneySet(99999999);
-    DateReset();
-    Simulation_TaxPercentageSet(10);
-    Simulation_SetFirstStep();
-    Room_Bank_Set_Loan(0, 0);
-
-    Load_City_Data(test_map_map, 9, 9);
 
     Game_Room_Load(ROOM_MAIN_MENU);
 

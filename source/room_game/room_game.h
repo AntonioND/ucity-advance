@@ -115,8 +115,6 @@ void Room_Game_GetCurrentScroll(int *x, int *y);
 int Room_Game_IsSimulationEnabled(void);
 int Room_Game_AreAnimationsEnabled(void);
 
-void Load_City_Data(const void *map, int scx, int scy);
-
 void Room_Game_Load(void);
 void Room_Game_Unload(void);
 void Room_Game_Handle(void);
@@ -130,6 +128,13 @@ void BuildModeUpdateStatusBar(void);
 
 void Room_Game_FastVBLHandler(void);
 void Room_Game_SlowVBLHandler(void);
+
+// ----------------------------------------------------------------------------
+
+void Room_Game_Load_City(const void *map, int scroll_x, int scroll_y);
+void Room_Game_Set_City_Date(int month, int year);
+void Room_Game_Set_City_Economy(int money_amount, int tax_percentage,
+                                int loan_payments, int payment_amount);
 
 // ----------------------------------------------------------------------------
 
