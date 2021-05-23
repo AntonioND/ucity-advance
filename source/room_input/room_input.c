@@ -276,7 +276,11 @@ void Room_Input_Handle(void)
 
         if (tile == 1)
         {
-            Game_Room_Prepare_Switch(ROOM_GENERATE_MAP);
+            if (text_string_len > 0)
+            {
+                // Only end if the name isn't empty
+                Game_Room_Prepare_Switch(ROOM_GENERATE_MAP);
+            }
         }
         else
         {
