@@ -178,17 +178,12 @@ static void Keyboard_Move_Up(void)
 {
     Room_Input_Draw_Cursor(tile_clear);
 
-    int old_keyboard_y = keyboard_y;
-
     while (1)
     {
         if (keyboard_y == 0)
-        {
-            keyboard_y = old_keyboard_y;
-            break;
-        }
-
-        keyboard_y--;
+            keyboard_y = KEYBOARD_H - 1;
+        else
+            keyboard_y--;
 
         if (keyboard_char[keyboard_y][keyboard_x] != 0)
             break;
@@ -201,17 +196,12 @@ static void Keyboard_Move_Down(void)
 {
     Room_Input_Draw_Cursor(tile_clear);
 
-    int old_keyboard_y = keyboard_y;
-
     while (1)
     {
         if (keyboard_y == (KEYBOARD_H - 1))
-        {
-            keyboard_y = old_keyboard_y;
-            break;
-        }
-
-        keyboard_y++;
+            keyboard_y = 0;
+        else
+            keyboard_y++;
 
         if (keyboard_char[keyboard_y][keyboard_x] != 0)
             break;
@@ -224,17 +214,12 @@ static void Keyboard_Move_Left(void)
 {
     Room_Input_Draw_Cursor(tile_clear);
 
-    int old_keyboard_x = keyboard_x;
-
     while (1)
     {
         if (keyboard_x == 0)
-        {
-            keyboard_x = old_keyboard_x;
-            break;
-        }
-
-        keyboard_x--;
+            keyboard_x = KEYBOARD_W - 1;
+        else
+            keyboard_x--;
 
         if (keyboard_char[keyboard_y][keyboard_x] != 0)
             break;
@@ -247,17 +232,12 @@ static void Keyboard_Move_Right(void)
 {
     Room_Input_Draw_Cursor(tile_clear);
 
-    int old_keyboard_x = keyboard_x;
-
     while (1)
     {
         if (keyboard_x == (KEYBOARD_W - 1))
-        {
-            keyboard_x = old_keyboard_x;
-            break;
-        }
-
-        keyboard_x++;
+            keyboard_x = 0;
+        else
+            keyboard_x++;
 
         if (keyboard_char[keyboard_y][keyboard_x] != 0)
             break;
