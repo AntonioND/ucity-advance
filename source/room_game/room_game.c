@@ -51,6 +51,8 @@ static int simulation_disaster_mode = 0;
 // This is set to 1 when the main loop isn't done with a simulation step
 static volatile int main_loop_is_busy;
 
+static char city_name[CITY_MAX_NAME_LENGTH + 1];
+
 // ----------------------------------------------------------------------------
 
 // Must be a power of 2
@@ -987,10 +989,30 @@ void Room_Game_SlowVBLHandler(void)
     }
 }
 
-void Room_Game_Load_City(const void *map, int scroll_x, int scroll_y)
+const char *Room_Game_Get_City_Name(void)
+{
+    return city_name;
+}
+
+void Room_Game_Load_City(const void *map, const char *name,
+                         int scroll_x, int scroll_y)
 {
     Load_City_Data(map, scroll_x, scroll_y);
     Simulation_SetFirstStep();
+
+    // Save name with padding spaces before the actual name
+    memset(city_name, ' ', sizeof(city_name));
+    size_t l = strlen(name);
+    if (l == 0)
+    {
+        name = "No Name";
+        l = strlen(name);
+    }
+    int src = 0;
+    int dst = CITY_MAX_NAME_LENGTH - l;
+    for ( ; dst < CITY_MAX_NAME_LENGTH; dst++, src++)
+        city_name[dst] = name[src];
+    city_name[dst + 1] = '\0';
 }
 
 void Room_Game_Set_City_Date(int month, int year)

@@ -174,6 +174,9 @@ void PauseMenuDraw(void)
     Print_Integer_Decimal_Right(pop_str, 11, Simulation_GetTotalPopulation());
     StatusBarPrint(11, 0 + (32 - 30), pop_str);
 
+    // Print city name
+    StatusBarPrint(8, 2 + (32 - 30), Room_Game_Get_City_Name());
+
     if (selected_submenu == PAUSE_SUBMENU_MAIN)
     {
         PauseMenuDrawMain();

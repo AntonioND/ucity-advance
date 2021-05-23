@@ -43,12 +43,12 @@ static void Room_Input_Putc(int x, int y, uint16_t c)
     *ptr = MAP_REGULAR_TILE(c) | MAP_REGULAR_PALETTE(BG_INPUT_PALETTE);
 }
 
-static char text_string[13];
+static char text_string[CITY_MAX_NAME_LENGTH + 1];
 static int text_string_len;
 
 static void Text_String_Putc(uint16_t tile)
 {
-    if (text_string_len == (sizeof(text_string) - 1))
+    if (text_string_len == (sizeof(text_string) - 2))
         return;
 
     text_string[text_string_len] = tile;

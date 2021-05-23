@@ -81,7 +81,7 @@ static void Room_City_Stats_Draw(void)
     // ----------------
 
     // City name
-    // TODO
+    Room_City_Stats_Print(15, 4, Room_Game_Get_City_Name());
 
     // Population
     Print_Integer_Decimal_Right(str, 11, Simulation_GetTotalPopulation());

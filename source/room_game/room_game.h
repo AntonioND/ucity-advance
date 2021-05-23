@@ -20,6 +20,10 @@
 
 // ----------------------------------------------------------------------------
 
+#define CITY_MAX_NAME_LENGTH        13
+
+// ----------------------------------------------------------------------------
+
 #define TILE_OK_POWER_BIT           0
 #define TILE_OK_SERVICES_BIT        1 // Hospitals, police and firemen
 #define TILE_OK_EDUCATION_BIT       2
@@ -129,9 +133,12 @@ void BuildModeUpdateStatusBar(void);
 void Room_Game_FastVBLHandler(void);
 void Room_Game_SlowVBLHandler(void);
 
+const char *Room_Game_Get_City_Name(void);
+
 // ----------------------------------------------------------------------------
 
-void Room_Game_Load_City(const void *map, int scroll_x, int scroll_y);
+void Room_Game_Load_City(const void *map, const char *name,
+                         int scroll_x, int scroll_y);
 void Room_Game_Set_City_Date(int month, int year);
 void Room_Game_Set_City_Economy(int money_amount, int tax_percentage,
                                 int loan_payments, int payment_amount);
