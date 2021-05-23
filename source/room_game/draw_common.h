@@ -8,7 +8,9 @@
 #include <stdint.h>
 
 uint16_t CityMapGetType(int x, int y);
+uint16_t CityMapGetTypeNoBoundCheck(int x, int y);
 uint16_t CityMapGetTile(int x, int y);
+uint16_t CityMapGetTileClamped(int x, int y);
 void CityMapGetTypeAndTile(int x, int y, uint16_t *tile, uint16_t *type);
 void CityMapGetTypeAndTileUnsafe(int x, int y, uint16_t *tile, uint16_t *type);
 

@@ -77,6 +77,22 @@ uint16_t CityMapGetTile(int x, int y)
     return MAP_REGULAR_TILE(read_tile_sbb(map, x, y));
 }
 
+uint16_t CityMapGetTileClamped(int x, int y)
+{
+    if (x < 0)
+        x = 0;
+    else if (x > (CITY_MAP_WIDTH - 1))
+        x = CITY_MAP_WIDTH - 1;
+
+    if (y < 0)
+        y = 0;
+    else if (y > (CITY_MAP_HEIGHT - 1))
+        y = CITY_MAP_HEIGHT - 1;
+
+    void *map = (void *)CITY_MAP_BASE;
+    return MAP_REGULAR_TILE(read_tile_sbb(map, x, y));
+}
+
 void CityMapGetTypeAndTileUnsafe(int x, int y, uint16_t *tile, uint16_t *type)
 {
     void *map = (void *)CITY_MAP_BASE;
