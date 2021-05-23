@@ -75,6 +75,7 @@ static void Room_City_Stats_Draw(void)
     }
 
     char str[31];
+    int val;
 
     // Print statistics
     // ----------------
@@ -97,8 +98,11 @@ static void Room_City_Stats_Draw(void)
     Room_City_Stats_Print(18, 8, str);
 
     // Developed land
-    Print_Integer_Decimal_Right(str, 3,
-                                (100 * developed_land_area) / total_land_area);
+    if (total_land_area > 0)
+        val = (100 * developed_land_area) / total_land_area;
+    else
+        val = 0;
+    Print_Integer_Decimal_Right(str, 3, val);
     Room_City_Stats_Print(25, 10, str);
 
     // Total RCI land / Total developed land
@@ -106,11 +110,25 @@ static void Room_City_Stats_Draw(void)
     int r, c, i;
     Simulation_GetRCIAreasTotal(&r, &c, &i);
 
-    Print_Integer_Decimal_Right(str, 3, (100 * r) / developed_land_area);
+    if (developed_land_area > 0)
+        val = (100 * r) / developed_land_area;
+    else
+        val = 0;
+    Print_Integer_Decimal_Right(str, 3, val);
     Room_City_Stats_Print(25, 11, str);
-    Print_Integer_Decimal_Right(str, 3, (100 * c) / developed_land_area);
+
+    if (developed_land_area > 0)
+        val = (100 * c) / developed_land_area;
+    else
+        val = 0;
+    Print_Integer_Decimal_Right(str, 3, val);
     Room_City_Stats_Print(25, 12, str);
-    Print_Integer_Decimal_Right(str, 3, (100 * i) / developed_land_area);
+
+    if (developed_land_area > 0)
+        val = (100 * i) / developed_land_area;
+    else
+        val = 0;
+    Print_Integer_Decimal_Right(str, 3, val);
     Room_City_Stats_Print(25, 13, str);
 
     // Traffic

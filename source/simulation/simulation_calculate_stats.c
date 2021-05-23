@@ -91,7 +91,12 @@ static int Simulation_CalculateDemand(uint32_t used, uint32_t empty)
 static_assert((2 * CITY_MAP_HEIGHT * CITY_MAP_WIDTH) < (1 << 16), "Map too big");
 
     // Get fraction
-    uint32_t used_percentage = ((used << 16) / (used + empty));
+    uint32_t used_percentage;
+    if ((used + empty) > 0)
+        used_percentage = ((used << 16) / (used + empty));
+    else
+        used_percentage = 0;
+
     if (used_percentage >= (1 << 16))
         used_percentage = (1 << 16) - 1;
 

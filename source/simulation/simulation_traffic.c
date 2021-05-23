@@ -660,8 +660,15 @@ static void Simulation_TrafficSetTileOkFlag(void)
 
     unsigned int total_tiles = bc->roads + bc->train_tracks;
 
-    simulation_traffic_jam_num_tiles_percent =
+    if (total_tiles > 0)
+    {
+        simulation_traffic_jam_num_tiles_percent =
                         (simulation_traffic_jam_num_tiles * 100) / total_tiles;
+    }
+    else
+    {
+        simulation_traffic_jam_num_tiles_percent = 0;
+    }
 
     if (simulation_traffic_jam_num_tiles_percent > TRAFFIC_JAM_MAX_TILES)
     {
