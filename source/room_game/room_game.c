@@ -920,7 +920,9 @@ void Room_Game_SlowVBLHandler(void)
                 case PAUSE_MENU_MINIMAPS:
                     Game_Room_Prepare_Switch(ROOM_MINIMAP);
                     return;
-                //case PAUSE_MENU_GRAPHS: // TODO
+                case PAUSE_MENU_GRAPHS: // TODO
+                    Game_Room_Prepare_Switch(ROOM_GENERATE_MAP);
+                    return;
                 case PAUSE_MENU_CITY_STATS:
                     Game_Room_Prepare_Switch(ROOM_CITY_STATS);
                     return;
@@ -932,7 +934,9 @@ void Room_Game_SlowVBLHandler(void)
                     PauseMenuDraw();
                     break;
                 //case PAUSE_MENU_SAVE_GAME: // TODO
-                //case PAUSE_MENU_MAIN_MENU: // TODO
+                case PAUSE_MENU_MAIN_MENU:
+                    Game_Room_Prepare_Switch(ROOM_MAIN_MENU);
+                    return;
 
                 case PAUSE_MENU_EXIT:
                     Room_Game_Set_Mode(MODE_RUNNING);

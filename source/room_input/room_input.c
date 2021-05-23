@@ -276,7 +276,7 @@ void Room_Input_Handle(void)
 
         if (tile == 1)
         {
-            Game_Room_Prepare_Switch(ROOM_GAME);
+            Game_Room_Prepare_Switch(ROOM_GENERATE_MAP);
         }
         else
         {
@@ -293,7 +293,7 @@ void Room_Input_Handle(void)
         }
         else
         {
-            Game_Room_Prepare_Switch(ROOM_GAME);
+            Game_Room_Prepare_Switch(ROOM_MAIN_MENU);
         }
     }
 

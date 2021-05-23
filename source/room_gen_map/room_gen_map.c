@@ -255,7 +255,6 @@ void Room_Generate_Map_Load(void)
     map_is_generated = 0;
 
     Draw_User_Interface();
-    Draw_Generated_Map();
 
     // Load palettes
     // -------------
@@ -276,17 +275,30 @@ void Room_Generate_Map_Handle(void)
 {
     uint16_t keys_pressed = KEYS_Pressed();
 
-    if (keys_pressed & (KEY_START | KEY_B))
+    if (keys_pressed & KEY_B)
     {
-        Game_Room_Prepare_Switch(ROOM_GAME);
+        Game_Room_Prepare_Switch(ROOM_INPUT);
         return;
     }
 
     if (keys_pressed & KEY_A)
     {
-        Room_Generate_Map_Generate_Map();
-        Draw_Generated_Map();
-        map_is_generated = 1;
+
+        if ((menu_selection == MENU_TYPE_LAND) ||
+            (menu_selection == MENU_TYPE_WATER))
+        {
+            Room_Generate_Map_Generate_Map();
+            Draw_Generated_Map();
+            map_is_generated = 1;
+        }
+        else if (menu_selection == MENU_DONE)
+        {
+            if (map_is_generated)
+            {
+                Game_Room_Prepare_Switch(ROOM_GAME);
+                return;
+            }
+        }
     }
 
     if (Key_Autorepeat_Pressed_Left())

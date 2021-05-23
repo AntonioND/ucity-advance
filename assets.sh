@@ -59,6 +59,7 @@ tools/build/png2maps/png2maps \
     maps/budget_menu_bg.png \
     maps/city_stats_bg.png \
     maps/generate_map_bg.png \
+    maps/main_menu_bg.png \
     maps/name_input_menu_bg.png \
     maps/notification_bg.png \
     maps/pause_menu_bg.png

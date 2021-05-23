@@ -16,6 +16,7 @@
 #include "room_game/room_game.h"
 #include "room_gen_map/room_gen_map.h"
 #include "room_input/room_input.h"
+#include "room_main_menu/room_main_menu.h"
 #include "room_minimap/room_minimap.h"
 #include "simulation/simulation_common.h"
 #include "simulation/simulation_money.h"
@@ -85,6 +86,9 @@ static void Game_Room_Unload(int room)
         case ROOM_GENERATE_MAP:
             Room_Generate_Map_Unload();
             break;
+        case ROOM_MAIN_MENU:
+            Room_Main_Menu_Unload();
+            break;
         default:
             UGBA_Assert(0);
             return;
@@ -117,6 +121,9 @@ static void Game_Room_Load(int room)
             break;
         case ROOM_GENERATE_MAP:
             Room_Generate_Map_Load();
+            break;
+        case ROOM_MAIN_MENU:
+            Room_Main_Menu_Load();
             break;
         default:
             UGBA_Assert(0);
@@ -253,6 +260,9 @@ static void Game_Room_Handle_Current(void)
         case ROOM_GENERATE_MAP:
             Room_Generate_Map_Handle();
             break;
+        case ROOM_MAIN_MENU:
+            Room_Main_Menu_Handle();
+            break;
         default:
             UGBA_Assert(0);
             return;
@@ -386,6 +396,7 @@ int main(int argc, char *argv[])
 
     //UMOD_Song_Play(SONG_KAOS_OCH_DEKADENS_MOD);
 
+    // TODO: This has to be initialized somewhere else
     MoneySet(99999999);
     DateReset();
     Simulation_TaxPercentageSet(10);
@@ -394,7 +405,7 @@ int main(int argc, char *argv[])
 
     Load_City_Data(test_map_map, 9, 9);
 
-    Game_Room_Load(ROOM_GAME);
+    Game_Room_Load(ROOM_MAIN_MENU);
 
     while (1)
     {
