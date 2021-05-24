@@ -13,6 +13,7 @@
 #include "room_game/tileset_info.h"
 #include "room_gen_map/generate_map.h"
 #include "room_input/room_input.h"
+#include "simulation/simulation_technology.h"
 
 // Assets
 
@@ -301,7 +302,7 @@ void Room_Generate_Map_Handle(void)
                 Room_Game_Load_City(NULL, Room_Input_Text_String(), scx, scy);
                 Room_Game_Set_City_Date(0, 1950);
                 Room_Game_Set_City_Economy(20000, 10, 0, 0);
-                // TODO: Technology level
+                Technology_SetLevel(0);
                 // TODO: Message flags
                 // TODO: Game over state
                 // TODO: Graphs information

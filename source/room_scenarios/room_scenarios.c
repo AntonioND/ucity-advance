@@ -14,6 +14,7 @@
 #include "room_game/room_game.h"
 #include "room_game/tileset_info.h"
 #include "room_input/room_input.h"
+#include "simulation/simulation_technology.h"
 
 // Assets
 
@@ -355,7 +356,7 @@ void Room_Scenarios_Handle(void)
         Room_Game_Set_City_Date(s->start_month, s->start_year);
         Room_Game_Set_City_Economy(s->start_funds, s->tax_percentage,
                                    s->payments_left, s->amount_per_payment);
-        // TODO: Technology level
+        Technology_SetLevel(s->technology_level);
         // TODO: Message flags
         // TODO: Game over state
         // TODO: Graphs information

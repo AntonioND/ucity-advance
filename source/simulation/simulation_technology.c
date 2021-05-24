@@ -10,13 +10,19 @@
 #include "room_game/building_info.h"
 #include "room_game/text_messages.h"
 #include "simulation/simulation_building_count.h"
-
-#define TECH_LEVEL_NUCLEAR      10
-#define TECH_LEVEL_FUSION       40
-
-#define TECH_LEVEL_MAX          40
+#include "simulation/simulation_technology.h"
 
 static int technology_level; // Maxes out at TECH_LEVEL_MAX
+
+void Technology_SetLevel(int level)
+{
+    technology_level = level;
+}
+
+int Technology_GetLevel(void)
+{
+    return technology_level;
+}
 
 // Returns 1 if available, 0 if not
 int Technology_IsBuildingAvailable(int building_type)
