@@ -175,7 +175,7 @@ void PauseMenuDraw(void)
     StatusBarPrint(11, 0 + (32 - 30), pop_str);
 
     // Print city name
-    StatusBarPrint(8, 2 + (32 - 30), Room_Game_Get_City_Name());
+    StatusBarPrint(9, 2 + (32 - 30), Room_Game_Get_City_Name());
 
     if (selected_submenu == PAUSE_SUBMENU_MAIN)
     {

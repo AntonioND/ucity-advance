@@ -1009,8 +1009,8 @@ void Room_Game_Load_City(const void *map, const char *name,
         l = strlen(name);
     }
     int src = 0;
-    int dst = CITY_MAX_NAME_LENGTH - l;
-    for ( ; dst < CITY_MAX_NAME_LENGTH; dst++, src++)
+    int dst = CITY_MAX_NAME_LENGTH - l - 1;
+    for ( ; dst < (CITY_MAX_NAME_LENGTH - 1); dst++, src++)
         city_name[dst] = name[src];
     city_name[dst + 1] = '\0';
 }
