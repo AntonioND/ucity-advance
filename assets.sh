@@ -62,7 +62,8 @@ tools/build/png2maps/png2maps \
     maps/main_menu_bg.png \
     maps/name_input_menu_bg.png \
     maps/notification_bg.png \
-    maps/pause_menu_bg.png
+    maps/pause_menu_bg.png \
+    maps/scenario_selection_bg.png
 
 # Convert other graphics
 

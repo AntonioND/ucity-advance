@@ -18,6 +18,7 @@
 #include "room_input/room_input.h"
 #include "room_main_menu/room_main_menu.h"
 #include "room_minimap/room_minimap.h"
+#include "room_scenarios/room_scenarios.h"
 
 // Assets
 
@@ -86,6 +87,9 @@ static void Game_Room_Unload(int room)
         case ROOM_MAIN_MENU:
             Room_Main_Menu_Unload();
             break;
+        case ROOM_SCENARIOS:
+            Room_Scenarios_Unload();
+            break;
         default:
             UGBA_Assert(0);
             return;
@@ -121,6 +125,9 @@ static void Game_Room_Load(int room)
             break;
         case ROOM_MAIN_MENU:
             Room_Main_Menu_Load();
+            break;
+        case ROOM_SCENARIOS:
+            Room_Scenarios_Load();
             break;
         default:
             UGBA_Assert(0);
@@ -259,6 +266,9 @@ static void Game_Room_Handle_Current(void)
             break;
         case ROOM_MAIN_MENU:
             Room_Main_Menu_Handle();
+            break;
+        case ROOM_SCENARIOS:
+            Room_Scenarios_Handle();
             break;
         default:
             UGBA_Assert(0);

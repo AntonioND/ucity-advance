@@ -993,12 +993,8 @@ const char *Room_Game_Get_City_Name(void)
     return city_name;
 }
 
-void Room_Game_Load_City(const void *map, const char *name,
-                         int scroll_x, int scroll_y)
+void Room_Game_Set_City_Name(const char *name)
 {
-    Load_City_Data(map, scroll_x, scroll_y);
-    Simulation_SetFirstStep();
-
     // Save name with padding spaces before the actual name
     memset(city_name, ' ', sizeof(city_name));
     size_t l = strlen(name);
@@ -1012,6 +1008,14 @@ void Room_Game_Load_City(const void *map, const char *name,
     for ( ; dst < (CITY_MAX_NAME_LENGTH - 1); dst++, src++)
         city_name[dst] = name[src];
     city_name[dst + 1] = '\0';
+}
+
+void Room_Game_Load_City(const void *map, const char *name,
+                         int scroll_x, int scroll_y)
+{
+    Load_City_Data(map, scroll_x, scroll_y);
+    Simulation_SetFirstStep();
+    Room_Game_Set_City_Name(name);
 }
 
 void Room_Game_Set_City_Date(int month, int year)

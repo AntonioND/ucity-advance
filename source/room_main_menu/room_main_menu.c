@@ -114,17 +114,21 @@ void Room_Main_Menu_Handle(void)
     {
         if (selected_option == LOAD_SCENARIO)
         {
-            // TODO: Move this to the scenario selection room
-            Room_Game_Load_City(test_map_map, "Test Map", 9, 9);
-            Room_Game_Set_City_Date(0, 1950);
-            Room_Game_Set_City_Economy(99999999, 10, 0, 0);
-            Game_Room_Prepare_Switch(ROOM_GAME);
+            Game_Room_Prepare_Switch(ROOM_SCENARIOS);
             return;
         }
         else if (selected_option == RANDOM_MAP)
         {
             Game_Room_Prepare_Switch(ROOM_INPUT);
             return;
+        }
+        else if (selected_option == CREDITS)
+        {
+            // TODO: Remove this and implement the real credits
+            Room_Game_Load_City(test_map_map, "Test Map", 9, 9);
+            Room_Game_Set_City_Date(0, 1950);
+            Room_Game_Set_City_Economy(99999999, 10, 0, 0);
+            Game_Room_Prepare_Switch(ROOM_GAME);
         }
     }
 

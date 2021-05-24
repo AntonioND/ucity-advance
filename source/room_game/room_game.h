@@ -134,6 +134,7 @@ void Room_Game_FastVBLHandler(void);
 void Room_Game_SlowVBLHandler(void);
 
 const char *Room_Game_Get_City_Name(void);
+void Room_Game_Set_City_Name(const char *name);
 
 // ----------------------------------------------------------------------------
 

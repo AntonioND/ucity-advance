@@ -301,6 +301,11 @@ void Room_Generate_Map_Handle(void)
                 Room_Game_Load_City(NULL, Room_Input_Text_String(), scx, scy);
                 Room_Game_Set_City_Date(0, 1950);
                 Room_Game_Set_City_Economy(20000, 10, 0, 0);
+                // TODO: Technology level
+                // TODO: Message flags
+                // TODO: Game over state
+                // TODO: Graphs information
+                // TODO: Game options
                 Game_Room_Prepare_Switch(ROOM_GAME);
                 return;
             }
