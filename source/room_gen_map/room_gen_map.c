@@ -85,7 +85,7 @@ static void Palettes_Set_White(void)
 }
 
 typedef enum {
-     C_WHITE    = FRAMEBUFFER_COLOR_BASE,
+     C_WHITE = FRAMEBUFFER_COLOR_BASE,
 
      C_GREEN,
      C_LIGHT_GREEN,
@@ -284,7 +284,6 @@ void Room_Generate_Map_Handle(void)
 
     if (keys_pressed & KEY_A)
     {
-
         if ((menu_selection == MENU_TYPE_LAND) ||
             (menu_selection == MENU_TYPE_WATER))
         {

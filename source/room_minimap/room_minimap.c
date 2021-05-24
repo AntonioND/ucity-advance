@@ -168,7 +168,7 @@ static void Palettes_Set_White(void)
 }
 
 typedef enum {
-     C_WHITE    = FRAMEBUFFER_COLOR_BASE,
+     C_WHITE = FRAMEBUFFER_COLOR_BASE,
      C_PURPLE,
      C_YELLOW,
      C_ORANGE,
