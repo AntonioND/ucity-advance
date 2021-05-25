@@ -42,9 +42,9 @@ typedef enum {
 
     GRAPHS_SELECTION_POPULATION = GRAPHS_SELECTION_MIN,
     GRAPHS_SELECTION_RCI,
-    GRAPHS_SELECTION_MONEY,
+    GRAPHS_SELECTION_FUNDS,
 
-    GRAPHS_SELECTION_MAX = GRAPHS_SELECTION_MONEY,
+    GRAPHS_SELECTION_MAX = GRAPHS_SELECTION_FUNDS,
 } minimap_type;
 
 static minimap_type selected_minimap;
@@ -186,12 +186,73 @@ static void Draw_Graphs_Population(void)
     Palettes_Set_Colors();
 }
 
+static void Draw_Graphs_Funds(void)
+{
+    Palettes_Set_White();
+
+    uint16_t fill = 0;
+    SWI_CpuSet_Fill16(&fill, (void *)FRAMEBUFFER_TILES_BASE, 64 * 256);
+
+    Graphs_Title("City Funds");
+
+    graph_info *info = Graph_Get(GRAPH_INFO_FUNDS);
+
+    // Check if there are negative values in the graph
+    int has_negative = 0;
+    for (int i = 0; i < 64; i++)
+    {
+        int8_t val = info->values[i];
+        if (val != GRAPH_INVALID_ENTRY)
+        {
+            if (val < 0)
+                has_negative = 1;
+        }
+    }
+
+    int index = info->write_ptr;
+
+    for (int i = 0; i < 64; i++)
+    {
+        int8_t val = info->values[index];
+
+        if (val != GRAPH_INVALID_ENTRY)
+        {
+            if (has_negative)
+            {
+                int color = (val < 0) ? C_RED: C_BLACK;
+
+                val += 63;
+                val >>= 1;
+
+                Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, 63 - val, color);
+            }
+            else
+            {
+                int color = C_BLACK;
+                Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, 63 - val, color);
+            }
+        }
+
+        index++;
+        if (index == GRAPH_SIZE)
+            index = 0;
+    }
+
+    Palettes_Set_Colors();
+}
+
 static void Draw_Graphs_Selected(void)
 {
     switch (selected_minimap)
     {
         case GRAPHS_SELECTION_POPULATION:
             Draw_Graphs_Population();
+            break;
+        case GRAPHS_SELECTION_RCI:
+            // TODO
+            break;
+        case GRAPHS_SELECTION_FUNDS:
+            Draw_Graphs_Funds();
             break;
         default:
             UGBA_Assert(0);
