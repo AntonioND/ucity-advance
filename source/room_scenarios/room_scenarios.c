@@ -226,13 +226,6 @@ static void Draw_Selected_Map(void)
     Palettes_Set_Colors();
 }
 
-static void Room_Scenarios_Putc(int x, int y, uint16_t c)
-{
-    uintptr_t addr = SCENARIOS_BG_MAP_BASE + (y * 32 + x) * 2;
-    uint16_t *ptr = (uint16_t *)addr;
-    *ptr = MAP_REGULAR_TILE(c) | MAP_REGULAR_PALETTE(SCENARIOS_BG_PALETTE);
-}
-
 static void Draw_User_Interface(void)
 {
     char str[31];
