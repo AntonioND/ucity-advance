@@ -54,7 +54,7 @@ static void Room_Graphs_Refresh_Icons(void)
     int x = ((GBA_SCREEN_W - 16) / 2) - selected_minimap * 16;
     int y = GBA_SCREEN_H - 16 - 8;
 
-    for (int i = 0; i < 14; i++)
+    for (int i = 0; i < 3; i++)
     {
         int pal = graph_menu_map_map[i * 4] >> 12;
         int tile = i * 4 + GRAPH_MENU_ICONS_TILES_INDEX;
