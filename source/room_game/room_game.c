@@ -633,6 +633,9 @@ void Room_Game_Load(void)
     // Refresh some simulation data
     Simulation_CountBuildings();
 
+    // TODO: This shouldn't be done when loading this room. Right now, that
+    // means that whenever the room is left, after returning the settings will
+    // be set to the default settings.
     frames_left_to_step = 0;
     simulation_enabled = 1;
     animations_disabled = 0;
