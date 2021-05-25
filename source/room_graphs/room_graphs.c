@@ -136,6 +136,7 @@ static void Palettes_Set_White(void)
 typedef enum {
      C_WHITE = FRAMEBUFFER_COLOR_BASE,
      C_PURPLE,
+     C_YELLOW,
      C_ORANGE,
      C_BLACK,
      C_RED,
@@ -150,6 +151,7 @@ static void Palettes_Set_Colors(void)
     // Load palette
     MEM_PALETTE_BG[C_WHITE] = RGB15(31, 31, 31);
     MEM_PALETTE_BG[C_PURPLE] = RGB15(15, 0, 15);
+    MEM_PALETTE_BG[C_YELLOW] = RGB15(31, 31, 0);
     MEM_PALETTE_BG[C_ORANGE] = RGB15(31, 20, 0);
     MEM_PALETTE_BG[C_BLACK] = RGB15(0, 0, 0);
     MEM_PALETTE_BG[C_RED] = RGB15(31, 0, 0);
@@ -181,6 +183,55 @@ static void Draw_Graphs_Population(void)
         index++;
         if (index == GRAPH_SIZE)
             index = 0;
+    }
+
+    Palettes_Set_Colors();
+}
+
+static void Draw_Graphs_Population_RCI(void)
+{
+    Palettes_Set_White();
+
+    uint16_t fill = 0;
+    SWI_CpuSet_Fill16(&fill, (void *)FRAMEBUFFER_TILES_BASE, 64 * 256);
+
+    Graphs_Title("Sector Population");
+
+    graph_info *info_r = Graph_Get(GRAPH_INFO_RESIDENTIAL);
+    graph_info *info_c = Graph_Get(GRAPH_INFO_COMMERCIAL);
+    graph_info *info_i = Graph_Get(GRAPH_INFO_INDUSTRIAL);
+
+    int index_r = info_r->write_ptr;
+    int index_c = info_c->write_ptr;
+    int index_i = info_i->write_ptr;
+
+    for (int i = 0; i < 64; i++)
+    {
+        int8_t val;
+
+        val = info_r->values[index_r];
+        if (val != GRAPH_INVALID_ENTRY)
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, 63 - val, C_GREEN);
+
+        val = info_c->values[index_c];
+        if (val != GRAPH_INVALID_ENTRY)
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, 63 - val, C_BLUE);
+
+        val = info_i->values[index_i];
+        if (val != GRAPH_INVALID_ENTRY)
+            Plot_Tile((void *)FRAMEBUFFER_TILES_BASE, i, 63 - val, C_YELLOW);
+
+        index_r++;
+        if (index_r == GRAPH_SIZE)
+            index_r = 0;
+
+        index_c++;
+        if (index_c == GRAPH_SIZE)
+            index_c = 0;
+
+        index_i++;
+        if (index_i == GRAPH_SIZE)
+            index_i = 0;
     }
 
     Palettes_Set_Colors();
@@ -249,7 +300,7 @@ static void Draw_Graphs_Selected(void)
             Draw_Graphs_Population();
             break;
         case GRAPHS_SELECTION_RCI:
-            // TODO
+            Draw_Graphs_Population_RCI();
             break;
         case GRAPHS_SELECTION_FUNDS:
             Draw_Graphs_Funds();
