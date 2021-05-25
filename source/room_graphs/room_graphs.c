@@ -45,20 +45,20 @@ typedef enum {
     GRAPHS_SELECTION_FUNDS,
 
     GRAPHS_SELECTION_MAX = GRAPHS_SELECTION_FUNDS,
-} minimap_type;
+} graph_types;
 
-static minimap_type selected_minimap;
+static graph_types selected_graph;
 
 static void Room_Graphs_Refresh_Icons(void)
 {
-    int x = ((GBA_SCREEN_W - 16) / 2) - selected_minimap * 16;
+    int x = ((GBA_SCREEN_W - 16) / 2) - selected_graph * 16;
     int y = GBA_SCREEN_H - 16 - 8;
 
     for (int i = 0; i < 3; i++)
     {
         int pal = graph_menu_map_map[i * 4] >> 12;
         int tile = i * 4 + GRAPH_MENU_ICONS_TILES_INDEX;
-        if (i == selected_minimap)
+        if (i == selected_graph)
         {
             const obj_affine_src objsrc_init[] =
             {
@@ -294,7 +294,7 @@ static void Draw_Graphs_Funds(void)
 
 static void Draw_Graphs_Selected(void)
 {
-    switch (selected_minimap)
+    switch (selected_graph)
     {
         case GRAPHS_SELECTION_POPULATION:
             Draw_Graphs_Population();
@@ -404,7 +404,7 @@ void Room_Graphs_Load(void)
     DISP_Object1DMappingEnable(1);
     DISP_LayersEnable(0, 1, 1, 0, 1);
 
-    selected_minimap = GRAPHS_SELECTION_POPULATION;
+    selected_graph = GRAPHS_SELECTION_POPULATION;
 
     Room_Graphs_Set_Watching_Mode();
 
@@ -470,17 +470,17 @@ void Room_Graphs_Handle(void)
 
             if (Key_Autorepeat_Pressed_Left())
             {
-                if (selected_minimap > GRAPHS_SELECTION_MIN)
+                if (selected_graph > GRAPHS_SELECTION_MIN)
                 {
-                    selected_minimap--;
+                    selected_graph--;
                     Room_Graphs_Refresh_Icons();
                 }
             }
             else if (Key_Autorepeat_Pressed_Right())
             {
-                if (selected_minimap < GRAPHS_SELECTION_MAX)
+                if (selected_graph < GRAPHS_SELECTION_MAX)
                 {
-                    selected_minimap++;
+                    selected_graph++;
                     Room_Graphs_Refresh_Icons();
                 }
             }
