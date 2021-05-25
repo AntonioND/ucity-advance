@@ -86,10 +86,11 @@ void Simulation_SimulateAll(void)
 
     // First, get data from last frame and build new buildings or destroy
     // them (if there haven't been changes since the previous step!)
-    // depending on the tile ok flags map. In the first iteration step the
-    // flags should be 0, so this can be called as well.
+    // depending on the tile ok flags map. In the first iteration the
+    // build/demolish flags are being initialized, so don't call it.
 
-    Simulation_CreateBuildings();
+    if (first_simulation_iteration == 0)
+        Simulation_CreateBuildings();
 
     // Now, simulate this new map. First, power distribution, as it will be
     // needed for other simulations
