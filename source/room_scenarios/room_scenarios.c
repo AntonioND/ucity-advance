@@ -14,6 +14,7 @@
 #include "room_game/room_game.h"
 #include "room_game/tileset_info.h"
 #include "room_input/room_input.h"
+#include "simulation/simulation_common.h"
 #include "simulation/simulation_technology.h"
 
 // Assets
@@ -360,6 +361,7 @@ void Room_Scenarios_Handle(void)
         // TODO: Message flags
         // TODO: Game over state
         // TODO: Graphs information
+        Simulation_GraphsResetAll();
         // TODO: Game options
         Game_Room_Prepare_Switch(ROOM_GAME);
         return;

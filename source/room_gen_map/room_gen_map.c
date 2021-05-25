@@ -13,6 +13,7 @@
 #include "room_game/tileset_info.h"
 #include "room_gen_map/generate_map.h"
 #include "room_input/room_input.h"
+#include "simulation/simulation_common.h"
 #include "simulation/simulation_technology.h"
 
 // Assets
@@ -305,7 +306,7 @@ void Room_Generate_Map_Handle(void)
                 Technology_SetLevel(0);
                 // TODO: Message flags
                 // TODO: Game over state
-                // TODO: Graphs information
+                Simulation_GraphsResetAll();
                 // TODO: Game options
                 Game_Room_Prepare_Switch(ROOM_GAME);
                 return;

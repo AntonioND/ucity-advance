@@ -16,6 +16,7 @@ typedef enum {
     ROOM_GENERATE_MAP,
     ROOM_MAIN_MENU,
     ROOM_SCENARIOS,
+    ROOM_GRAPHS,
 } room_type;
 
 void Game_Room_Prepare_Switch(room_type new_room);

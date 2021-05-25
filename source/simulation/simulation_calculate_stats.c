@@ -69,6 +69,13 @@ uint32_t Simulation_GetTotalPopulation(void)
     return population_total;
 }
 
+void Simulation_GetPopulationRCI(uint32_t *r, uint32_t *c, uint32_t *i)
+{
+    *r = population_residential;
+    *c = population_commercial;
+    *i = population_industrial;
+}
+
 void Simulation_GetDemandRCI(int *r, int *c, int *i)
 {
     *r = graph_value_r;

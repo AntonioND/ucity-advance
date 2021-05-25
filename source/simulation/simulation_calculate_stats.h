@@ -9,6 +9,7 @@ int Simulation_GetCityClass(void);
 const char *Simulation_GetCityClassString(void);
 
 uint32_t Simulation_GetTotalPopulation(void);
+void Simulation_GetPopulationRCI(uint32_t *r, uint32_t *c, uint32_t *i);
 
 void Simulation_GetDemandRCI(int *r, int *c, int *i);
 

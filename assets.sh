@@ -47,6 +47,11 @@ tools/build/png2sprites/png2sprites \
 
 tools/build/png2sprites/png2sprites \
     ${OUT_DIR}/sprites/ \
+    sprites/graph_menu_tiles.png \
+    sprites/graph_menu_map.png
+
+tools/build/png2sprites/png2sprites \
+    ${OUT_DIR}/sprites/ \
     sprites/minimap_menu_tiles.png \
     sprites/minimap_menu_map.png
 
@@ -59,6 +64,7 @@ tools/build/png2maps/png2maps \
     maps/budget_menu_bg.png \
     maps/city_stats_bg.png \
     maps/generate_map_bg.png \
+    maps/graphs_frame_bg.png \
     maps/main_menu_bg.png \
     maps/name_input_menu_bg.png \
     maps/notification_bg.png \

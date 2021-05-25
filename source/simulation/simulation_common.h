@@ -5,6 +5,8 @@
 #ifndef SIMULATION_SIMULATION_COMMON_H__
 #define SIMULATION_SIMULATION_COMMON_H__
 
+void Simulation_GraphsResetAll(void);
+
 typedef enum {
     REQUESTED_DISASTER_NONE,
     REQUESTED_DISASTER_FIRE,

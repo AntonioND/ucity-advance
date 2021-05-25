@@ -930,7 +930,8 @@ void Room_Game_SlowVBLHandler(void)
                 case PAUSE_MENU_MINIMAPS:
                     Game_Room_Prepare_Switch(ROOM_MINIMAP);
                     return;
-                case PAUSE_MENU_GRAPHS: // TODO
+                case PAUSE_MENU_GRAPHS:
+                    Game_Room_Prepare_Switch(ROOM_GRAPHS);
                     return;
                 case PAUSE_MENU_CITY_STATS:
                     Game_Room_Prepare_Switch(ROOM_CITY_STATS);

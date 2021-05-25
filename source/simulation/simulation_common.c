@@ -5,10 +5,12 @@
 #include <stdint.h>
 
 #include "date.h"
+#include "money.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
 #include "room_game/text_messages.h"
 #include "room_game/tileset_info.h"
+#include "room_graphs/graphs_handler.h"
 #include "simulation/simulation_calculate_stats.h"
 #include "simulation/simulation_common.h"
 #include "simulation/simulation_create_buildings.h"
@@ -72,6 +74,31 @@ static int first_simulation_iteration = 1;
 void Simulation_SetFirstStep(void)
 {
     first_simulation_iteration = 1;
+}
+
+static void GraphHandleRecords(void)
+{
+    Graph_Add_Record(Graph_Get(GRAPH_INFO_POPULATION),
+                     Simulation_GetTotalPopulation());
+
+    uint32_t r, c, i;
+    Simulation_GetPopulationRCI(&r, &c, &i);
+    Graph_Add_Record(Graph_Get(GRAPH_INFO_RESIDENTIAL), r);
+    Graph_Add_Record(Graph_Get(GRAPH_INFO_COMMERCIAL), c);
+    Graph_Add_Record(Graph_Get(GRAPH_INFO_INDUSTRIAL), i);
+
+    Graph_Add_Record(Graph_Get(GRAPH_INFO_FUNDS), MoneyGet());
+}
+
+void Simulation_GraphsResetAll(void)
+{
+    Graph_Reset(Graph_Get(GRAPH_INFO_POPULATION));
+
+    Graph_Reset(Graph_Get(GRAPH_INFO_RESIDENTIAL));
+    Graph_Reset(Graph_Get(GRAPH_INFO_COMMERCIAL));
+    Graph_Reset(Graph_Get(GRAPH_INFO_INDUSTRIAL));
+
+    Graph_Reset(Graph_Get(GRAPH_INFO_FUNDS));
 }
 
 void Simulation_SimulateAll(void)
@@ -211,7 +238,7 @@ void Simulation_SimulateAll(void)
 
     // Handle historical records
 
-    // TODO: GraphHandleRecords()
+    GraphHandleRecords();
 
     // End of this simulation step
 }
