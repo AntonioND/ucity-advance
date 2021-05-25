@@ -14,6 +14,7 @@
 #include "room_gen_map/generate_map.h"
 #include "room_input/room_input.h"
 #include "simulation/simulation_common.h"
+#include "simulation/simulation_money.h"
 #include "simulation/simulation_technology.h"
 
 // Assets
@@ -305,7 +306,7 @@ void Room_Generate_Map_Handle(void)
                 Room_Game_Set_City_Economy(20000, 10, 0, 0);
                 Technology_SetLevel(0);
                 // TODO: Message flags
-                // TODO: Game over state
+                Simulation_NegativeBudgetCountSet(0);
                 Simulation_GraphsResetAll();
                 // TODO: Game options
                 Game_Room_Prepare_Switch(ROOM_GAME);

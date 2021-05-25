@@ -10,6 +10,9 @@
 #include "room_game/tileset_info.h"
 #include "simulation/simulation_money.h"
 
+// Number of quarters with negative budgets and negative funds
+static int negative_budget_count;
+
 // Max amount of money per tile * tiles in map = 99 * 64 * 64 = 175890
 
 static budget_info budget;
@@ -31,8 +34,15 @@ void Simulation_TaxPercentageSet(int value)
     tax_percentage = value;
 }
 
-// Number of quarters with negative budgets and negative funds
-static int negative_budget_count;
+int Simulation_NegativeBudgetCountGet(void)
+{
+    return negative_budget_count;
+}
+
+void Simulation_NegativeBudgetCountSet(int value)
+{
+    negative_budget_count = value;
+}
 
 // Cost and income is per-tile. The amount can be 0-99
 // Depending on the tile, cost or income.
@@ -699,6 +709,11 @@ void Simulation_ApplyBudgetAndTaxes(void)
 
     // Check if money is negative to warn the user
 
+    // If game over conditions have been reached, don't let the counter go down
+    // to zero and cancel the game over.
+    if (negative_budget_count >= NEGATIVE_BUDGET_COUNT_GAME_OVER)
+        return;
+
     if (MoneyGet() > 0)
     {
         negative_budget_count = 0;
@@ -713,7 +728,7 @@ void Simulation_ApplyBudgetAndTaxes(void)
         {
             negative_budget_count++;
 
-            if (negative_budget_count >= 4)
+            if (negative_budget_count >= NEGATIVE_BUDGET_COUNT_GAME_OVER)
             {
                 MessageQueueAdd(ID_MSG_GAME_OVER_1);
                 MessageQueueAdd(ID_MSG_GAME_OVER_2);

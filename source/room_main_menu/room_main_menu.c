@@ -9,6 +9,7 @@
 #include "text_utils.h"
 #include "room_game/room_game.h"
 #include "simulation/simulation_common.h"
+#include "simulation/simulation_money.h"
 
 // Assets
 
@@ -129,6 +130,7 @@ void Room_Main_Menu_Handle(void)
             Room_Game_Load_City(test_map_map, "Test Map", 9, 9);
             Room_Game_Set_City_Date(0, 1950);
             Room_Game_Set_City_Economy(99999999, 10, 0, 0);
+            Simulation_NegativeBudgetCountSet(0);
             Simulation_GraphsResetAll();
             Game_Room_Prepare_Switch(ROOM_GAME);
         }

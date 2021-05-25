@@ -677,6 +677,13 @@ void Room_Game_Handle(void)
                     frames_left_to_step = MIN_FRAMES_PER_DATE_STEP;
 
                     main_loop_is_busy = 1;
+
+                    if (Simulation_NegativeBudgetCountGet() >=
+                        NEGATIVE_BUDGET_COUNT_GAME_OVER)
+                    {
+                        Game_Room_Prepare_Switch(ROOM_MAIN_MENU);
+                    }
+
                     Simulation_SimulateAll();
                 }
             }

@@ -15,6 +15,7 @@
 #include "room_game/tileset_info.h"
 #include "room_input/room_input.h"
 #include "simulation/simulation_common.h"
+#include "simulation/simulation_money.h"
 #include "simulation/simulation_technology.h"
 
 // Assets
@@ -352,8 +353,7 @@ void Room_Scenarios_Handle(void)
                                    s->payments_left, s->amount_per_payment);
         Technology_SetLevel(s->technology_level);
         // TODO: Message flags
-        // TODO: Game over state
-        // TODO: Graphs information
+        Simulation_NegativeBudgetCountSet(0);
         Simulation_GraphsResetAll();
         // TODO: Game options
         Game_Room_Prepare_Switch(ROOM_GAME);

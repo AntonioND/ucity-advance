@@ -5,6 +5,11 @@
 #ifndef SIMULATION_SIMULATION_MONEY_H__
 #define SIMULATION_SIMULATION_MONEY_H__
 
+#define NEGATIVE_BUDGET_COUNT_GAME_OVER     4
+
+int Simulation_NegativeBudgetCountGet(void);
+void Simulation_NegativeBudgetCountSet(int value);
+
 typedef struct {
     int32_t taxes_residential;
     int32_t taxes_commercial;
