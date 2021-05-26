@@ -8,13 +8,13 @@
 
 static uint8_t persistent_msg_flags[BYTES_SAVE_PERSISTENT_MSG];
 
-// TODO: Adjust messages for the new size of the text box
 static const char *msg_text[] = {
     [ID_MSG_EMPTY] =
         "",
 
     [ID_MSG_POLLUTION_HIGH] =
-        "Pollution is too high!",
+        "Air pollution is too\n"
+        "high!",
     [ID_MSG_TRAFFIC_HIGH] =
         "Traffic is too high!",
     [ID_MSG_MONEY_NEGATIVE_CAN_LOAN] =
@@ -22,12 +22,12 @@ static const char *msg_text[] = {
         "of money. Consider\n"
         "getting a loan.",
     [ID_MSG_MONEY_NEGATIVE_CANT_LOAN] =
-        "You have run out\n"
-        "of money!",
+        "You have run out of\n"
+        "money!",
 
     [ID_MSG_CLASS_TOWN] =
-        "Your village is\n"
-        "now a town!",
+        "Your village is now a\n"
+        "town!",
     [ID_MSG_CLASS_CITY] =
         "Your town is now a\n"
         "city!",
@@ -39,20 +39,20 @@ static const char *msg_text[] = {
         "now a capital!",
 
     [ID_MSG_TECH_NUCLEAR] =
-        "Scientists have\n"
+        "Scientists have just\n"
         "invented nuclear\n"
         "power plants!",
     [ID_MSG_TECH_FUSION] =
-        "Scientists have\n"
+        "Scientists have just\n"
         "invented fusion\n"
         "power plants!",
 
     [ID_MSG_FIRE_INITED] =
         "A fire has started\n"
-        "somewhere!",
+        "somewhere in the city!",
     [ID_MSG_NUCLEAR_MELTDOWN] =
         "A nuclear power\n"
-        "plant has had a\n"
+        "plant has just had a\n"
         "meltdown!",
 
     [ID_MSG_TECH_INSUFFICIENT] =
@@ -65,14 +65,13 @@ static const char *msg_text[] = {
         "build that!",
     [ID_MSG_FINISHED_LOAN] =
         "You have finished\n"
-        "repaying your\n"
-        "loan.",
+        "repaying your loan.\n",
     [ID_MSG_GAME_OVER_1] =
-        "The people are\n"
-        "tired of you.",
+        "The people of this\n"
+        "city are tired of you.",
     [ID_MSG_GAME_OVER_2] =
         "\n"
-        "     Game Over",
+        "      GAME  OVER",
 };
 
 #define MESSAGE_QUEUE_SIZE  10
