@@ -81,15 +81,34 @@ IWRAM_CODE ARM_CODE void Audio_Mix(void)
     current_dma_buffer ^= 1;
 }
 
+static uint32_t current_song = UINT32_MAX;
+static int audio_enabled = 1;
+
+void Audio_Enable_Set(int enabled)
+{
+    audio_enabled = enabled;
+
+    if (audio_enabled)
+        UMOD_Song_Play(current_song);
+    else
+         UMOD_Song_Stop();
+}
+
+int Audio_Enable_Get(void)
+{
+    return audio_enabled;
+}
+
 // Play song, but don't restart it if it is already playing
 void Audio_Song_Play(uint32_t song)
 {
-    static uint32_t current_song = UINT32_MAX;
-
     if (current_song == song)
         return;
 
     current_song = song;
 
-    UMOD_Song_Play(song);
+    if (audio_enabled)
+        UMOD_Song_Play(song);
+    else
+         UMOD_Song_Stop();
 }

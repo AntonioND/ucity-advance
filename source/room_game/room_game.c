@@ -6,6 +6,7 @@
 
 #include <ugba/ugba.h>
 
+#include "audio.h"
 #include "cursor.h"
 #include "date.h"
 #include "input_utils.h"
@@ -977,7 +978,10 @@ void Room_Game_SlowVBLHandler(void)
                     animations_disabled ^= 1;
                     PauseMenuDraw();
                     break;
-                //case OPTIONS_MUSIC_ENABLE: // TODO
+                case OPTIONS_MUSIC_ENABLE:
+                    Audio_Enable_Set(Audio_Enable_Get() ^ 1);
+                    PauseMenuDraw();
+                    break;
 
                 case PAUSE_MENU_INVALID_OPTION:
                     // Nothing to do

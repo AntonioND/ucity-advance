@@ -6,6 +6,7 @@
 
 #include <ugba/ugba.h>
 
+#include "audio.h"
 #include "input_utils.h"
 #include "text_utils.h"
 #include "room_game/pause_menu.h"
@@ -155,6 +156,14 @@ static void PauseMenuDrawOptions(void)
     int y = menu_entry[OPTIONS_ANIMATIONS_ENABLE].y + (32 - 30);
 
     if (Room_Game_AreAnimationsEnabled())
+        StatusBarPrint(x, y, "Disable");
+    else
+        StatusBarPrint(x, y, "Enable ");
+
+    x = menu_entry[OPTIONS_MUSIC_ENABLE].x;
+    y = menu_entry[OPTIONS_MUSIC_ENABLE].y + (32 - 30);
+
+    if (Audio_Enable_Get())
         StatusBarPrint(x, y, "Disable");
     else
         StatusBarPrint(x, y, "Enable ");
@@ -358,6 +367,8 @@ static pause_menu_options PauseMenuHandleInputOptions(void)
     {
         if (selected_option == OPTIONS_ANIMATIONS_ENABLE)
             return OPTIONS_ANIMATIONS_ENABLE;
+        else if (selected_option == OPTIONS_MUSIC_ENABLE)
+            return OPTIONS_MUSIC_ENABLE;
     }
 
     return PAUSE_MENU_INVALID_OPTION;
