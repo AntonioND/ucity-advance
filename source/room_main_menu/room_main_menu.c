@@ -81,8 +81,7 @@ void Room_Main_Menu_Load(void)
     // Setup display mode
 
     DISP_ModeSet(1);
-    DISP_Object1DMappingEnable(1);
-    DISP_LayersEnable(0, 1, 1, 0, 1);
+    DISP_LayersEnable(0, 1, 0, 0, 0);
 
     // Load palettes
     // -------------

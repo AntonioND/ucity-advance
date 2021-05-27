@@ -250,8 +250,7 @@ void Room_Generate_Map_Load(void)
     // Setup display mode
 
     DISP_ModeSet(1);
-    DISP_Object1DMappingEnable(1);
-    DISP_LayersEnable(0, 1, 1, 0, 1);
+    DISP_LayersEnable(0, 1, 1, 0, 0);
 
     // Initialize state
 
