@@ -29,11 +29,9 @@ typedef enum {
     // Regular (non-persistent) messages
     ID_MSG_FIRE_INITED                  = 17,
     ID_MSG_NUCLEAR_MELTDOWN             = 18,
-    ID_MSG_TECH_INSUFFICIENT            = 19,
-    ID_MSG_POPULATION_INSUFFICIENT      = 20,
-    ID_MSG_FINISHED_LOAN                = 21,
-    ID_MSG_GAME_OVER_1                  = 22,
-    ID_MSG_GAME_OVER_2                  = 23,
+    ID_MSG_FINISHED_LOAN                = 19,
+    ID_MSG_GAME_OVER_1                  = 20,
+    ID_MSG_GAME_OVER_2                  = 21,
 } message_ids;
 
 // Number of bytes needed to store a flag for each persistent message. Rounded

@@ -55,14 +55,6 @@ static const char *msg_text[] = {
         "plant has just had a\n"
         "meltdown!",
 
-    [ID_MSG_TECH_INSUFFICIENT] =
-        "Technology isn't\n"
-        "advanced enough\n"
-        "to build that!",
-    [ID_MSG_POPULATION_INSUFFICIENT] =
-        "There isn't enough\n"
-        "population to\n"
-        "build that!",
     [ID_MSG_FINISHED_LOAN] =
         "You have finished\n"
         "repaying your loan.\n",
