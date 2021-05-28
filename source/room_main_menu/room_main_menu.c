@@ -8,6 +8,7 @@
 #include "main.h"
 #include "text_utils.h"
 #include "room_game/room_game.h"
+#include "room_save_slots/room_save_slots.h"
 #include "simulation/simulation_common.h"
 #include "simulation/simulation_money.h"
 
@@ -113,14 +114,20 @@ void Room_Main_Menu_Handle(void)
 
     if (keys_pressed & KEY_A)
     {
-        if (selected_option == LOAD_SCENARIO)
+        if (selected_option == LOAD_SAVED_GAME)
         {
-            Game_Room_Prepare_Switch(ROOM_SCENARIOS);
+            Room_Save_Slots_Set_Mode(ROOM_SAVE_SLOTS_LOAD);
+            Game_Room_Prepare_Switch(ROOM_SAVE_SLOTS);
             return;
         }
         else if (selected_option == RANDOM_MAP)
         {
             Game_Room_Prepare_Switch(ROOM_INPUT);
+            return;
+        }
+        else if (selected_option == LOAD_SCENARIO)
+        {
+            Game_Room_Prepare_Switch(ROOM_SCENARIOS);
             return;
         }
         else if (selected_option == CREDITS)

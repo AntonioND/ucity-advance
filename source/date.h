@@ -7,10 +7,13 @@
 
 const char *DateString(void);
 
+void DateStringMake(char *buf, int month, int year);
+
 void DateSet(int month, int year);
 
 // 0 = January, 11 = December
 int DateGetMonth(void);
+int DateGetYear(void);
 
 void DateStep(void);
 

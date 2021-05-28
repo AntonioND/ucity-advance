@@ -3,6 +3,7 @@
 // Copyright (c) 2021, Antonio Niño Díaz
 
 #include <stdint.h>
+#include <string.h>
 
 #include <ugba/ugba.h>
 
@@ -51,6 +52,16 @@ void Graph_Reset(graph_info *info)
         info->values[i] = GRAPH_INVALID_ENTRY;
     info->shift = 0;
     info->write_ptr = 0;
+}
+
+void Graph_Data_Set(const graph_info *info, graph_info_type type)
+{
+    memcpy(Graph_Get(type), info, sizeof(graph_info));
+}
+
+void Graph_Data_Get(graph_info *info, graph_info_type type)
+{
+    memcpy(info, Graph_Get(type), sizeof(graph_info));
 }
 
 void Graph_Add_Record(graph_info *info, int32_t value)

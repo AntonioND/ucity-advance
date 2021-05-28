@@ -144,6 +144,9 @@ void Room_Game_Set_City_Date(int month, int year);
 void Room_Game_Set_City_Economy(int money_amount, int tax_percentage,
                                 int loan_payments, int payment_amount);
 
+int Room_Game_City_Load(int slot_index);
+void Room_Game_City_Save(int slot_index);
+
 // ----------------------------------------------------------------------------
 
 #endif // ROOM_GAME_ROOM_GAME_H__

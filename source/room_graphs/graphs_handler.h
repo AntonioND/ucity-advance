@@ -33,6 +33,9 @@ graph_info *Graph_Get(graph_info_type type);
 
 void Graph_Reset(graph_info *info);
 
+void Graph_Data_Set(const graph_info *info, graph_info_type type);
+void Graph_Data_Get(graph_info *info, graph_info_type type);
+
 void Graph_Add_Record(graph_info *info, int32_t value);
 
 #endif // ROOM_GRAPHS_GRAPHS_HANDLER_H__

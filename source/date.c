@@ -41,6 +41,19 @@ const char *DateString(void)
     return date_str;
 }
 
+void DateStringMake(char *buf, int month, int year)
+{
+    buf[0] = '\0';
+
+    strcpy(buf, month_name[month]);
+
+    int l = strlen(buf);
+    buf[l] = ' ';
+    l++;
+
+    Print_Integer_Decimal(&buf[l], year);
+}
+
 void DateSet(int month, int year)
 {
     date_month = month;
@@ -51,6 +64,11 @@ void DateSet(int month, int year)
 int DateGetMonth(void)
 {
     return date_month;
+}
+
+int DateGetYear(void)
+{
+    return date_year;
 }
 
 void DateStep(void)

@@ -9,6 +9,7 @@
 #include "input_utils.h"
 #include "main.h"
 #include "money.h"
+#include "save.h"
 #include "room_bank/room_bank.h"
 #include "room_budget/room_budget.h"
 #include "room_city_stats/room_city_stats.h"
@@ -18,6 +19,7 @@
 #include "room_input/room_input.h"
 #include "room_main_menu/room_main_menu.h"
 #include "room_minimap/room_minimap.h"
+#include "room_save_slots/room_save_slots.h"
 #include "room_scenarios/room_scenarios.h"
 
 void Game_Clear_Screen(void)
@@ -88,6 +90,9 @@ static void Game_Room_Unload(int room)
         case ROOM_GRAPHS:
             Room_Graphs_Unload();
             break;
+        case ROOM_SAVE_SLOTS:
+            Room_Save_Slots_Unload();
+            break;
         default:
             UGBA_Assert(0);
             return;
@@ -131,6 +136,9 @@ static void Game_Room_Load(int room)
             break;
         case ROOM_GRAPHS:
             Room_Graphs_Load();
+            break;
+        case ROOM_SAVE_SLOTS:
+            Room_Save_Slots_Load();
             break;
         default:
             UGBA_Assert(0);
@@ -276,6 +284,9 @@ static void Game_Room_Handle_Current(void)
         case ROOM_GRAPHS:
             Room_Graphs_Handle();
             break;
+        case ROOM_SAVE_SLOTS:
+            Room_Save_Slots_Handle();
+            break;
         default:
             UGBA_Assert(0);
             return;
@@ -345,6 +356,8 @@ int main(int argc, char *argv[])
     IRQ_Enable(IRQ_VBLANK);
 
     Game_Clear_Screen();
+
+    Save_Data_Check();
 
     Audio_Init();
 

@@ -13,6 +13,7 @@
 #include "main.h"
 #include "money.h"
 #include "map_utils.h"
+#include "save.h"
 #include "text_utils.h"
 #include "room_bank/room_bank.h"
 #include "room_game/building_info.h"
@@ -24,6 +25,8 @@
 #include "room_game/text_messages.h"
 #include "room_game/tileset_info.h"
 #include "room_game/status_bar.h"
+#include "room_graphs/graphs_handler.h"
+#include "room_save_slots/room_save_slots.h"
 #include "simulation/simulation_building_count.h"
 #include "simulation/simulation_calculate_stats.h"
 #include "simulation/simulation_common.h"
@@ -927,8 +930,6 @@ void Room_Game_SlowVBLHandler(void)
             pause_menu_options option = PauseMenuHandleInput();
             switch (option)
             {
-                // TODO: Implement remaining elements of the menu
-
                 case PAUSE_MENU_BUDGET:
                     Game_Room_Prepare_Switch(ROOM_BUDGET);
                     break;
@@ -951,7 +952,15 @@ void Room_Game_SlowVBLHandler(void)
                     simulation_enabled ^= 1;
                     PauseMenuDraw();
                     break;
-                //case PAUSE_MENU_SAVE_GAME: // TODO
+                case PAUSE_MENU_SAVE_GAME:
+                    // If a disaster is active, don't let the player save
+                    if (simulation_disaster_mode == 0)
+                    {
+                        Room_Save_Slots_Set_Mode(ROOM_SAVE_SLOTS_SAVE);
+                        Game_Room_Prepare_Switch(ROOM_SAVE_SLOTS);
+                        // TODO: SFX_WrongSelection();
+                    }
+                    return;
                 case PAUSE_MENU_MAIN_MENU:
                     Game_Room_Prepare_Switch(ROOM_MAIN_MENU);
                     return;
@@ -984,7 +993,8 @@ void Room_Game_SlowVBLHandler(void)
                     break;
 
                 case PAUSE_MENU_INVALID_OPTION:
-                    // Nothing to do
+                    // Nothing to do, this is returned when no action needs to
+                    // be taken.
                     break;
                 default:
                     UGBA_Assert(0);
@@ -1012,7 +1022,7 @@ void Room_Game_Set_City_Name(const char *name)
 {
     // Save name with padding spaces before the actual name
     memset(city_name, ' ', sizeof(city_name));
-    size_t l = strlen(name);
+    size_t l = strnlen(name, CITY_MAX_NAME_LENGTH);
     if (l == 0)
     {
         name = "No Name";
@@ -1044,4 +1054,112 @@ void Room_Game_Set_City_Economy(int money_amount, int tax_percentage,
     MoneySet(money_amount);
     Simulation_TaxPercentageSet(tax_percentage);
     Room_Bank_Set_Loan(loan_payments, payment_amount);
+}
+
+static EWRAM_BSS uint16_t decompressed_map[CITY_MAP_WIDTH * CITY_MAP_HEIGHT];
+
+// Returns 1 if the city has been loaded correctly
+int Room_Game_City_Load(int slot_index)
+{
+    // TODO: Load and save settings
+
+    city_save_data *city = Save_Data_Get_City(slot_index);
+    if (city->name[0] == '\0')
+        return 0;
+
+    memcpy(city_name, city->name, CITY_MAX_NAME_LENGTH);
+
+    DateSet(city->month, city->year);
+
+    Room_Game_Set_City_Economy(city->funds, city->tax_percent,
+                               city->loan_remaining_payments,
+                               city->loan_payment_amount);
+
+    Technology_SetLevel(city->technology_level);
+
+    Simulation_NegativeBudgetCountSet(city->negative_budget_count);
+
+    Graph_Data_Set(&(city->graph_population), GRAPH_INFO_POPULATION);
+    Graph_Data_Set(&(city->graph_residential), GRAPH_INFO_RESIDENTIAL);
+    Graph_Data_Set(&(city->graph_commercial), GRAPH_INFO_COMMERCIAL);
+    Graph_Data_Set(&(city->graph_industrial), GRAPH_INFO_INDUSTRIAL);
+    Graph_Data_Set(&(city->graph_funds), GRAPH_INFO_FUNDS);
+
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            uint16_t lsb = city->map_lsb[j * CITY_MAP_WIDTH + i];
+            uint16_t msb = city->map_msb[(j * CITY_MAP_WIDTH + i) / 8];
+            uint16_t bit_mask = 1 << (i % 8);
+            if (msb & bit_mask)
+                msb = 1 << 8;
+            else
+                msb = 0 << 8;
+            uint16_t tile = lsb | msb;
+            uint16_t vram_info = City_Tileset_VRAM_Info(tile);
+            decompressed_map[j * CITY_MAP_WIDTH + i] = vram_info;
+        }
+    }
+
+    Load_City_Data(decompressed_map, city->last_scroll_x, city->last_scroll_y);
+
+    // TODO: Persistent message flags
+
+    Simulation_SetFirstStep();
+
+    return 1;
+}
+
+void Room_Game_City_Save(int slot_index)
+{
+    city_save_data *city = Save_Data_Get_City(slot_index);
+
+    memcpy(city->name, city_name, CITY_MAX_NAME_LENGTH);
+
+    city->month = DateGetMonth();
+    city->year = DateGetYear();
+
+    city->funds = MoneyGet();
+
+    city->last_scroll_x = mapx / 8;
+    city->last_scroll_y = mapy / 8;
+
+    city->tax_percent = Simulation_TaxPercentageGet();
+
+    city->technology_level = Technology_GetLevel();
+
+    city->negative_budget_count = Simulation_NegativeBudgetCountGet();
+
+    int payments, amount;
+    Room_Bank_Get_Loan(&payments, &amount);
+    city->loan_remaining_payments = payments;
+    city->loan_payment_amount = amount;
+
+    Graph_Data_Get(&(city->graph_population), GRAPH_INFO_POPULATION);
+    Graph_Data_Get(&(city->graph_residential), GRAPH_INFO_RESIDENTIAL);
+    Graph_Data_Get(&(city->graph_commercial), GRAPH_INFO_COMMERCIAL);
+    Graph_Data_Get(&(city->graph_industrial), GRAPH_INFO_INDUSTRIAL);
+    Graph_Data_Get(&(city->graph_funds), GRAPH_INFO_FUNDS);
+
+    memset(city->map_msb, 0, sizeof(city->map_msb));
+    for (int j = 0; j < CITY_MAP_HEIGHT; j++)
+    {
+        for (int i = 0; i < CITY_MAP_WIDTH; i++)
+        {
+            void *map = (void *)CITY_MAP_BASE;
+            uint16_t tile = read_tile_sbb(map, i, j);
+            city->map_lsb[j * CITY_MAP_WIDTH + i] = tile & 0xFF;
+
+            uint16_t msb;
+            uint16_t bit_mask = 1 << (i % 8);
+            if (tile & (1 << 8))
+                msb = bit_mask;
+            else
+                msb = 0;
+            city->map_msb[(j * CITY_MAP_WIDTH + i) / 8] |= msb;
+        }
+    }
+
+    // TODO: Persistent message flags
 }
