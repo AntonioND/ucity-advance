@@ -117,6 +117,8 @@
 void Room_Game_GetCurrentScroll(int *x, int *y);
 
 int Room_Game_IsSimulationEnabled(void);
+
+void Room_Game_SetAnimationsEnabled(int value);
 int Room_Game_AreAnimationsEnabled(void);
 
 void Room_Game_Load(void);
@@ -146,6 +148,9 @@ void Room_Game_Set_City_Economy(int money_amount, int tax_percentage,
 
 int Room_Game_City_Load(int slot_index);
 void Room_Game_City_Save(int slot_index);
+
+void Room_Game_Settings_Load(void);
+void Room_Game_Settings_Save(void);
 
 // ----------------------------------------------------------------------------
 

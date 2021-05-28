@@ -43,7 +43,7 @@
 // ----------------------------------------------------------------------------
 
 static int simulation_enabled = 1;
-static int animations_disabled = 0;
+static int animations_enabled = 1;
 
 // Frames left for a simulation step
 static int frames_left_to_step = 0;
@@ -82,16 +82,21 @@ void Room_Game_SetDisasterMode(int enabled)
     simulation_disaster_mode = enabled;
 }
 
+void Room_Game_SetAnimationsEnabled(int value)
+{
+    animations_enabled = value;
+}
+
 int Room_Game_AreAnimationsEnabled(void)
 {
-    if (animations_disabled)
-        return 0;
-    return 1;
+    if (animations_enabled)
+        return 1;
+    return 0;
 }
 
 static void GameAnimateMapVBLFastHandle(void)
 {
-    if (animations_disabled)
+    if (animations_enabled == 0)
         return;
 
     if (simulation_disaster_mode)
@@ -141,7 +146,7 @@ static void GameAnimateMapVBLFastHandle(void)
 
 static void GameAnimateMap(void)
 {
-    if (animations_disabled)
+    if (animations_enabled == 0)
         return;
 
     if (simulation_disaster_mode)
@@ -640,13 +645,11 @@ void Room_Game_Load(void)
     // TODO: This shouldn't be done when loading this room. Right now, that
     // means that whenever the room is left, after returning the settings will
     // be set to the default settings.
-    frames_left_to_step = 0;
     simulation_enabled = 1;
-    animations_disabled = 0;
 
+    frames_left_to_step = 0;
     main_loop_is_busy = 1;
 
-    Simulation_DisastersSetEnabled(1);
     Simulation_RequestDisaster(REQUESTED_DISASTER_NONE);
 
     Room_Game_Set_Mode(MODE_RUNNING);
@@ -962,10 +965,12 @@ void Room_Game_SlowVBLHandler(void)
                     }
                     return;
                 case PAUSE_MENU_MAIN_MENU:
+                    Room_Game_Settings_Save();
                     Game_Room_Prepare_Switch(ROOM_MAIN_MENU);
                     return;
 
                 case PAUSE_MENU_EXIT:
+                    Room_Game_Settings_Save();
                     Room_Game_Set_Mode(MODE_RUNNING);
                     break;
 
@@ -984,7 +989,7 @@ void Room_Game_SlowVBLHandler(void)
                     break;
 
                 case OPTIONS_ANIMATIONS_ENABLE:
-                    animations_disabled ^= 1;
+                    animations_enabled ^= 1;
                     PauseMenuDraw();
                     break;
                 case OPTIONS_MUSIC_ENABLE:
@@ -1061,8 +1066,6 @@ static EWRAM_BSS uint16_t decompressed_map[CITY_MAP_WIDTH * CITY_MAP_HEIGHT];
 // Returns 1 if the city has been loaded correctly
 int Room_Game_City_Load(int slot_index)
 {
-    // TODO: Load and save settings
-
     city_save_data *city = Save_Data_Get_City(slot_index);
     if (city->name[0] == '\0')
         return 0;
@@ -1162,4 +1165,26 @@ void Room_Game_City_Save(int slot_index)
     }
 
     // TODO: Persistent message flags
+}
+
+void Room_Game_Settings_Load(void)
+{
+    save_data *sav = Save_Data_Get();
+
+    Simulation_DisastersSetEnabled(sav->disasters_enabled);
+    Room_Game_SetAnimationsEnabled(sav->animations_enabled);
+    Audio_Enable_Set(sav->music_enabled);
+
+    sav->music_enabled;
+}
+
+void Room_Game_Settings_Save(void)
+{
+    save_data *sav = Save_Data_Get();
+
+    sav->disasters_enabled = Simulation_AreDisastersEnabled();
+    sav->animations_enabled = Room_Game_AreAnimationsEnabled();
+    sav->music_enabled = Audio_Enable_Get();
+
+    Save_Reset_Checksum();
 }

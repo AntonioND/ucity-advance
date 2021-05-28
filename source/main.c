@@ -358,6 +358,7 @@ int main(int argc, char *argv[])
     Game_Clear_Screen();
 
     Save_Data_Check();
+    Room_Game_Settings_Load();
 
     Audio_Init();
 

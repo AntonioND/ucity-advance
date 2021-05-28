@@ -307,7 +307,6 @@ void Room_Generate_Map_Handle(void)
                 // TODO: Message flags
                 Simulation_NegativeBudgetCountSet(0);
                 Simulation_GraphsResetAll();
-                // TODO: Game options
                 Game_Room_Prepare_Switch(ROOM_GAME);
                 return;
             }

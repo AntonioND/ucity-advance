@@ -7,7 +7,9 @@
 
 #include <ugba/ugba.h>
 
+#include "audio.h"
 #include "save.h"
+#include "simulation/simulation_common.h"
 
 save_data *Save_Data_Get(void)
 {
@@ -59,6 +61,14 @@ void Save_Data_Reset(void)
 
     // Save magic string
     memcpy(sav->magic_string, MAGIC_STRING, MAGIC_STRING_LEN);
+
+    // Default settings
+    Simulation_DisastersSetEnabled(1);
+    Room_Game_SetAnimationsEnabled(1);
+    Audio_Enable_Set(1);
+    sav->disasters_enabled = 1;
+    sav->animations_enabled = 1;
+    sav->music_enabled = 1;
 
     for (int i = 0; i < 4; i++)
         Save_Data_Reset_City(i);
