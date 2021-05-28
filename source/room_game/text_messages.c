@@ -4,6 +4,8 @@
 
 #include <ugba/ugba.h>
 
+#include <string.h>
+
 #include "room_game/text_messages.h"
 
 static uint8_t persistent_msg_flags[BYTES_SAVE_PERSISTENT_MSG];
@@ -148,4 +150,14 @@ void PersistentYearlyMessagesReset(void)
 {
     for (int i = 0; i < (ID_MSG_RESET_YEAR_NUM / 8); i++)
         persistent_msg_flags[i] = 0;
+}
+
+void PersistentMessageFlagsSet(uint8_t *flags)
+{
+    memcpy(flags, persistent_msg_flags, BYTES_SAVE_PERSISTENT_MSG);
+}
+
+void PersistentMessageFlagsGet(const uint8_t *flags)
+{
+    memcpy(persistent_msg_flags, flags, BYTES_SAVE_PERSISTENT_MSG);
 }

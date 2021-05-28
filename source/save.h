@@ -10,6 +10,7 @@
 #include <ugba/ugba.h>
 
 #include "room_game/room_game.h"
+#include "room_game/text_messages.h"
 #include "room_graphs/graphs_handler.h"
 
 #define MAGIC_STRING        "UCY0"
@@ -36,7 +37,7 @@ typedef struct {
     uint8_t     loan_remaining_payments; // 0 if no loan active
     uint16_t    loan_payment_amount;
 
-    // TODO: Persistent message flags
+    uint8_t     persistent_msg_flags[BYTES_SAVE_PERSISTENT_MSG];
 
     graph_info  graph_population;
     graph_info  graph_residential;

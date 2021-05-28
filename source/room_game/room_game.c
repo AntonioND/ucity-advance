@@ -1107,7 +1107,7 @@ int Room_Game_City_Load(int slot_index)
 
     Load_City_Data(decompressed_map, city->last_scroll_x, city->last_scroll_y);
 
-    // TODO: Persistent message flags
+    PersistentMessageFlagsGet(city->persistent_msg_flags);
 
     Simulation_SetFirstStep();
 
@@ -1164,7 +1164,7 @@ void Room_Game_City_Save(int slot_index)
         }
     }
 
-    // TODO: Persistent message flags
+    PersistentMessageFlagsSet(city->persistent_msg_flags);
 }
 
 void Room_Game_Settings_Load(void)
