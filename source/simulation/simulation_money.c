@@ -732,8 +732,7 @@ void Simulation_ApplyBudgetAndTaxes(void)
             {
                 MessageQueueAdd(ID_MSG_GAME_OVER_1);
                 MessageQueueAdd(ID_MSG_GAME_OVER_2);
-                // TODO: game_over = 1;
-
+                // The code that exits from the game room is in room_game.c
                 return;
             }
             else
