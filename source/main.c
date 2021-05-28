@@ -13,6 +13,7 @@
 #include "room_bank/room_bank.h"
 #include "room_budget/room_budget.h"
 #include "room_city_stats/room_city_stats.h"
+#include "room_credits/room_credits.h"
 #include "room_game/room_game.h"
 #include "room_gen_map/room_gen_map.h"
 #include "room_graphs/room_graphs.h"
@@ -93,6 +94,9 @@ static void Game_Room_Unload(int room)
         case ROOM_SAVE_SLOTS:
             Room_Save_Slots_Unload();
             break;
+        case ROOM_CREDITS:
+            Room_Credits_Unload();
+            break;
         default:
             UGBA_Assert(0);
             return;
@@ -139,6 +143,9 @@ static void Game_Room_Load(int room)
             break;
         case ROOM_SAVE_SLOTS:
             Room_Save_Slots_Load();
+            break;
+        case ROOM_CREDITS:
+            Room_Credits_Load();
             break;
         default:
             UGBA_Assert(0);
@@ -286,6 +293,9 @@ static void Game_Room_Handle_Current(void)
             break;
         case ROOM_SAVE_SLOTS:
             Room_Save_Slots_Handle();
+            break;
+        case ROOM_CREDITS:
+            Room_Credits_Handle();
             break;
         default:
             UGBA_Assert(0);

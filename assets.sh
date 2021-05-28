@@ -63,6 +63,7 @@ tools/build/png2maps/png2maps \
     maps/bank_repay_menu_bg.png \
     maps/budget_menu_bg.png \
     maps/city_stats_bg.png \
+    maps/credits_bg.png \
     maps/generate_map_bg.png \
     maps/graphs_frame_bg.png \
     maps/main_menu_bg.png \
