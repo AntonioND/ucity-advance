@@ -114,6 +114,17 @@ int MessageQueueIsEmpty(void)
     return 1;
 }
 
+void PersistentMessageFlagAsShown(message_ids id)
+{
+    // Message IDs start at 1, so subtract 1.
+
+    int which_byte = (id - 1) / 8;
+    int which_bit = (id - 1) % 8;
+    uint8_t bit_mask = 1 << which_bit;
+
+    persistent_msg_flags[which_byte] |= bit_mask;
+}
+
 // The message ID should be a valid persistent message ID
 void PersistentMessageShow(message_ids id)
 {

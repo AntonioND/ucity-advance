@@ -12,6 +12,7 @@
 #include "text_utils.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
+#include "room_game/text_messages.h"
 #include "room_game/tileset_info.h"
 #include "room_input/room_input.h"
 #include "simulation/simulation_common.h"
@@ -36,6 +37,8 @@
 #define SCENARIOS_BG_TILES_BASE         MEM_BG_TILES_BLOCK_ADDR(3)
 #define SCENARIOS_BG_MAP_BASE           MEM_BG_MAP_BLOCK_ADDR(28)
 
+#define MAX_PERMANENT_MSGS_TO_DISABLE   (5)
+
 typedef struct {
     const void *map;
     const char *name;
@@ -46,7 +49,7 @@ typedef struct {
     int payments_left;
     int amount_per_payment;
     int technology_level;
-    // TODO: permanent_msg_flags_to_disable
+    int permanent_msgs_to_disable[MAX_PERMANENT_MSGS_TO_DISABLE];
 } scenario_info;
 
 typedef enum {
@@ -62,24 +65,68 @@ typedef enum {
 
 static const scenario_info scenarios[] = {
     [SCENARIO_ROCK_RIVER] = {
-        scenario_0_rock_river_map, "Rock River", 14, 33, 20000,
-        0, 1950, 10, 0, 0,
-        0,
+        .map                = scenario_0_rock_river_map,
+        .name               = "Rock River",
+        .start_scroll_x     = 14,
+        .start_scroll_y     = 33,
+        .start_funds        = 20000,
+        .start_month        = 0,
+        .start_year         = 1950,
+        .tax_percentage     = 10,
+        .payments_left      = 0,
+        .amount_per_payment = 0,
+        .technology_level   = 0,
+        .permanent_msgs_to_disable = {
+            ID_MSG_CLASS_TOWN, ID_MSG_CLASS_CITY, 0, 0, 0
+        }
     },
     [SCENARIO_BORINGTOWN] = {
-        scenario_1_boringtown_map , "Boringtown", 24, 24, 9000,
-        3, 1975, 10, 0, 0,
-        10,
+        .map                = scenario_1_boringtown_map,
+        .name               = "Boringtown",
+        .start_scroll_x     = 24,
+        .start_scroll_y     = 24,
+        .start_funds        = 9000,
+        .start_month        = 3,
+        .start_year         = 1975,
+        .tax_percentage     = 10,
+        .payments_left      = 0,
+        .amount_per_payment = 0,
+        .technology_level   = 10,
+        .permanent_msgs_to_disable = {
+            ID_MSG_CLASS_TOWN, 0, 0, 0, 0
+        }
     },
     [SCENARIO_PORTVILLE] = {
-        scenario_2_portville_map, "Portville", 7, 26, 20000,
-        0, 1960, 10, 0, 0,
-        10
+        .map                = scenario_2_portville_map,
+        .name               = "Portville",
+        .start_scroll_x     = 7,
+        .start_scroll_y     = 26,
+        .start_funds        = 20000,
+        .start_month        = 0,
+        .start_year         = 1960,
+        .tax_percentage     = 10,
+        .payments_left      = 0,
+        .amount_per_payment = 0,
+        .technology_level   = 10,
+        .permanent_msgs_to_disable = {
+            ID_MSG_CLASS_TOWN, ID_MSG_CLASS_CITY, 0, 0, 0
+        }
     },
     [SCENARIO_NEWDALE] = {
-        scenario_3_newdale_map, "Newdale", 22, 23, 20000,
-        0, 1950, 10, 0, 0,
-        0
+        .map                = scenario_3_newdale_map,
+        .name               = "Newdale",
+        .start_scroll_x     = 22,
+        .start_scroll_y     = 23,
+        .start_funds        = 20000,
+        .start_month        = 0,
+        .start_year         = 1950,
+        .tax_percentage     = 10,
+        .payments_left      = 0,
+        .amount_per_payment = 0,
+        .technology_level   = 0,
+        .permanent_msgs_to_disable = {
+            ID_MSG_CLASS_TOWN, ID_MSG_CLASS_CITY, 0, 0, 0
+        }
     },
 };
 
@@ -351,7 +398,12 @@ void Room_Scenarios_Handle(void)
         Room_Game_Set_City_Economy(s->start_funds, s->tax_percentage,
                                    s->payments_left, s->amount_per_payment);
         Technology_SetLevel(s->technology_level);
-        // TODO: Message flags
+        for (int i = 0; i < MAX_PERMANENT_MSGS_TO_DISABLE; i++)
+        {
+            int id = s->permanent_msgs_to_disable[i];
+            if (id != 0)
+                PersistentMessageFlagAsShown(id);
+        }
         Simulation_NegativeBudgetCountSet(0);
         Simulation_GraphsResetAll();
         Game_Room_Prepare_Switch(ROOM_GAME);

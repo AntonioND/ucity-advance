@@ -42,6 +42,7 @@ void MessageQueueAdd(int id);
 const char *MessageQueueGet(void);
 int MessageQueueIsEmpty(void);
 
+void PersistentMessageFlagAsShown(message_ids id);
 void PersistentMessageShow(message_ids id);
 void PersistentYearlyMessagesReset(void);
 
