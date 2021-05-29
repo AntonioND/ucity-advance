@@ -1174,8 +1174,6 @@ void Room_Game_Settings_Load(void)
     Simulation_DisastersSetEnabled(sav->disasters_enabled);
     Room_Game_SetAnimationsEnabled(sav->animations_enabled);
     Audio_Enable_Set(sav->music_enabled);
-
-    sav->music_enabled;
 }
 
 void Room_Game_Settings_Save(void)
