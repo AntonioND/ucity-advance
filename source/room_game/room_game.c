@@ -38,7 +38,8 @@
 
 // Assets
 
-#include "maps/city_tileset.h"
+#include "maps/city/city_map_tiles_bin.h"
+#include "maps/city/city_map_palette_bin.h"
 
 // ----------------------------------------------------------------------------
 
@@ -243,10 +244,12 @@ void Room_Game_Request_Scroll(int scx, int scy)
 static void Load_City_Graphics(void)
 {
     // Load the palettes
-    VRAM_BGPalette16Copy(city_tileset_pal, city_tileset_pal_size, CITY_MAP_PALETTE);
+    VRAM_BGPalette16Copy(city_map_palette_bin, city_map_palette_bin_size,
+                         CITY_MAP_PALETTE);
 
     // Load the tiles
-    SWI_CpuSet_Copy16(city_tileset_tiles, (void *)CITY_TILES_BASE, city_tileset_tiles_size);
+    SWI_CpuSet_Copy16(city_map_tiles_bin, (void *)CITY_TILES_BASE,
+                      city_map_tiles_bin_size);
 
     // Setup background
     BG_RegularInit(2, BG_REGULAR_512x512, BG_16_COLORS,

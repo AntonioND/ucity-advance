@@ -12,11 +12,12 @@
 
 // Assets
 
-#include "maps/city_tileset.h"
-#include "maps/scenario_0_rock_river.h"
-#include "maps/scenario_1_boringtown.h"
-#include "maps/scenario_2_portville.h"
-#include "maps/scenario_3_newdale.h"
+#include "maps/city/city_map_tiles_bin.h"
+#include "maps/city/city_map_palette_bin.h"
+#include "maps/city/scenario_0_rock_river_bin.h"
+#include "maps/city/scenario_1_boringtown_bin.h"
+#include "maps/city/scenario_2_portville_bin.h"
+#include "maps/city/scenario_3_newdale_bin.h"
 
 // ----------------------------------------------------------------------------
 
@@ -33,17 +34,19 @@ void Room_Intro_Load(void)
     // --------------------
 
     // Load the palettes
-    VRAM_BGPalette16Copy(city_tileset_pal, city_tileset_pal_size, CITY_MAP_PALETTE);
+    VRAM_BGPalette16Copy(city_map_palette_bin, city_map_palette_bin_size,
+                         CITY_MAP_PALETTE);
 
     // Load the tiles
-    SWI_CpuSet_Copy16(city_tileset_tiles, (void *)CITY_TILES_BASE, city_tileset_tiles_size);
+    SWI_CpuSet_Copy16(city_map_tiles_bin, (void *)CITY_TILES_BASE,
+                      city_map_tiles_bin_size);
 
     // Load the map
     const void *maps[] = {
-        scenario_0_rock_river_map,
-        scenario_1_boringtown_map,
-        scenario_2_portville_map,
-        scenario_3_newdale_map,
+        scenario_0_rock_river_bin,
+        scenario_1_boringtown_bin,
+        scenario_2_portville_bin,
+        scenario_3_newdale_bin,
     };
 
     copy_map_to_sbb(maps[rand() & 3], (void *)CITY_MAP_BASE,

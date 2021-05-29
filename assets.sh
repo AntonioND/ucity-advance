@@ -20,21 +20,17 @@ popd
 
 # Prepare destination folder
 
+export SUPERFAMICONV=../SuperFamiconv/bin/superfamiconv
+
 OUT_DIR=built_assets
 rm -rf ${OUT_DIR}
 mkdir ${OUT_DIR}
 
 # Convert city tileset and maps
 
-mkdir ${OUT_DIR}/maps
-
-tools/build/png2maps/png2maps \
-    ${OUT_DIR}/maps/ \
-    maps/city_tileset.png \
-    maps/city_tileset_map.png \
-    maps/scenario_0_rock_river.png maps/scenario_1_boringtown.png \
-    maps/scenario_2_portville.png maps/scenario_3_newdale.png \
-    maps/test_map.png \
+OUT_DIR_MAPS_CITY=${OUT_DIR}/maps/city
+mkdir -p ${OUT_DIR_MAPS_CITY}
+bash maps/city/convert.sh ${OUT_DIR_MAPS_CITY}
 
 # Convert sprite sheets
 

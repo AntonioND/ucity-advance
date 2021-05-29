@@ -16,7 +16,6 @@
 
 #include "maps/main_menu_bg.h"
 #include "maps/minimap_frame_tiles.h"
-#include "maps/test_map.h"
 
 #define BG_MAIN_MENU_PALETTE                (0)
 #define BG_MAIN_MENU_TILES_BASE             MEM_BG_TILES_BLOCK_ADDR(3)

@@ -24,10 +24,10 @@
 #include "maps/scenario_selection_bg.h"
 #include "maps/minimap_frame_tiles.h"
 
-#include "maps/scenario_0_rock_river.h"
-#include "maps/scenario_1_boringtown.h"
-#include "maps/scenario_2_portville.h"
-#include "maps/scenario_3_newdale.h"
+#include "maps/city/scenario_0_rock_river_bin.h"
+#include "maps/city/scenario_1_boringtown_bin.h"
+#include "maps/city/scenario_2_portville_bin.h"
+#include "maps/city/scenario_3_newdale_bin.h"
 
 #define FRAMEBUFFER_TILES_BASE          MEM_BG_TILES_BLOCK_ADDR(0)
 #define FRAMEBUFFER_MAP_BASE            MEM_BG_MAP_BLOCK_ADDR(16)
@@ -65,7 +65,7 @@ typedef enum {
 
 static const scenario_info scenarios[] = {
     [SCENARIO_ROCK_RIVER] = {
-        .map                = scenario_0_rock_river_map,
+        .map                = scenario_0_rock_river_bin,
         .name               = "Rock River",
         .start_scroll_x     = 14,
         .start_scroll_y     = 33,
@@ -81,7 +81,7 @@ static const scenario_info scenarios[] = {
         }
     },
     [SCENARIO_BORINGTOWN] = {
-        .map                = scenario_1_boringtown_map,
+        .map                = scenario_1_boringtown_bin,
         .name               = "Boringtown",
         .start_scroll_x     = 24,
         .start_scroll_y     = 24,
@@ -97,7 +97,7 @@ static const scenario_info scenarios[] = {
         }
     },
     [SCENARIO_PORTVILLE] = {
-        .map                = scenario_2_portville_map,
+        .map                = scenario_2_portville_bin,
         .name               = "Portville",
         .start_scroll_x     = 7,
         .start_scroll_y     = 26,
@@ -113,7 +113,7 @@ static const scenario_info scenarios[] = {
         }
     },
     [SCENARIO_NEWDALE] = {
-        .map                = scenario_3_newdale_map,
+        .map                = scenario_3_newdale_bin,
         .name               = "Newdale",
         .start_scroll_x     = 22,
         .start_scroll_y     = 23,
