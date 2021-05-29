@@ -240,7 +240,7 @@ void Room_Game_Request_Scroll(int scx, int scy)
     BG_RegularScrollSet(2, mapx, mapy);
 }
 
-void Load_City_Graphics(void)
+static void Load_City_Graphics(void)
 {
     // Load the palettes
     VRAM_BGPalette16Copy(city_tileset_pal, city_tileset_pal_size, CITY_MAP_PALETTE);

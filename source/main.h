@@ -19,6 +19,7 @@ typedef enum {
     ROOM_GRAPHS,
     ROOM_SAVE_SLOTS,
     ROOM_CREDITS,
+    ROOM_INTRO,
 } room_type;
 
 void Game_Room_Prepare_Switch(room_type new_room);

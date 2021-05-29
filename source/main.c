@@ -18,6 +18,7 @@
 #include "room_gen_map/room_gen_map.h"
 #include "room_graphs/room_graphs.h"
 #include "room_input/room_input.h"
+#include "room_intro/room_intro.h"
 #include "room_main_menu/room_main_menu.h"
 #include "room_minimap/room_minimap.h"
 #include "room_save_slots/room_save_slots.h"
@@ -97,6 +98,9 @@ static void Game_Room_Unload(int room)
         case ROOM_CREDITS:
             Room_Credits_Unload();
             break;
+        case ROOM_INTRO:
+            Room_Intro_Unload();
+            break;
         default:
             UGBA_Assert(0);
             return;
@@ -146,6 +150,10 @@ static void Game_Room_Load(int room)
             break;
         case ROOM_CREDITS:
             Room_Credits_Load();
+            break;
+        case ROOM_INTRO:
+            Room_Intro_Load();
+            Audio_Song_Play(SONG_TITLE_MOD);
             break;
         default:
             UGBA_Assert(0);
@@ -297,6 +305,9 @@ static void Game_Room_Handle_Current(void)
         case ROOM_CREDITS:
             Room_Credits_Handle();
             break;
+        case ROOM_INTRO:
+            Room_Intro_Handle();
+            break;
         default:
             UGBA_Assert(0);
             return;
@@ -372,7 +383,7 @@ int main(int argc, char *argv[])
 
     Audio_Init();
 
-    Game_Room_Load(ROOM_MAIN_MENU);
+    Game_Room_Load(ROOM_INTRO);
 
     while (1)
     {
