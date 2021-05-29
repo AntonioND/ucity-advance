@@ -38,8 +38,8 @@
 
 // Assets
 
-#include "maps/city/city_map_tiles_bin.h"
 #include "maps/city/city_map_palette_bin.h"
+#include "maps/city/city_map_tiles_bin.h"
 
 // ----------------------------------------------------------------------------
 

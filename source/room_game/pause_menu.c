@@ -17,7 +17,7 @@
 
 // Assets
 
-#include "maps/pause_menu_bg.h"
+#include "maps/pause_menu_bg_bin.h"
 
 #define MENU_MAP_BASE       (TEXT_MAP_BASE + (32 * 32 * 2))
 
@@ -30,9 +30,9 @@ static pause_menu_submenus selected_submenu;
 
 static void PauseMenuClear(void)
 {
-    for (size_t i = 0; i < (pause_menu_bg_map_size / 2); i++)
+    for (size_t i = 0; i < (pause_menu_bg_bin_size / 2); i++)
     {
-        const uint16_t *src = (const uint16_t *)pause_menu_bg_map;
+        const uint16_t *src = (const uint16_t *)pause_menu_bg_bin;
         uint16_t *dst = (void *)MENU_MAP_BASE;
 
         dst[i] =  MAP_REGULAR_TILE(src[i]) | MAP_REGULAR_PALETTE(TEXT_PALETTE);

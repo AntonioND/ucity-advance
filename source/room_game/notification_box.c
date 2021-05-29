@@ -8,7 +8,7 @@
 
 // Assets
 
-#include "maps/notification_bg.h"
+#include "maps/notification_bg_bin.h"
 
 #define NOTIFICATION_BOX_MAP_BASE   MEM_BG_MAP_BLOCK_ADDR(31)
 
@@ -24,7 +24,7 @@ void Notification_Box_Hide(void)
 
 void Notification_Box_Clear(void)
 {
-    uint16_t *src = (uint16_t *)notification_bg_map;
+    uint16_t *src = (uint16_t *)notification_bg_bin;
     uint16_t *dst = (uint16_t *)NOTIFICATION_BOX_MAP_BASE;
 
     for (int i = 0; i < 32 * 32; i++)

@@ -12,8 +12,8 @@
 
 // Assets
 
-#include "maps/city/city_map_tiles_bin.h"
 #include "maps/city/city_map_palette_bin.h"
+#include "maps/city/city_map_tiles_bin.h"
 #include "maps/city/scenario_0_rock_river_bin.h"
 #include "maps/city/scenario_1_boringtown_bin.h"
 #include "maps/city/scenario_2_portville_bin.h"

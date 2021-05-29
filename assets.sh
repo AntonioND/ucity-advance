@@ -32,6 +32,10 @@ OUT_DIR_MAPS_CITY=${OUT_DIR}/maps/city
 mkdir -p ${OUT_DIR_MAPS_CITY}
 bash maps/city/convert.sh ${OUT_DIR_MAPS_CITY}
 
+OUT_DIR_MAPS=${OUT_DIR}/maps
+mkdir -p ${OUT_DIR_MAPS}
+bash maps/convert.sh ${OUT_DIR_MAPS}
+
 # Convert sprite sheets
 
 mkdir ${OUT_DIR}/sprites
@@ -50,24 +54,6 @@ tools/build/png2sprites/png2sprites \
     ${OUT_DIR}/sprites/ \
     sprites/minimap_menu_tiles.png \
     sprites/minimap_menu_map.png
-
-tools/build/png2maps/png2maps \
-    ${OUT_DIR}/maps/ \
-    maps/minimap_frame_tiles.png \
-    maps/minimap_frame_bg.png \
-    maps/bank_offer_menu_bg.png \
-    maps/bank_repay_menu_bg.png \
-    maps/budget_menu_bg.png \
-    maps/city_stats_bg.png \
-    maps/credits_bg.png \
-    maps/generate_map_bg.png \
-    maps/graphs_frame_bg.png \
-    maps/main_menu_bg.png \
-    maps/name_input_menu_bg.png \
-    maps/notification_bg.png \
-    maps/pause_menu_bg.png \
-    maps/save_menu_bg.png \
-    maps/scenario_selection_bg.png
 
 # Convert other graphics
 
