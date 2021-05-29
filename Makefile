@@ -87,7 +87,8 @@ CFLAGS      := -g -O2 -flto -mcpu=arm7tdmi -mtune=arm7tdmi \
 CXXFLAGS    := $(CFLAGS) -fno-rtti -fno-exceptions
 
 ASFLAGS     := -g $(ARCH)
-LDFLAGS     := -g -flto $(ARCH) -Wl,-Map,$(BUILDDIR)/$(TARGET).map
+LDFLAGS     := -g -flto $(ARCH) -Wl,-Map,$(BUILDDIR)/$(TARGET).map \
+               -Wno-stringop-overflow -Wno-stringop-overread
 
 # Build options
 # -------------
