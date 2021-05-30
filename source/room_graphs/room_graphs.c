@@ -13,11 +13,11 @@
 
 // Assets
 
-#include "sprites/graph_menu_map.h"
-#include "sprites/graph_menu_tiles.h"
 #include "maps/graphs_frame_bg_bin.h"
 #include "maps/minimap_frame_palette_bin.h"
 #include "maps/minimap_frame_tiles_bin.h"
+#include "sprites/graphs_menu/graphs_menu_sprites_palette_bin.h"
+#include "sprites/graphs_menu/graphs_menu_sprites_tiles_bin.h"
 
 #define FRAMEBUFFER_TILES_BASE          MEM_BG_TILES_BLOCK_ADDR(0)
 #define FRAMEBUFFER_MAP_BASE            MEM_BG_MAP_BLOCK_ADDR(16)
@@ -29,7 +29,7 @@
 
 #define GRAPH_MENU_ICONS_PALETTE        (0)
 #define GRAPH_MENU_ICONS_TILES_BASE     MEM_BG_TILES_BLOCK_ADDR(5)
-#define GRAPH_MENU_ICONS_TILES_INDEX    (512)
+#define GRAPH_MENU_ICONS_TILES_INDEX    (256)
 
 typedef enum {
     MODE_SELECTING,
@@ -57,7 +57,6 @@ static void Room_Graphs_Refresh_Icons(void)
 
     for (int i = 0; i < 3; i++)
     {
-        int pal = graph_menu_map_map[i * 4] >> 12;
         int tile = i * 4 + GRAPH_MENU_ICONS_TILES_INDEX;
         if (i == selected_graph)
         {
@@ -68,13 +67,13 @@ static void Room_Graphs_Refresh_Icons(void)
             SWI_ObjAffineSet_OAM(&objsrc_init[0], MEM_OAM, 1);
 
             OBJ_AffineInit(i, x - 8, y - 8,
-                           OBJ_SIZE_16x16, 0, OBJ_16_COLORS,
-                           pal, tile, 1);
+                           OBJ_SIZE_16x16, 0, OBJ_256_COLORS,
+                           0, tile, 1);
             OBJ_PrioritySet(i, 0);
         }
         else
         {
-            OBJ_RegularInit(i, x, y, OBJ_SIZE_16x16, OBJ_16_COLORS, pal, tile);
+            OBJ_RegularInit(i, x, y, OBJ_SIZE_16x16, OBJ_256_COLORS, 0, tile);
             OBJ_PrioritySet(i, 1);
         }
         x += 16;
@@ -336,9 +335,9 @@ void Room_Graphs_Load(void)
     // ----------
 
     // Load the tiles
-    SWI_CpuSet_Copy16(graph_menu_tiles_tiles,
+    SWI_CpuSet_Copy16(graphs_menu_sprites_tiles_bin,
                       (void *)GRAPH_MENU_ICONS_TILES_BASE,
-                      graph_menu_tiles_tiles_size);
+                      graphs_menu_sprites_tiles_bin_size);
 
     // Load frame map
     // --------------
@@ -415,8 +414,8 @@ void Room_Graphs_Load(void)
     // -------------
 
     // Load icon palettes
-    VRAM_OBJPalette16Copy(graph_menu_tiles_pal, graph_menu_tiles_pal_size,
-                          GRAPH_MENU_ICONS_PALETTE);
+    VRAM_OBJPalette256Copy(graphs_menu_sprites_palette_bin,
+                           graphs_menu_sprites_palette_bin_size);
 
     // Load frame palettes
     SWI_CpuSet_Copy16(minimap_frame_palette_bin,
