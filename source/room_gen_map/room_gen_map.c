@@ -10,6 +10,7 @@
 #include "main.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
+#include "room_game/text_messages.h"
 #include "room_game/tileset_info.h"
 #include "room_gen_map/generate_map.h"
 #include "room_input/room_input.h"
@@ -306,7 +307,7 @@ void Room_Generate_Map_Handle(void)
                 Room_Game_Set_City_Date(0, 1950);
                 Room_Game_Set_City_Economy(20000, 10, 0, 0);
                 Technology_SetLevel(0);
-                // TODO: Message flags
+                PersistentMessageFlagsReset();
                 Simulation_NegativeBudgetCountSet(0);
                 Simulation_GraphsResetAll();
                 Game_Room_Prepare_Switch(ROOM_GAME);

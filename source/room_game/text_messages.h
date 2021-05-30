@@ -46,6 +46,7 @@ void PersistentMessageFlagAsShown(message_ids id);
 void PersistentMessageShow(message_ids id);
 void PersistentYearlyMessagesReset(void);
 
+void PersistentMessageFlagsReset(void);
 void PersistentMessageFlagsSet(uint8_t *flags);
 void PersistentMessageFlagsGet(const uint8_t *flags);
 

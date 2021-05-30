@@ -152,6 +152,11 @@ void PersistentYearlyMessagesReset(void)
         persistent_msg_flags[i] = 0;
 }
 
+void PersistentMessageFlagsReset(void)
+{
+    memset(persistent_msg_flags, 0, BYTES_SAVE_PERSISTENT_MSG);
+}
+
 void PersistentMessageFlagsSet(uint8_t *flags)
 {
     memcpy(flags, persistent_msg_flags, BYTES_SAVE_PERSISTENT_MSG);
