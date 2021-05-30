@@ -16,8 +16,8 @@
 
 // Assets
 
-#include "sprites/building_menu_tiles.h"
-#include "sprites/building_menu_map.h"
+#include "sprites/building_menu/building_menu_sprites_palette_bin.h"
+#include "sprites/building_menu/building_menu_sprites_tiles_bin.h"
 
 int selected_group = 0;
 int selected_group_icon = 0;
@@ -183,15 +183,14 @@ void BuildIconPlace(int building, int x, int y)
 
     if (icon == -1)
     {
-        OBJ_RegularInit(127, 0, 256, OBJ_SIZE_16x16, OBJ_16_COLORS, 0, 0);
+        OBJ_RegularInit(127, 0, 256, OBJ_SIZE_16x16, OBJ_256_COLORS, 0, 0);
     }
     else
     {
         int icon_base_tile = icon * 4;
-        int pal = building_menu_map_map[icon_base_tile] >> 12;
 
-        OBJ_RegularInit(127, x, y, OBJ_SIZE_16x16, OBJ_16_COLORS,
-                        pal, icon_base_tile);
+        OBJ_RegularInit(127, x, y, OBJ_SIZE_16x16, OBJ_256_COLORS,
+                        0, icon_base_tile);
         OBJ_PrioritySet(127, 0);
     }
 }
@@ -213,10 +212,9 @@ void BuildSelectMenuShow(void)
 
         {
             int icon_base_tile = group * 4;
-            int pal = building_menu_map_map[icon_base_tile] >> 12;
 
-            OBJ_RegularInit(index, x, y, OBJ_SIZE_16x16, OBJ_16_COLORS,
-                            pal, icon_base_tile);
+            OBJ_RegularInit(index, x, y, OBJ_SIZE_16x16, OBJ_256_COLORS,
+                            0, icon_base_tile);
             OBJ_PrioritySet(index, 2);
 
             x += 16;
@@ -239,7 +237,6 @@ void BuildSelectMenuShow(void)
                 continue;
 
             int icon_base_tile = menu[group].icon[i] * 4;
-            int pal = building_menu_map_map[icon_base_tile] >> 12;
 
             if (i == selected_group_icon)
             {
@@ -250,15 +247,15 @@ void BuildSelectMenuShow(void)
                 SWI_ObjAffineSet_OAM(&objsrc_init[0], MEM_OAM, 1);
 
                 OBJ_AffineInit(index, x - 8, y - 8,
-                               OBJ_SIZE_16x16, 0, OBJ_16_COLORS,
-                               pal, icon_base_tile, 1);
+                               OBJ_SIZE_16x16, 0, OBJ_256_COLORS,
+                               0, icon_base_tile, 1);
                 OBJ_PrioritySet(index, 1);
                 x += 16;
             }
             else
             {
-                OBJ_RegularInit(index, x, y, OBJ_SIZE_16x16, OBJ_16_COLORS,
-                                pal, icon_base_tile);
+                OBJ_RegularInit(index, x, y, OBJ_SIZE_16x16, OBJ_256_COLORS,
+                                0, icon_base_tile);
                 OBJ_PrioritySet(index, 2);
                 x += 16;
             }
@@ -291,12 +288,13 @@ void BuildSelectMenuLoadGfx(void)
 #define SPRITES_TILES_BASE  MEM_BG_TILES_BLOCK_ADDR(4)
 
     // Load the palettes
-    VRAM_OBJPalette16Copy(building_menu_tiles_pal, building_menu_tiles_pal_size,
-                          building_menu_tiles_pal_start);
+    VRAM_OBJPalette256Copy(building_menu_sprites_palette_bin,
+                           building_menu_sprites_palette_bin_size);
 
     // Load the tiles
-    SWI_CpuSet_Copy16(building_menu_tiles_tiles, (void *)SPRITES_TILES_BASE,
-                      building_menu_tiles_tiles_size);
+    SWI_CpuSet_Copy16(building_menu_sprites_tiles_bin,
+                      (void *)SPRITES_TILES_BASE,
+                      building_menu_sprites_tiles_bin_size);
 }
 
 int BuildMenuSelection(void)
