@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#
 # SPDX-License-Identifier: GPL-3.0-only
 #
 # Copyright (c) 2021, Antonio Niño Díaz
@@ -18,13 +18,20 @@ make
 
 popd
 
-# Prepare destination folder
+# Paths to tools
 
 export SUPERFAMICONV=../SuperFamiconv/bin/superfamiconv
+export PNGS2STRIP=tools/build/pngs2strip/pngs2strip
+
+# Prepare destination folder
 
 OUT_DIR=built_assets
 rm -rf ${OUT_DIR}
 mkdir ${OUT_DIR}
+
+# Generate city tileset
+
+bash maps/buildings/convert.sh maps/city
 
 # Convert city tileset and maps
 
