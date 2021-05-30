@@ -10,7 +10,8 @@
 
 // Assets
 
-#include "graphics/text.h"
+#include "maps/status_bar/text_palette_bin.h"
+#include "maps/status_bar/text_tiles_bin.h"
 
 static int status_bar_position = STATUS_BAR_UP;
 static int status_bar_hidden = 1;
@@ -18,10 +19,11 @@ static int status_bar_hidden = 1;
 void StatusBarLoad(void)
 {
     // Load the palettes
-    VRAM_BGPalette16Copy(textPal, textPalLen, TEXT_PALETTE);
+    VRAM_BGPalette16Copy(text_palette_bin, text_palette_bin_size, TEXT_PALETTE);
 
     // Load the tiles
-    SWI_CpuSet_Copy16(textTiles, (void *)TEXT_TILES_BASE, textTilesLen);
+    SWI_CpuSet_Copy16(text_tiles_bin, (void *)TEXT_TILES_BASE,
+                      text_tiles_bin_size);
 
     // Load the map
 

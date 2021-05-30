@@ -35,19 +35,27 @@ bash maps/buildings/convert.sh maps/city
 
 # Convert maps
 
-OUT_DIR_MAPS_CITY=${OUT_DIR}/maps/city
-mkdir -p ${OUT_DIR_MAPS_CITY}
-bash maps/city/convert.sh ${OUT_DIR_MAPS_CITY}
-
 OUT_DIR_MAPS=${OUT_DIR}/maps
 mkdir -p ${OUT_DIR_MAPS}
 bash maps/convert.sh ${OUT_DIR_MAPS}
+
+OUT_DIR_MAPS_CITY=${OUT_DIR}/maps/city
+mkdir -p ${OUT_DIR_MAPS_CITY}
+bash maps/city/convert.sh ${OUT_DIR_MAPS_CITY}
 
 OUT_DIR_MAPS_INTRO=${OUT_DIR}/maps/intro
 mkdir -p ${OUT_DIR_MAPS_INTRO}
 bash maps/intro/convert.sh ${OUT_DIR_MAPS_INTRO}
 
+OUT_DIR_MAPS_STATUS_BAR=${OUT_DIR}/maps/status_bar
+mkdir -p ${OUT_DIR_MAPS_STATUS_BAR}
+bash maps/status_bar/convert.sh ${OUT_DIR_MAPS_STATUS_BAR}
+
 # Convert sprite sheets
+
+OUT_DIR_SPRITES=${OUT_DIR}/sprites
+mkdir -p ${OUT_DIR_SPRITES}
+bash sprites/convert.sh ${OUT_DIR_SPRITES}
 
 OUT_DIR_SPRITES_BUILDING_MENU=${OUT_DIR}/sprites/building_menu
 mkdir -p ${OUT_DIR_SPRITES_BUILDING_MENU}
@@ -60,18 +68,6 @@ bash sprites/graphs_menu/convert.sh ${OUT_DIR_SPRITES_GRAPHS_MENU}
 OUT_DIR_SPRITES_MINIMAP_MENU=${OUT_DIR}/sprites/minimap_menu
 mkdir -p ${OUT_DIR_SPRITES_MINIMAP_MENU}
 bash sprites/minimap_menu/convert.sh ${OUT_DIR_SPRITES_MINIMAP_MENU}
-
-# Convert other graphics
-
-mkdir ${OUT_DIR}/graphics
-
-pushd ${OUT_DIR}/graphics
-for png in $(find "${BASE_DIR}/graphics/" -name "*.png")
-do
-    echo grit ${png} -ftc -o $(basename ${png} ".png")
-    grit ${png} -ftc -o $(basename ${png} ".png")
-done
-popd
 
 # Convert music
 

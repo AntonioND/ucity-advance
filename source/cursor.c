@@ -6,7 +6,8 @@
 
 // Assets
 
-#include "graphics/cursor.h"
+#include "sprites/cursor_palette_bin.h"
+#include "sprites/cursor_tiles_bin.h"
 
 static int curx = (GBA_SCREEN_W / 2) - 8;
 static int cury = (GBA_SCREEN_H / 2) - 8;
@@ -120,7 +121,7 @@ void Load_Cursor_Graphics(void *tiles_base, int tiles_index)
     Cursor_Hide();
 
     // Load the tiles
-    SWI_CpuSet_Copy16(cursorTiles, tiles_base, cursorTilesLen);
+    SWI_CpuSet_Copy16(cursor_tiles_bin, tiles_base, cursor_tiles_bin_size);
 
     cursor_tiles_index = tiles_index;
 }
@@ -129,5 +130,6 @@ void Load_Cursor_Palette(int pal_index)
 {
     cursor_palette = pal_index;
 
-    VRAM_OBJPalette16Copy(cursorPal, cursorPalLen, pal_index);
+    VRAM_OBJPalette16Copy(cursor_palette_bin, cursor_palette_bin_size,
+                          pal_index);
 }
