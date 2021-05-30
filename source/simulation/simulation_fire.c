@@ -7,6 +7,7 @@
 
 #include <ugba/ugba.h>
 
+#include "sfx.h"
 #include "room_game/building_info.h"
 #include "room_game/draw_building.h"
 #include "room_game/draw_common.h"
@@ -60,7 +61,7 @@ void MapDeleteBuildingFire(int x, int y)
 
     Building_Remove(1, ox, oy);
 
-    // TODO: SFX_FireExplosion()
+    SFX_FireExplosion();
 
     // TODO: Maybe support burning bridges?
 

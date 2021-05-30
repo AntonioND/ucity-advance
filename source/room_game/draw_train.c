@@ -8,6 +8,7 @@
 
 #include "map_utils.h"
 #include "money.h"
+#include "sfx.h"
 #include "room_game/building_info.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
@@ -224,7 +225,7 @@ void MapDrawTrain(int force, int x, int y)
         if (MoneyIsThereEnough(bi->price) == 0)
         {
             // Exit and play "not enough money" sound
-            // TODO: SFX_BuildError();
+            SFX_BuildError();
             return;
         }
     }
@@ -290,6 +291,6 @@ built:
     {
         const building_info *bi = Get_Building_Info(B_Train);
         MoneyReduce(bi->price);
-        // TODO: SFX_Build();
+        SFX_Build();
     }
 }

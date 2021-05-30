@@ -8,6 +8,7 @@
 
 #include "map_utils.h"
 #include "money.h"
+#include "sfx.h"
 #include "room_game/building_info.h"
 #include "room_game/draw_common.h"
 #include "room_game/draw_road.h"
@@ -304,13 +305,12 @@ void CityMapCheckBuildBridge(int force, int x, int y, uint16_t type,
         if (MoneyIsThereEnough(bi->price * (*length)) == 0)
         {
             // Exit and play "not enough money" sound
-            // TODO: SFX_BuildError();
+            SFX_BuildError();
             return;
         }
 
         // Success
-
-        // TODO: SFX_Build()
+        SFX_Build();
     }
 
     return;
@@ -592,9 +592,7 @@ int MapDeleteRoadTrainPowerlines(int force, int x, int y)
         if (MoneyIsThereEnough(bi->price) == 0)
         {
             // Exit and play "not enough money" sound
-            // TODO: SFX_BuildError();
-
-            // Return
+            SFX_BuildError();
             return 1;
         }
     }
@@ -609,7 +607,7 @@ int MapDeleteRoadTrainPowerlines(int force, int x, int y)
     {
         const building_info *bi = Get_Building_Info(B_Delete);
         MoneyReduce(bi->price);
-        // TODO: SFX_Demolish();
+        SFX_Demolish();
     }
 
     return 0;
@@ -763,9 +761,7 @@ void DrawCityDeleteBridge(int force, int x, int y)
         if (MoneyIsThereEnough(total_price) == 0)
         {
             // Exit and play "not enough money" sound
-            // TODO: SFX_BuildError();
-
-            // Return
+            SFX_BuildError();
             return;
         }
     }
@@ -832,7 +828,7 @@ void DrawCityDeleteBridge(int force, int x, int y)
     if (force == 0)
     {
         MoneyReduce(total_price);
-        // TODO: SFX_Demolish();
+        SFX_Demolish();
     }
 
     // Done

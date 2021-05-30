@@ -9,6 +9,7 @@
 
 #include "map_utils.h"
 #include "money.h"
+#include "sfx.h"
 #include "room_game/building_info.h"
 #include "room_game/draw_common.h"
 #include "room_game/draw_port.h"
@@ -46,7 +47,7 @@ int MapDrawBuilding(int forced, int type, int x, int y)
         if (MoneyIsThereEnough(bi->price) == 0)
         {
             // Exit and play "not enough money" sound
-            // TODO: SFX_BuildError();
+            SFX_BuildError();
             return 1;
         }
 
@@ -68,7 +69,7 @@ int MapDrawBuilding(int forced, int type, int x, int y)
                     (type != (TYPE_FIELD | TYPE_HAS_POWER)))
                 {
                     // Exit and play error sound
-                    // TODO: SFX_BuildError();
+                    SFX_BuildError();
                     return 1;
                 }
             }
@@ -102,7 +103,7 @@ int MapDrawBuilding(int forced, int type, int x, int y)
     {
         const building_info *bi = Get_Building_Info(type);
         MoneyReduce(bi->price);
-        // TODO: SFX_Build()
+        SFX_Build();
     }
 
     // Return success
@@ -165,7 +166,7 @@ int MapDeleteBuilding(int forced, int x, int y)
         if (MoneyIsThereEnough(total_price) == 0)
         {
             // Exit and play "not enough money" sound
-            // TODO: SFX_BuildError();
+            SFX_BuildError();
 
             // Return error
             return 1;
@@ -189,7 +190,7 @@ int MapDeleteBuilding(int forced, int x, int y)
     if (forced == 0)
     {
         MoneyReduce(total_price);
-        // TODO: SFX_Demolish();
+        SFX_Demolish();
     }
 
     // Return success
@@ -208,7 +209,7 @@ void MapClearDemolishedTile(int forced, int x, int y)
         if (MoneyIsThereEnough(bi->price) == 0)
         {
             // Exit and play "not enough money" sound
-            // TODO: SFX_BuildError();
+            SFX_BuildError();
             return;
         }
     }
@@ -223,7 +224,7 @@ void MapClearDemolishedTile(int forced, int x, int y)
     {
         const building_info *bi = Get_Building_Info(B_Delete);
         MoneyReduce(bi->price);
-        // TODO: SFX_Clear()
+        SFX_Clear();
     }
 }
 

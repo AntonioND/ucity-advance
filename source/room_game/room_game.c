@@ -14,6 +14,7 @@
 #include "money.h"
 #include "map_utils.h"
 #include "save.h"
+#include "sfx.h"
 #include "text_utils.h"
 #include "room_bank/room_bank.h"
 #include "room_game/building_info.h"
@@ -881,7 +882,7 @@ void Room_Game_SlowVBLHandler(void)
                 }
                 else
                 {
-                    // TODO: SFX_WrongSelection()
+                    SFX_WrongSelection();
                 }
             }
 
@@ -964,7 +965,10 @@ void Room_Game_SlowVBLHandler(void)
                     {
                         Room_Save_Slots_Set_Mode(ROOM_SAVE_SLOTS_SAVE);
                         Game_Room_Prepare_Switch(ROOM_SAVE_SLOTS);
-                        // TODO: SFX_WrongSelection();
+                    }
+                    else
+                    {
+                        SFX_WrongSelection();
                     }
                     return;
                 case PAUSE_MENU_MAIN_MENU:

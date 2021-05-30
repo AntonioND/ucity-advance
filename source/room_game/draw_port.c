@@ -8,6 +8,7 @@
 
 #include "map_utils.h"
 #include "money.h"
+#include "sfx.h"
 #include "room_game/building_info.h"
 #include "room_game/draw_building.h"
 #include "room_game/draw_common.h"
@@ -214,9 +215,7 @@ void MapDeletePort(int force, int x, int y)
         if (MoneyIsThereEnough(total_price) == 0)
         {
             // Exit and play "not enough money" sound
-            // TODO: SFX_BuildError();
-
-            // Return
+            SFX_BuildError();
             return;
         }
     }
@@ -241,6 +240,6 @@ void MapDeletePort(int force, int x, int y)
     if (force == 0)
     {
         MoneyReduce(total_price);
-        // TODO: SFX_Demolish();
+        SFX_Demolish();
     }
 }
