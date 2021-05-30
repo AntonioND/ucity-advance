@@ -8,3 +8,4 @@ cmake_minimum_required(VERSION 3.15)
 
 add_subdirectory(bin2c)
 add_subdirectory(png2sprites)
+add_subdirectory(pngs2strip)
