@@ -18,6 +18,9 @@
 #include "maps/city/scenario_1_boringtown_bin.h"
 #include "maps/city/scenario_2_portville_bin.h"
 #include "maps/city/scenario_3_newdale_bin.h"
+#include "maps/intro/ucity_logo_map_bin.h"
+#include "maps/intro/ucity_logo_palette_bin.h"
+#include "maps/intro/ucity_logo_tiles_bin.h"
 
 // ----------------------------------------------------------------------------
 
@@ -56,6 +59,29 @@ void Room_Intro_Load(void)
     BG_RegularInit(2, BG_REGULAR_512x512, BG_16_COLORS,
                    CITY_TILES_BASE, CITY_MAP_BASE);
 
+    // Load game logo
+    // --------------
+
+#define GAME_LOGO_PALETTE       (10)
+#define GAME_LOGO_TILES_BASE    MEM_BG_TILES_BLOCK_ADDR(2)
+#define GAME_LOGO_MAP_BASE      MEM_BG_MAP_BLOCK_ADDR(30)
+
+    // Load the palettes
+    VRAM_BGPalette16Copy(ucity_logo_palette_bin, ucity_logo_palette_bin_size,
+                         GAME_LOGO_PALETTE);
+
+    // Load the tiles
+    SWI_CpuSet_Copy16(ucity_logo_tiles_bin, (void *)GAME_LOGO_TILES_BASE,
+                      ucity_logo_tiles_bin_size);
+
+    // Load the tiles
+    SWI_CpuSet_Copy16(ucity_logo_map_bin, (void *)GAME_LOGO_MAP_BASE,
+                      ucity_logo_map_bin_size);
+
+    // Setup background
+    BG_RegularInit(0, BG_REGULAR_256x256, BG_16_COLORS,
+                   GAME_LOGO_TILES_BASE, GAME_LOGO_MAP_BASE);
+
     // Initialize room state
     // ---------------------
 
@@ -78,7 +104,7 @@ void Room_Intro_Load(void)
 
     DISP_ModeSet(0);
     DISP_Object1DMappingEnable(1);
-    DISP_LayersEnable(0, 0, 1, 0, 0);
+    DISP_LayersEnable(1, 0, 1, 0, 0);
 }
 
 void Room_Intro_Unload(void)

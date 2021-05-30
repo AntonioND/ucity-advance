@@ -33,7 +33,7 @@ mkdir ${OUT_DIR}
 
 bash maps/buildings/convert.sh maps/city
 
-# Convert city tileset and maps
+# Convert maps
 
 OUT_DIR_MAPS_CITY=${OUT_DIR}/maps/city
 mkdir -p ${OUT_DIR_MAPS_CITY}
@@ -42,6 +42,10 @@ bash maps/city/convert.sh ${OUT_DIR_MAPS_CITY}
 OUT_DIR_MAPS=${OUT_DIR}/maps
 mkdir -p ${OUT_DIR_MAPS}
 bash maps/convert.sh ${OUT_DIR_MAPS}
+
+OUT_DIR_MAPS_INTRO=${OUT_DIR}/maps/intro
+mkdir -p ${OUT_DIR_MAPS_INTRO}
+bash maps/intro/convert.sh ${OUT_DIR_MAPS_INTRO}
 
 # Convert sprite sheets
 
