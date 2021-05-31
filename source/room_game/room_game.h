@@ -121,6 +121,8 @@ int Room_Game_IsSimulationEnabled(void);
 void Room_Game_SetAnimationsEnabled(int value);
 int Room_Game_AreAnimationsEnabled(void);
 
+void Room_Game_Set_Initial_Load_State(void);
+
 void Room_Game_Load(void);
 void Room_Game_Unload(void);
 void Room_Game_Handle(void);

@@ -408,6 +408,7 @@ void Room_Scenarios_Handle(void)
         }
         Simulation_NegativeBudgetCountSet(0);
         Simulation_GraphsResetAll();
+        Room_Game_Set_Initial_Load_State();
         Game_Room_Prepare_Switch(ROOM_GAME);
         return;
     }

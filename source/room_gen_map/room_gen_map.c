@@ -310,6 +310,7 @@ void Room_Generate_Map_Handle(void)
                 PersistentMessageFlagsReset();
                 Simulation_NegativeBudgetCountSet(0);
                 Simulation_GraphsResetAll();
+                Room_Game_Set_Initial_Load_State();
                 Game_Room_Prepare_Switch(ROOM_GAME);
                 return;
             }

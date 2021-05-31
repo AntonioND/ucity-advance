@@ -177,6 +177,7 @@ void Room_Save_Slots_Handle(void)
             // If this is a valid slot, and the city has been loaded
             if (Room_Game_City_Load(selected_slot) != 0)
             {
+                Room_Game_Set_Initial_Load_State();
                 Game_Room_Prepare_Switch(ROOM_GAME);
                 return;
             }

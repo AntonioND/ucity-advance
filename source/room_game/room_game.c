@@ -646,17 +646,19 @@ void Room_Game_Load(void)
     // Refresh some simulation data
     Simulation_CountBuildings();
 
-    // TODO: This shouldn't be done when loading this room. Right now, that
-    // means that whenever the room is left, after returning the settings will
-    // be set to the default settings.
-    simulation_enabled = 1;
-
     frames_left_to_step = 0;
     main_loop_is_busy = 1;
 
     Simulation_RequestDisaster(REQUESTED_DISASTER_NONE);
 
     Room_Game_Set_Mode(MODE_RUNNING);
+}
+
+void Room_Game_Set_Initial_Load_State(void)
+{
+    // Whenever a new city is loaded, enable simulation. Don't re-enable it when
+    // returning to this room from a menu, or from checking minimaps.
+    simulation_enabled = 1;
 }
 
 void Room_Game_Unload(void)
