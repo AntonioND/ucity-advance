@@ -18,7 +18,7 @@
 // combined tile number and palette to be written to VRAM in the background.
 uint16_t City_Tileset_VRAM_Info(uint16_t city_index)
 {
-    // TODO UGBA_Assert(city_index < city_tileset_map_map_height);
+    UGBA_Assert(city_index <= T_LAST);
     uint16_t *ptr = (uint16_t *)city_map_tiles_map_bin;
     return ptr[city_index];
 }

@@ -230,9 +230,11 @@ void BuildingGetCoordinateOrigin(uint16_t tile, int x, int y, int *ox, int *oy);
 #define T_RADIATION_GROUND          482
 #define T_RADIATION_WATER           483
 
+#define T_LAST                      T_RADIATION_WATER
+
 // TODO Unique buildings (only one per map) ?
-#define T_CITY_HALL                 484
-#define T_RESEARCH_CENTRE           500
-#define T_LANDMARK                  510
+//#define T_CITY_HALL                 484
+//#define T_RESEARCH_CENTRE           500
+//#define T_LANDMARK                  510
 
 #endif // ROOM_GAME_TILESET_INFO_H__
