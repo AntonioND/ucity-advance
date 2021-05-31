@@ -45,14 +45,14 @@ void Cursor_Get_Position(int *x, int *y)
 
 void Cursor_Hide(void)
 {
-    OBJ_RegularInit(64, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
-    OBJ_RegularEnableSet(64, 0);
-    OBJ_RegularInit(65, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
-    OBJ_RegularEnableSet(65, 0);
-    OBJ_RegularInit(66, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
-    OBJ_RegularEnableSet(66, 0);
-    OBJ_RegularInit(67, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
-    OBJ_RegularEnableSet(67, 0);
+    OBJ_RegularInit(120, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
+    OBJ_RegularEnableSet(120, 0);
+    OBJ_RegularInit(121, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
+    OBJ_RegularEnableSet(121, 0);
+    OBJ_RegularInit(122, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
+    OBJ_RegularEnableSet(122, 0);
+    OBJ_RegularInit(123, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
+    OBJ_RegularEnableSet(123, 0);
 }
 
 void Cursor_Update(void)
@@ -91,29 +91,29 @@ void Cursor_Refresh(void)
     int x = curx;
     int y = cury;
 
-    OBJ_RegularInit(64, x - 4 - add, y - 4 - add,
+    OBJ_RegularInit(120, x - 4 - add, y - 4 - add,
                     OBJ_SIZE_8x8, OBJ_16_COLORS,
                     cursor_palette, cursor_tiles_index);
-    OBJ_PrioritySet(64, 1);
+    OBJ_PrioritySet(120, 1);
 
-    OBJ_RegularInit(65, x + curw - 4 + add, y - 4 - add,
+    OBJ_RegularInit(121, x + curw - 4 + add, y - 4 - add,
                     OBJ_SIZE_8x8, OBJ_16_COLORS,
                     cursor_palette, cursor_tiles_index);
-    OBJ_RegularHFlipSet(65, 1);
-    OBJ_PrioritySet(65, 1);
+    OBJ_RegularHFlipSet(121, 1);
+    OBJ_PrioritySet(121, 1);
 
-    OBJ_RegularInit(66, x - 4 - add, y + curh - 4 + add,
+    OBJ_RegularInit(122, x - 4 - add, y + curh - 4 + add,
                     OBJ_SIZE_8x8, OBJ_16_COLORS,
                     cursor_palette, cursor_tiles_index);
-    OBJ_RegularVFlipSet(66, 1);
-    OBJ_PrioritySet(66, 1);
+    OBJ_RegularVFlipSet(122, 1);
+    OBJ_PrioritySet(122, 1);
 
-    OBJ_RegularInit(67, x + curw - 4 + add, y + curh - 4 + add,
+    OBJ_RegularInit(123, x + curw - 4 + add, y + curh - 4 + add,
                     OBJ_SIZE_8x8, OBJ_16_COLORS,
                     cursor_palette, cursor_tiles_index);
-    OBJ_RegularHFlipSet(67, 1);
-    OBJ_RegularVFlipSet(67, 1);
-    OBJ_PrioritySet(67, 1);
+    OBJ_RegularHFlipSet(123, 1);
+    OBJ_RegularVFlipSet(123, 1);
+    OBJ_PrioritySet(123, 1);
 }
 
 void Load_Cursor_Graphics(void *tiles_base, int tiles_index)
