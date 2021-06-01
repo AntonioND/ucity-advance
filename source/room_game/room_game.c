@@ -200,8 +200,8 @@ typedef enum {
 
 static room_game_mode current_mode;
 
-static int mapx = 64;
-static int mapy = 64;
+static int mapx = 0;
+static int mapy = 0;
 static int scrollx = 0;
 static int scrolly = 0;
 
