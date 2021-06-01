@@ -132,6 +132,10 @@ void Room_Save_Slots_Load(void)
 
     Room_Save_Slots_Draw();
 
+    // This is a hack so that the ROM contains this magic string. It will be
+    // printed outside of the screen viewport.
+    Room_Save_Slots_Print(1, 21, "SRAM_V110");
+
     // Setup display mode
 
     DISP_ModeSet(1);
