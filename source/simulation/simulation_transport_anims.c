@@ -3,6 +3,7 @@
 // Copyright (c) 2021 Antonio Niño Díaz
 
 #include "room_game/room_game.h"
+#include "simulation/simulation_anim_boats.h"
 #include "simulation/simulation_anim_planes.h"
 #include "simulation/simulation_transport_anims.h"
 
@@ -41,7 +42,7 @@ void Simulation_TransportAnimsInit(void)
 
     PlanesReset();
     //TrainsReset();
-    //BoatsReset();
+    BoatsReset();
 
     // Set scroll reference
 
@@ -63,7 +64,7 @@ void Simulation_TransportAnimsHide(void)
 
     PlanesHide();
     //TrainsHide();
-    //BoatsHide();
+    BoatsHide();
 }
 
 // This refreshes all sprites. It should be used right after the objects are
@@ -81,7 +82,7 @@ void Simulation_TransportAnimsShow(void)
 
     PlanesShow();
     //TrainsShow();
-    //BoatsShow();
+    BoatsShow();
 
     sprites_shown = 1;
 }
@@ -103,7 +104,7 @@ void Simulation_TransportAnimsVBLHandle(void)
 
     PlanesVBLHandle();
     //TrainsVBLHandle();
-    //BoatsVBLHandle();
+    BoatsVBLHandle();
 }
 
 // Handle objects that leave the map and destroy them, create new objects, etc.
@@ -118,7 +119,7 @@ void Simulation_TransportAnimsHandle(void)
 
     PlanesHandle();
     //TrainsHandle();
-    //BoatsHandle();
+    BoatsHandle();
 }
 
 // Update sprites according to the scroll of the background. It checks the
@@ -153,5 +154,5 @@ void Simulation_TransportAnimsScroll(void)
 
     PlanesHandleScroll(deltax, deltay);
     //TrainsHandleScroll(deltax, deltay);
-    //BoatsHandleScroll(deltax, deltay);
+    BoatsHandleScroll(deltax, deltay);
 }
