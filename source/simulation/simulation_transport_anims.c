@@ -5,6 +5,7 @@
 #include "room_game/room_game.h"
 #include "simulation/simulation_anim_boats.h"
 #include "simulation/simulation_anim_planes.h"
+#include "simulation/simulation_anim_trains.h"
 #include "simulation/simulation_transport_anims.h"
 
 // Assets
@@ -41,7 +42,7 @@ void Simulation_TransportAnimsInit(void)
     sprites_shown = 0;
 
     PlanesReset();
-    //TrainsReset();
+    TrainsReset();
     BoatsReset();
 
     // Set scroll reference
@@ -63,7 +64,7 @@ void Simulation_TransportAnimsHide(void)
     sprites_shown = 0;
 
     PlanesHide();
-    //TrainsHide();
+    TrainsHide();
     BoatsHide();
 }
 
@@ -81,7 +82,7 @@ void Simulation_TransportAnimsShow(void)
         return;
 
     PlanesShow();
-    //TrainsShow();
+    TrainsShow();
     BoatsShow();
 
     sprites_shown = 1;
@@ -103,7 +104,7 @@ void Simulation_TransportAnimsVBLHandle(void)
         return;
 
     PlanesVBLHandle();
-    //TrainsVBLHandle();
+    TrainsVBLHandle();
     BoatsVBLHandle();
 }
 
@@ -118,7 +119,7 @@ void Simulation_TransportAnimsHandle(void)
         return;
 
     PlanesHandle();
-    //TrainsHandle();
+    TrainsHandle();
     BoatsHandle();
 }
 
@@ -153,6 +154,6 @@ void Simulation_TransportAnimsScroll(void)
         return;
 
     PlanesHandleScroll(deltax, deltay);
-    //TrainsHandleScroll(deltax, deltay);
+    TrainsHandleScroll(deltax, deltay);
     BoatsHandleScroll(deltax, deltay);
 }
