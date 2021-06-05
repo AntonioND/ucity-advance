@@ -1022,6 +1022,11 @@ void Room_Game_SlowVBLHandler(void)
                     break;
 
                 case OPTIONS_ANIMATIONS_ENABLE:
+                    if (animations_enabled)
+                        Simulation_TransportAnimsHide();
+                    else
+                        Simulation_TransportAnimsInit();
+
                     animations_enabled ^= 1;
                     PauseMenuDraw();
                     break;
