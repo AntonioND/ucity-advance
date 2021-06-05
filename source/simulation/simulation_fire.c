@@ -18,6 +18,7 @@
 #include "simulation/simulation_building_count.h"
 #include "simulation/simulation_meltdown.h"
 #include "simulation/simulation_traffic.h"
+#include "simulation/simulation_transport_anims.h"
 
 // The count saturates to 31 - 1. The number of fire stations used for the
 // calculations is always increased by 1 to make sure that fires end even in a
@@ -179,7 +180,7 @@ void Simulation_FireTryStart(int force)
 
     Simulation_TrafficRemoveAnimationTiles();
 
-    // TODO: Simulation_TransportAnimsHide()
+    Simulation_TransportAnimsHide();
 
     // Enable disaster mode
     // --------------------
@@ -352,9 +353,9 @@ void Simulation_Fire(void)
     // A fire may have destroyed buildings, we need to refresh the counts
     Simulation_CountBuildings();
 
-    // Force reset of all planes to new coordinates
-    // TODO: Simulation_TransportAnimsInit()
-    // TODO: Simulation_TransportAnimsShow()
+    // Force reset of all planes, trains and boats to new coordinates
+    Simulation_TransportAnimsInit();
+    Simulation_TransportAnimsShow();
 }
 
 void Simulation_FireAnimate(void)

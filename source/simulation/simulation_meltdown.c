@@ -16,6 +16,7 @@
 #include "simulation/simulation_building_count.h"
 #include "simulation/simulation_fire.h"
 #include "simulation/simulation_traffic.h"
+#include "simulation/simulation_transport_anims.h"
 
 void Simulation_Radiation(void)
 {
@@ -194,12 +195,12 @@ void Simulation_MeltdownTryStart(int force)
 
             Room_Game_Request_Scroll(scx, scy);
 
-            // Remove all traffic tiles from the mapi and other animations
-            // -----------------------------------------------------------
+            // Remove all traffic tiles from the map and other animations
+            // ----------------------------------------------------------
 
             Simulation_TrafficRemoveAnimationTiles();
 
-            // TODO: Simulation_TransportAnimsHide()
+            Simulation_TransportAnimsHide();
 
             // Enable disaster mode
             // --------------------

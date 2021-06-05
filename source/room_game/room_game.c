@@ -35,6 +35,7 @@
 #include "simulation/simulation_money.h"
 #include "simulation/simulation_technology.h"
 #include "simulation/simulation_traffic.h"
+#include "simulation/simulation_transport_anims.h"
 #include "simulation/simulation_water.h"
 
 // Assets
@@ -127,7 +128,7 @@ static void GameAnimateMapVBLFastHandle(void)
         {
             // This function does a fast update of the position of all sprites,
             // it doesn't handle creation or destruction of objects.
-            // TODO: Simulation_TransportAnimsVBLHandle();
+            Simulation_TransportAnimsVBLHandle();
 
             animation_has_to_update_transport = 1;
         }
@@ -171,7 +172,7 @@ static void GameAnimateMap(void)
 
         if (animation_has_to_update_transport)
         {
-            // TODO: Simulation_TransportAnimsHandle()
+            Simulation_TransportAnimsHandle();
             animation_has_to_update_transport = 0;
         }
 
@@ -526,10 +527,15 @@ void Room_Game_Set_Mode(int mode)
         case MODE_RUNNING:
         {
             BuildSelectMenuHide();
+            BuildIconPlace(0, 240, 160);
             Cursor_Set_Size(8, 8);
             Cursor_Refresh();
             StatusBarClear();
             StatusBarShow();
+            if (simulation_disaster_mode == 0)
+            {
+                Simulation_TransportAnimsShow();
+            }
             break;
         }
         case MODE_WATCH:
@@ -547,6 +553,7 @@ void Room_Game_Set_Mode(int mode)
         case MODE_SELECT_BUILDING:
         {
             Cursor_Hide();
+            Simulation_TransportAnimsHide();
             StatusBarClear();
             BuildModeUpdateStatusBar();
             BuildMenuReset();
@@ -640,6 +647,11 @@ void Room_Game_Load(void)
     Cursor_Reset_Position();
     Cursor_Refresh();
 
+    // Load transportation sprites
+    // -------------------------
+
+    Simulation_TransportLoadGraphics();
+
     // Initialize room state
     // ---------------------
 
@@ -659,6 +671,8 @@ void Room_Game_Set_Initial_Load_State(void)
     // Whenever a new city is loaded, enable simulation. Don't re-enable it when
     // returning to this room from a menu, or from checking minimaps.
     simulation_enabled = 1;
+
+    Simulation_TransportAnimsInit();
 }
 
 void Room_Game_Unload(void)
@@ -809,6 +823,16 @@ void Room_Game_FastVBLHandler(void)
     }
 
     Room_Game_Handle_Drift();
+
+    // If the map scrolls this frame it is needed to update the position of the
+    // sprites for the next frame. At this point we know the scroll of the
+    // background for the next frame, so this function can calculate the
+    // position of the sprites for the next frame. They both will be updated in
+    // the next VBL handler execution.
+    //
+    // This function also handles the non-critical parts of the animation
+    // handling.
+    Simulation_TransportAnimsScroll();
 }
 
 void Room_Game_SlowVBLHandler(void)

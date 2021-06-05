@@ -276,7 +276,7 @@ void BuildSelectMenuShow(void)
 
 void BuildSelectMenuHide(void)
 {
-    for (int i = 0; i < 128; i++)
+    for (int i = 0; i < 64; i++)
     {
         OBJ_RegularInit(i, 0, 200, OBJ_SIZE_8x8, OBJ_16_COLORS, 0, 0);
         OBJ_RegularEnableSet(i, 0);
