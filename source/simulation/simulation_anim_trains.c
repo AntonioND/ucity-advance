@@ -391,11 +391,11 @@ void TrainsHandle(void)
         active_trains++;
     }
 
-    // Spawn trains until the number of enabled trains is equal to half of the
-    // number of train tracks
+    // Spawn trains until the number of enabled trains is equal to the number of
+    // train tracks divided by 32
 
     building_count_info *info = Simulation_CountBuildingsGet();
-    int max_trains = info->train_tracks / 2;
+    int max_trains = info->train_tracks / 64;
 
     if (max_trains > SIMULATION_MAX_TRAINS)
         max_trains = SIMULATION_MAX_TRAINS;
