@@ -20,17 +20,16 @@
 #include "simulation/simulation_traffic.h"
 #include "simulation/simulation_transport_anims.h"
 
-// The count saturates to 31 - 1. The number of fire stations used for the
-// calculations is always increased by 1 to make sure that fires end even in a
-// city with no fire stations.
+// The number of fire stations used for the calculations is always increased by
+// 1 to make sure that fires end even in a city with no fire stations.
 //
 // This number is calculated before the fire starts. In case the fire destroys a
 // fire station, it still counts for the current fire.
 
-#define MAX_USEFUL_NUMBER_FIRE_STATIONS     (30)
+#define FIRE_START_INITIAL_THRESHOLD        (4)
+#define FIRE_END_PER_STATION_MULTIPLIER     (8)
 
-int initial_number_fire_stations;
-int extinguish_fire_probability;
+static int initial_number_fire_stations;
 
 EWRAM_BSS static uint8_t fire_map[CITY_MAP_WIDTH * CITY_MAP_HEIGHT];
 
@@ -109,11 +108,10 @@ void Simulation_FireTryStart(int force)
 
         // The chances of it happening depend on the number of fire stations
 
-        int probabilities;
-        if (initial_number_fire_stations > 4)
+        int probabilities = FIRE_START_INITIAL_THRESHOLD
+                          - (initial_number_fire_stations / 4);
+        if (probabilities < 0)
             probabilities = 0;
-        else
-            probabilities = 4 - initial_number_fire_stations;
 
         probabilities++; // Leave at least a 1 in 256 chance of fire!
 
@@ -297,7 +295,9 @@ void Simulation_Fire(void)
     // Calculate probability of the fire in a tile being extinguished
 
     // Add one fire station so that fire can end even with no fire stations.
-    int extinguish_fire_probability = (initial_number_fire_stations + 1) * 2;
+    int extinguish_fire_probability = (initial_number_fire_stations + 1)
+                                    * FIRE_END_PER_STATION_MULTIPLIER;
+
     if (extinguish_fire_probability > 255)
         extinguish_fire_probability = 255;
 
