@@ -29,6 +29,7 @@
 #include "maps/city/scenario_1_boringtown_bin.h"
 #include "maps/city/scenario_2_portville_bin.h"
 #include "maps/city/scenario_3_newdale_bin.h"
+#include "maps/city/test_map_bin.h"
 
 #define FRAMEBUFFER_TILES_BASE          MEM_BG_TILES_BLOCK_ADDR(0)
 #define FRAMEBUFFER_MAP_BASE            MEM_BG_MAP_BLOCK_ADDR(16)
@@ -61,7 +62,9 @@ typedef enum {
     SCENARIO_PORTVILLE,
     SCENARIO_NEWDALE,
 
-    SCENARIO_MAX = SCENARIO_NEWDALE
+    SCENARIO_MAX = SCENARIO_NEWDALE,
+
+    SCENARIO_TEST_MAP,
 } scenario_enum;
 
 static const scenario_info scenarios[] = {
@@ -127,6 +130,23 @@ static const scenario_info scenarios[] = {
         .technology_level   = 0,
         .permanent_msgs_to_disable = {
             ID_MSG_CLASS_TOWN, ID_MSG_CLASS_CITY, 0, 0, 0
+        }
+    },
+    [SCENARIO_TEST_MAP] = {
+        .map                = test_map_bin,
+        .name               = "Test Map",
+        .start_scroll_x     = 22,
+        .start_scroll_y     = 23,
+        .start_funds        = 99999999,
+        .start_month        = 0,
+        .start_year         = 1950,
+        .tax_percentage     = 10,
+        .payments_left      = 0,
+        .amount_per_payment = 0,
+        .technology_level   = TECH_LEVEL_MAX,
+        .permanent_msgs_to_disable = {
+            ID_MSG_CLASS_TOWN, ID_MSG_CLASS_CITY,
+            ID_MSG_TECH_NUCLEAR, ID_MSG_TECH_FUSION, 0
         }
     },
 };
@@ -383,6 +403,7 @@ void Room_Scenarios_Unload(void)
 void Room_Scenarios_Handle(void)
 {
     uint16_t keys_pressed = KEYS_Pressed();
+    uint16_t keys_held = KEYS_Held();
 
     if (keys_pressed & KEY_B)
     {
@@ -411,6 +432,15 @@ void Room_Scenarios_Handle(void)
         Room_Game_Set_Initial_Load_State();
         Game_Room_Prepare_Switch(ROOM_GAME);
         return;
+    }
+
+    // Cheat code to load test map
+    const uint16_t mask = KEY_SELECT | KEY_L | KEY_UP;
+    if ((keys_held & mask) == mask)
+    {
+        selected_scenario = SCENARIO_TEST_MAP;
+        Draw_User_Interface();
+        Draw_Selected_Map();
     }
 
     if (Key_Autorepeat_Pressed_Left())
