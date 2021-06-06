@@ -5,11 +5,13 @@
 #ifndef DATE_H__
 #define DATE_H__
 
+#include <stdint.h>
+
 const char *DateString(void);
 
-void DateStringMake(char *buf, int month, int year);
+void DateStringMake(char *buf, uint32_t month, uint32_t year);
 
-void DateSet(int month, int year);
+void DateSet(uint32_t month, uint32_t year);
 
 // 0 = January, 11 = December
 int DateGetMonth(void);

@@ -84,7 +84,10 @@ static void Room_Save_Slots_Draw(void)
 
     for (int i = 0; i < 4; i++)
     {
-        city_save_data *city = Save_Data_Get_City(i);
+        volatile city_save_data *sav_city = Save_Data_Get_City(i);
+        city_save_data *city = Save_Data_Get_City_Temporary();
+        Save_Data_Safe_Copy(city, sav_city);
+
         if (city->name[0] == '\0')
         {
             Room_Save_Slots_Print(5, 4 + 4 * i, "              No Data");

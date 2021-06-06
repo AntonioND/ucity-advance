@@ -51,8 +51,10 @@ typedef struct {
 } city_save_data;
 
 typedef struct {
+    // Make sure that all entries here are always read as uint8_t because SRAM
+    // can only be accessed in 8-bit accesses.
     uint8_t     magic_string[MAGIC_STRING_LEN];
-    uint32_t    checksum;
+    uint8_t     checksum[4];
 
     uint8_t     disasters_enabled;
     uint8_t     animations_enabled;
@@ -67,8 +69,13 @@ static_assert(sizeof(save_data) <= 32 * 1024,
 
 // ----------------------------------------------------------------------------
 
-save_data *Save_Data_Get(void);
-city_save_data *Save_Data_Get_City(int index);
+volatile save_data *Save_Data_Get(void);
+volatile city_save_data *Save_Data_Get_City(int index);
+
+city_save_data *Save_Data_Get_City_Temporary(void);
+
+void Save_Data_Safe_Copy(volatile city_save_data *dst,
+                         const volatile city_save_data *src);
 
 void Save_Reset_Checksum(void);
 

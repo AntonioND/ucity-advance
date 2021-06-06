@@ -144,7 +144,7 @@ void Room_Game_Set_City_Name(const char *name);
 
 void Room_Game_Load_City(const void *map, const char *name,
                          int scroll_x, int scroll_y);
-void Room_Game_Set_City_Date(int month, int year);
+void Room_Game_Set_City_Date(uint32_t month, uint32_t year);
 void Room_Game_Set_City_Economy(int money_amount, int tax_percentage,
                                 int loan_payments, int payment_amount);
 

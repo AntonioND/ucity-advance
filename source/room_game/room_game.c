@@ -1086,7 +1086,7 @@ void Room_Game_Load_City(const void *map, const char *name,
     Room_Game_Set_City_Name(name);
 }
 
-void Room_Game_Set_City_Date(int month, int year)
+void Room_Game_Set_City_Date(uint32_t month, uint32_t year)
 {
     DateSet(month, year);
 }
@@ -1104,7 +1104,10 @@ static EWRAM_BSS uint16_t decompressed_map[CITY_MAP_WIDTH * CITY_MAP_HEIGHT];
 // Returns 1 if the city has been loaded correctly
 int Room_Game_City_Load(int slot_index)
 {
-    city_save_data *city = Save_Data_Get_City(slot_index);
+    volatile city_save_data *sav_city = Save_Data_Get_City(slot_index);
+    city_save_data *city = Save_Data_Get_City_Temporary();
+    Save_Data_Safe_Copy(city, sav_city);
+
     if (city->name[0] == '\0')
         return 0;
 
@@ -1154,7 +1157,8 @@ int Room_Game_City_Load(int slot_index)
 
 void Room_Game_City_Save(int slot_index)
 {
-    city_save_data *city = Save_Data_Get_City(slot_index);
+    volatile city_save_data *sav_city = Save_Data_Get_City(slot_index);
+    city_save_data *city = Save_Data_Get_City_Temporary();
 
     memcpy(city->name, city_name, CITY_MAX_NAME_LENGTH);
 
@@ -1203,11 +1207,13 @@ void Room_Game_City_Save(int slot_index)
     }
 
     PersistentMessageFlagsSet(city->persistent_msg_flags);
+
+    Save_Data_Safe_Copy(sav_city, city);
 }
 
 void Room_Game_Settings_Load(void)
 {
-    save_data *sav = Save_Data_Get();
+    volatile save_data *sav = Save_Data_Get();
 
     Simulation_DisastersSetEnabled(sav->disasters_enabled);
     Room_Game_SetAnimationsEnabled(sav->animations_enabled);
@@ -1216,7 +1222,7 @@ void Room_Game_Settings_Load(void)
 
 void Room_Game_Settings_Save(void)
 {
-    save_data *sav = Save_Data_Get();
+    volatile save_data *sav = Save_Data_Get();
 
     sav->disasters_enabled = Simulation_AreDisastersEnabled();
     sav->animations_enabled = Room_Game_AreAnimationsEnabled();

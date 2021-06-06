@@ -2,6 +2,7 @@
 //
 // Copyright (c) 2021, Antonio Niño Díaz
 
+#include <stdint.h>
 #include <string.h>
 
 #include "text_utils.h"
@@ -41,7 +42,7 @@ const char *DateString(void)
     return date_str;
 }
 
-void DateStringMake(char *buf, int month, int year)
+void DateStringMake(char *buf, uint32_t month, uint32_t year)
 {
     buf[0] = '\0';
 
@@ -54,7 +55,7 @@ void DateStringMake(char *buf, int month, int year)
     Print_Integer_Decimal(&buf[l], year);
 }
 
-void DateSet(int month, int year)
+void DateSet(uint32_t month, uint32_t year)
 {
     date_month = month;
     date_year = year;
