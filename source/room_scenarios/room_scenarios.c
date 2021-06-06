@@ -381,6 +381,7 @@ void Room_Scenarios_Load(void)
 
     // Initialize state
 
+    selected_scenario = SCENARIO_MIN;
     Draw_User_Interface();
     Draw_Selected_Map();
 
