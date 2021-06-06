@@ -43,6 +43,7 @@ ${SUPERFAMICONV} map \
     --in-palette ${OUT}/city_map_palette.bin \
     --in-tiles ${OUT}/city_map_tiles.bin \
     --out-data ${OUT}/city_map_tiles_map.bin \
+    --no-flip \
     --verbose
 
 ${SUPERFAMICONV} map \
@@ -57,6 +58,7 @@ ${SUPERFAMICONV} map \
     --in-palette ${OUT}/city_map_palette.bin \
     --in-tiles ${OUT}/city_map_tiles.bin \
     --out-data ${OUT}/scenario_0_rock_river.bin \
+    --no-flip \
     --verbose
 
 ${SUPERFAMICONV} map \
@@ -85,6 +87,7 @@ ${SUPERFAMICONV} map \
     --in-palette ${OUT}/city_map_palette.bin \
     --in-tiles ${OUT}/city_map_tiles.bin \
     --out-data ${OUT}/scenario_2_portville.bin \
+    --no-flip \
     --verbose
 
 ${SUPERFAMICONV} map \
@@ -99,6 +102,7 @@ ${SUPERFAMICONV} map \
     --in-palette ${OUT}/city_map_palette.bin \
     --in-tiles ${OUT}/city_map_tiles.bin \
     --out-data ${OUT}/scenario_3_newdale.bin \
+    --no-flip \
     --verbose
 
 ${SUPERFAMICONV} map \
@@ -107,10 +111,11 @@ ${SUPERFAMICONV} map \
     --tile-width 8 --tile-height 8 \
     --tile-base-offset 0 \
     --palette-base-offset 0 \
-    --map-width 64 \
-    --map-height 64 \
+    --map-width 64 --map-height 64 \
+    --split-width 64 --split-height 64 \
     --in-image ${IN}/test_map.png \
     --in-palette ${OUT}/city_map_palette.bin \
     --in-tiles ${OUT}/city_map_tiles.bin \
     --out-data ${OUT}/test_map.bin \
+    --no-flip \
     --verbose
