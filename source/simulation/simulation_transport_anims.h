@@ -7,9 +7,9 @@
 
 #include <assert.h>
 
-#define SIMULATION_MAX_PLANES           4 // They all must be greater than 0
-#define SIMULATION_MAX_TRAINS           5
-#define SIMULATION_MAX_BOATS            4
+#define SIMULATION_MAX_PLANES           5 // They all must be greater than 0
+#define SIMULATION_MAX_TRAINS           7
+#define SIMULATION_MAX_BOATS            6
 
 #define ANIMATED_SPRITE_OUT_OF_MAP      128 // Coordinate outside of the map
 
