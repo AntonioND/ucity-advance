@@ -26,7 +26,7 @@
 // This number is calculated before the fire starts. In case the fire destroys a
 // fire station, it still counts for the current fire.
 
-#define FIRE_START_INITIAL_THRESHOLD        (4)
+#define FIRE_START_INITIAL_THRESHOLD        (6)
 #define FIRE_END_PER_STATION_MULTIPLIER     (8)
 
 static int initial_number_fire_stations;
@@ -109,13 +109,14 @@ void Simulation_FireTryStart(int force)
         // The chances of it happening depend on the number of fire stations
 
         int probabilities = FIRE_START_INITIAL_THRESHOLD
-                          - (initial_number_fire_stations / 4);
-        if (probabilities < 0)
-            probabilities = 0;
+                          - (initial_number_fire_stations / 2);
 
-        probabilities++; // Leave at least a 1 in 256 chance of fire!
+        // Leave at least a 1 in 512 chance of fire!
 
-        int r = rand() & 0xFF;
+        if (probabilities < 1)
+            probabilities = 1;
+
+        int r = rand() & (512 - 1);
 
         if (r > probabilities)
             return;
