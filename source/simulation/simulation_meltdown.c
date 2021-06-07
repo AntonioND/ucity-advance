@@ -146,7 +146,7 @@ void Simulation_MeltdownTryStart(int force)
             int r = rand() & 0xFF;
             if (r == 0)
             {
-                affected_plant = 0;
+                affected_plant = i;
                 break;
             }
         }
