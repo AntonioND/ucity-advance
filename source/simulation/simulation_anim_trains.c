@@ -8,6 +8,7 @@
 
 #include <ugba/ugba.h>
 
+#include "random.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
 #include "room_game/tileset_info.h"
@@ -146,7 +147,7 @@ static void TrainStartMovement(train_info *p)
 
     while (1)
     {
-        direction = rand() % TRAIN_NUM_DIRECTIONS;
+        direction = rand_fast() % TRAIN_NUM_DIRECTIONS;
 
         // This can't be optimized to the following because the value
         // TRAIN_DIRECTION_INVALID would also be a valid value in the formula:
@@ -213,7 +214,7 @@ static void TrainSpawn(train_info *p)
     int scx, scy;
     Room_Game_GetCurrentScroll(&scx, &scy);
 
-    int r = rand();
+    int r = rand_fast();
 
     // Spawn at a train track
 

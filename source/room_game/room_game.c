@@ -13,6 +13,7 @@
 #include "main.h"
 #include "money.h"
 #include "map_utils.h"
+#include "random.h"
 #include "save.h"
 #include "sfx.h"
 #include "text_utils.h"
@@ -1115,6 +1116,8 @@ int Room_Game_City_Load(int slot_index)
 
     DateSet(city->month, city->year);
 
+    rand_slow_set_seed(city->rand_slow_seed);
+
     Room_Game_Set_City_Economy(city->funds, city->tax_percent,
                                city->loan_remaining_payments,
                                city->loan_payment_amount);
@@ -1164,6 +1167,8 @@ void Room_Game_City_Save(int slot_index)
 
     city->month = DateGetMonth();
     city->year = DateGetYear();
+
+    city->rand_slow_seed = rand_slow_get_seed();
 
     city->funds = MoneyGet();
 
@@ -1218,6 +1223,12 @@ void Room_Game_Settings_Load(void)
     Simulation_DisastersSetEnabled(sav->disasters_enabled);
     Room_Game_SetAnimationsEnabled(sav->animations_enabled);
     Audio_Enable_Set(sav->music_enabled);
+
+    uint32_t seed = ((uint32_t)sav->rand_fast_seed[3] << 24) |
+                    ((uint32_t)sav->rand_fast_seed[2] << 16) |
+                    ((uint32_t)sav->rand_fast_seed[1] << 8) |
+                    ((uint32_t)sav->rand_fast_seed[0] << 0);
+    rand_fast_set_seed(seed);
 }
 
 void Room_Game_Settings_Save(void)
@@ -1227,6 +1238,12 @@ void Room_Game_Settings_Save(void)
     sav->disasters_enabled = Simulation_AreDisastersEnabled();
     sav->animations_enabled = Room_Game_AreAnimationsEnabled();
     sav->music_enabled = Audio_Enable_Get();
+
+    uint32_t seed = rand_fast_get_seed();
+    sav->rand_fast_seed[3] = seed >> 24;
+    sav->rand_fast_seed[2] = seed >> 16;
+    sav->rand_fast_seed[1] = seed >> 8;
+    sav->rand_fast_seed[0] = seed >> 0;
 
     Save_Reset_Checksum();
 }

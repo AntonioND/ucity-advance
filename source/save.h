@@ -22,6 +22,8 @@ typedef struct {
     uint8_t     month;
     uint16_t    year;
 
+    uint64_t    rand_slow_seed;
+
     int32_t     funds;
 
     // Last scroll position when saving the game
@@ -55,6 +57,8 @@ typedef struct {
     // can only be accessed in 8-bit accesses.
     uint8_t     magic_string[MAGIC_STRING_LEN];
     uint8_t     checksum[4];
+
+    uint8_t     rand_fast_seed[4];
 
     uint8_t     disasters_enabled;
     uint8_t     animations_enabled;

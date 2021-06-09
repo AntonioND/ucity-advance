@@ -6,6 +6,7 @@
 
 #include <ugba/ugba.h>
 
+#include "random.h"
 #include "room_game/building_info.h"
 #include "room_game/draw_building.h"
 #include "room_game/draw_common.h"
@@ -32,8 +33,8 @@ void Simulation_Radiation(void)
             if (type != TYPE_RADIATION)
                 continue;
 
-            // Only remove radiation if rand() = 0 (1 in 256 chance)
-            int r = rand() & 0xFF;
+            // Only remove radiation if rand_slow() = 0 (1 in 256 chance)
+            int r = rand_slow() & 0xFF;
             if (r > 0)
                 continue;
 
@@ -70,9 +71,9 @@ void Simulation_RadiationSpread(int x, int y)
     for (int c = 0; c < count; c++)
     {
         // Move to a random point surounding the center
-        int r = rand();
+        int r = rand_slow();
         int rx = cx + ((r & 15) - 8);
-        r = rand();
+        r = rand_slow();
         int ry = cy + ((r & 15) - 8);
 
         // Check if the result is outside of the map
@@ -143,7 +144,7 @@ void Simulation_MeltdownTryStart(int force)
 
         for (int i = 0; i < power_plant_count; i++)
         {
-            int r = rand() & 0xFF;
+            int r = rand_slow() & 0xFF;
             if (r == 0)
             {
                 affected_plant = i;
@@ -152,7 +153,7 @@ void Simulation_MeltdownTryStart(int force)
         }
 
         // In 1 out of each 8 cases, simply return
-        if ((rand() & 7) == 0)
+        if ((rand_slow() & 7) == 0)
             return;
     }
 

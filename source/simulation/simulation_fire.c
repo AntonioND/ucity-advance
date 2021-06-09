@@ -7,6 +7,7 @@
 
 #include <ugba/ugba.h>
 
+#include "random.h"
 #include "sfx.h"
 #include "room_game/building_info.h"
 #include "room_game/draw_building.h"
@@ -116,7 +117,7 @@ void Simulation_FireTryStart(int force)
         if (probabilities < 1)
             probabilities = 1;
 
-        int r = rand() & (512 - 1);
+        int r = rand_slow() & (512 - 1);
 
         if (r > probabilities)
             return;
@@ -134,8 +135,10 @@ void Simulation_FireTryStart(int force)
 
     for (int c = 0; c < retries; c++)
     {
-        int x = rand() & (CITY_MAP_WIDTH - 1);
-        int y = rand() & (CITY_MAP_HEIGHT - 1);
+        uint32_t r = rand_slow();
+
+        int x = (r >> 0) & (CITY_MAP_WIDTH - 1);
+        int y = (r >> 16) & (CITY_MAP_HEIGHT - 1);
 
         uint16_t tile = CityMapGetTile(x, y);
 
@@ -310,7 +313,7 @@ void Simulation_Fire(void)
             if (type != TYPE_FIRE)
                 continue;
 
-            int r = rand() & 0xFF;
+            int r = rand_slow() & 0xFF;
             if (r < extinguish_fire_probability)
                 CityMapDrawTile(T_DEMOLISHED, i, j);
         }
@@ -328,7 +331,7 @@ void Simulation_Fire(void)
             if (val == 0)
                 continue;
 
-            int r = rand() & 0xFF;
+            int r = rand_slow() & 0xFF;
             if (r < val)
                 MapDeleteBuildingFire(i, j);
         }

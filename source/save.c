@@ -8,6 +8,7 @@
 #include <ugba/ugba.h>
 
 #include "audio.h"
+#include "random.h"
 #include "save.h"
 #include "simulation/simulation_common.h"
 
@@ -81,6 +82,10 @@ void Save_Data_Reset_City(int index)
     Graph_Reset(&(city->graph_industrial));
     Graph_Reset(&(city->graph_funds));
 
+    // Use the fast random number generator to generate the starting seed for
+    // the city.
+    city->rand_slow_seed = rand_fast();
+
     Save_Data_Safe_Copy(sav_city, city);
 }
 
@@ -102,6 +107,12 @@ void Save_Data_Reset(void)
     sav->disasters_enabled = 1;
     sav->animations_enabled = 1;
     sav->music_enabled = 1;
+
+    rand_fast_set_seed(RAND_FAST_DEFAULT_SEED);
+    sav->rand_fast_seed[3] = (RAND_FAST_DEFAULT_SEED >> 24) & 0xFF;
+    sav->rand_fast_seed[2] = (RAND_FAST_DEFAULT_SEED >> 16) & 0xFF;
+    sav->rand_fast_seed[1] = (RAND_FAST_DEFAULT_SEED >> 8) & 0xFF;
+    sav->rand_fast_seed[0] = (RAND_FAST_DEFAULT_SEED >> 0) & 0xFF;
 
     for (int i = 0; i < 4; i++)
         Save_Data_Reset_City(i);

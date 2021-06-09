@@ -4,13 +4,14 @@
 
 #include <stdlib.h>
 
+#include "random.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
 #include "room_game/tileset_info.h"
 
 void Simulation_WaterAnimate(void)
 {
-    int count = (rand() & 31) + 1;
+    int count = (rand_fast() & 31) + 1;
 
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)
     {
@@ -22,7 +23,7 @@ void Simulation_WaterAnimate(void)
                 continue;
             }
 
-            count = (rand() & 31) + 1;
+            count = (rand_fast() & 31) + 1;
 
             uint16_t tile = CityMapGetTile(i, j);
             if (tile == T_WATER)

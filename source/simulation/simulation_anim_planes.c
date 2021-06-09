@@ -8,6 +8,7 @@
 
 #include <ugba/ugba.h>
 
+#include "random.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
 #include "room_game/tileset_info.h"
@@ -103,7 +104,7 @@ static void PlaneSpawn(plane_info *p)
     int scx, scy;
     Room_Game_GetCurrentScroll(&scx, &scy);
 
-    int r = rand();
+    int r = rand_fast();
 
     if (r & (1 << 2))
     {
@@ -148,23 +149,23 @@ airport_found:
         switch (r & 3)
         {
             case 0: // Up
-                p->x = rand() % (CITY_MAP_WIDTH * 8);
+                p->x = rand_fast() % (CITY_MAP_WIDTH * 8);
                 p->y = -OUT_MARGIN + 1;
                 p->direction = 4 + dir; // Down
                 break;
             case 1: // Right
                 p->x = (CITY_MAP_WIDTH * 8) + OUT_MARGIN - 1;
-                p->y = rand() % (CITY_MAP_HEIGHT * 8);
+                p->y = rand_fast() % (CITY_MAP_HEIGHT * 8);
                 p->direction = 6 + dir; // Left
                 break;
             case 2: // Down
-                p->x = rand() % (CITY_MAP_WIDTH * 8);
+                p->x = rand_fast() % (CITY_MAP_WIDTH * 8);
                 p->y = (CITY_MAP_HEIGHT * 8) + OUT_MARGIN - 1;
                 p->direction = 0 + dir; // Up
                 break;
             case 3: // Left
                 p->x = -OUT_MARGIN + 1;
-                p->y = rand() % (CITY_MAP_HEIGHT * 8);
+                p->y = rand_fast() % (CITY_MAP_HEIGHT * 8);
                 p->direction = 2 + dir; // Right
                 break;
             default:
@@ -172,7 +173,7 @@ airport_found:
         }
     }
 
-    p->direction_change_countdown = (rand() & (PLANE_CHANGE_DIR_RANGE - 1))
+    p->direction_change_countdown = (rand_fast() & (PLANE_CHANGE_DIR_RANGE - 1))
                                   + PLANE_CHANGE_DIR_MIN;
     p->spr_x = p->x - scx;
     p->spr_y = p->y - scy;
@@ -270,7 +271,7 @@ void PlanesHandle(void)
         p->direction_change_countdown--;
         if (p->direction_change_countdown == 0)
         {
-            int r = rand();
+            int r = rand_fast();
             p->direction_change_countdown = (r & (PLANE_CHANGE_DIR_RANGE - 1))
                                           + PLANE_CHANGE_DIR_MIN;
             p->direction += r & (1 << 16) ? 1 : -1;

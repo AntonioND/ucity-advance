@@ -8,6 +8,7 @@
 
 #include "main.h"
 #include "map_utils.h"
+#include "random.h"
 #include "room_game/room_game.h"
 
 // Assets
@@ -52,7 +53,7 @@ void Room_Intro_Load(void)
         scenario_3_newdale_bin,
     };
 
-    copy_map_to_sbb(maps[rand() & 3], (void *)CITY_MAP_BASE,
+    copy_map_to_sbb(maps[rand_fast() & 3], (void *)CITY_MAP_BASE,
                     CITY_MAP_HEIGHT, CITY_MAP_WIDTH);
 
     // Setup background
@@ -85,16 +86,16 @@ void Room_Intro_Load(void)
     // Initialize room state
     // ---------------------
 
-    mapx = rand() % ((CITY_MAP_WIDTH * 8) - GBA_SCREEN_W);
-    mapy = rand() % ((CITY_MAP_HEIGHT * 8) - GBA_SCREEN_H);
+    mapx = rand_fast() % ((CITY_MAP_WIDTH * 8) - GBA_SCREEN_W);
+    mapy = rand_fast() % ((CITY_MAP_HEIGHT * 8) - GBA_SCREEN_H);
     BG_RegularScrollSet(2, mapx, mapy);
 
-    if (rand() & 1)
+    if (rand_fast() & 1)
         deltax = 1;
     else
         deltax = -1;
 
-    if (rand() & 1)
+    if (rand_fast() & 1)
         deltay = 1;
     else
         deltay = -1;

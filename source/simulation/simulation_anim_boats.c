@@ -8,6 +8,7 @@
 
 #include <ugba/ugba.h>
 
+#include "random.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
 #include "room_game/tileset_info.h"
@@ -140,7 +141,7 @@ static void BoatStartMovement(boat_info *p)
 
     while (1)
     {
-        direction = rand() % BOAT_NUM_DIRECTIONS;
+        direction = rand_fast() % BOAT_NUM_DIRECTIONS;
 
         int deltax = boat_dir_increment[direction][0];
         int deltay = boat_dir_increment[direction][1];
@@ -190,7 +191,7 @@ static void BoatSpawn(boat_info *p)
     int scx, scy;
     Room_Game_GetCurrentScroll(&scx, &scy);
 
-    int r = rand();
+    int r = rand_fast();
 
     // Spawn at a dock
 
@@ -259,7 +260,7 @@ dock_found:
     // Make the boat wait for a bit before starting to move
 
     p->is_waiting = 1;
-    p->waitframes = BOAT_MOVE_WAIT_MIN + (rand() % BOAT_MOVE_WAIT_RANGE);
+    p->waitframes = BOAT_MOVE_WAIT_MIN + (rand_fast() % BOAT_MOVE_WAIT_RANGE);
 
     // Enable it only if it has spawned correctly
 
@@ -334,7 +335,7 @@ void BoatsVBLHandle(void)
         {
             p->is_waiting = 1;
             p->waitframes = BOAT_MOVE_WAIT_MIN
-                          + (rand() % BOAT_MOVE_WAIT_RANGE);
+                          + (rand_fast() % BOAT_MOVE_WAIT_RANGE);
         }
     }
 

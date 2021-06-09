@@ -8,6 +8,7 @@
 
 #include <ugba/ugba.h>
 
+#include "random.h"
 #include "room_game/building_info.h"
 #include "room_game/draw_building.h"
 #include "room_game/draw_common.h"
@@ -554,7 +555,7 @@ build_building:
 
     // There are 4 versions of all buildings. Pick one randomly.
 
-    building_result += rand() & 3;
+    building_result += rand_slow() & 3;
 
     MapDrawBuilding(1, building_result, x, y);
 
@@ -665,7 +666,7 @@ void Simulation_CreateBuildings(void)
             if (command == COMMAND_BUILD)
             {
                 // Try to build
-                uint8_t r = rand();
+                uint8_t r = rand_slow();
 
                 if (create_probability > r)
                     Simulation_CreateBuildingsTryBuild(i, j, type);
@@ -693,7 +694,7 @@ void Simulation_CreateBuildings(void)
             if (command == COMMAND_DEMOLISH)
             {
                 // Demolish building
-                uint8_t r = rand();
+                uint8_t r = rand_slow();
 
                 if (demolish_probability > r)
                 {

@@ -7,6 +7,7 @@
 
 #include <ugba/ugba.h>
 
+#include "random.h"
 #include "room_game/building_info.h"
 #include "room_game/text_messages.h"
 #include "simulation/simulation_building_count.h"
@@ -71,7 +72,7 @@ static void Technology_TryIncrement(void)
 
     // 70 / 256 chances of failing to increase
 
-    int r = rand() & 0xFF;
+    int r = rand_slow() & 0xFF;
     if (r < 70)
         return;
 
