@@ -18,7 +18,7 @@
 #include "maps/minimap_frame_tiles_bin.h"
 
 #define BG_BANK_PALETTE                 (0)
-#define BG_BANK_TILES_BASE              MEM_BG_TILES_BLOCK_ADDR(3)
+#define BG_BANK_TILES_BASE              MEM_BG_TILES_BLOCK_ADDR(2)
 #define BG_BANK_MAP_BASE                MEM_BG_MAP_BLOCK_ADDR(28)
 
 static int loan_remaining_payments; // 0 if no remaining payments (no loan)

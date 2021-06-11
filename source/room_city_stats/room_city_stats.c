@@ -22,7 +22,7 @@
 #include "maps/minimap_frame_tiles_bin.h"
 
 #define BG_CITY_STATS_PALETTE           (0)
-#define BG_CITY_STATS_TILES_BASE        MEM_BG_TILES_BLOCK_ADDR(3)
+#define BG_CITY_STATS_TILES_BASE        MEM_BG_TILES_BLOCK_ADDR(2)
 #define BG_CITY_STATS_MAP_BASE          MEM_BG_MAP_BLOCK_ADDR(28)
 
 static void Room_City_Stats_Print(int x, int y, const char *text)

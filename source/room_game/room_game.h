@@ -11,7 +11,7 @@
 
 #define CITY_MAP_PALETTE            (0)
 #define CITY_TILES_BASE             MEM_BG_TILES_BLOCK_ADDR(0)
-#define CITY_MAP_BASE               MEM_BG_MAP_BLOCK_ADDR(12)
+#define CITY_MAP_BASE               MEM_BG_MAP_BLOCK_ADDR(24)
 
 // ----------------------------------------------------------------------------
 

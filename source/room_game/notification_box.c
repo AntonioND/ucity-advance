@@ -10,7 +10,7 @@
 
 #include "maps/notification_bg_bin.h"
 
-#define NOTIFICATION_BOX_MAP_BASE   MEM_BG_MAP_BLOCK_ADDR(31)
+#define NOTIFICATION_BOX_MAP_BASE   MEM_BG_MAP_BLOCK_ADDR(30)
 
 void Notification_Box_Show(void)
 {

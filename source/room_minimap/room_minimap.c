@@ -29,11 +29,11 @@
 #include "sprites/minimap_menu/minimap_menu_sprites_tiles_bin.h"
 
 #define FRAMEBUFFER_TILES_BASE          MEM_BG_TILES_BLOCK_ADDR(0)
-#define FRAMEBUFFER_MAP_BASE            MEM_BG_MAP_BLOCK_ADDR(16)
+#define FRAMEBUFFER_MAP_BASE            MEM_BG_MAP_BLOCK_ADDR(30)
 #define FRAMEBUFFER_COLOR_BASE          (192)
 
 #define BG_FRAME_PALETTE                (0)
-#define BG_FRAME_TILES_BASE             MEM_BG_TILES_BLOCK_ADDR(3)
+#define BG_FRAME_TILES_BASE             MEM_BG_TILES_BLOCK_ADDR(2)
 #define BG_FRAME_MAP_BASE               MEM_BG_MAP_BLOCK_ADDR(28)
 
 #define GRAPH_MENU_ICONS_PALETTE        (0)

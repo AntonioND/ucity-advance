@@ -19,7 +19,7 @@
 #include "maps/minimap_frame_tiles_bin.h"
 
 #define SAVE_MENU_BG_PALETTE                (0)
-#define SAVE_MENU_BG_TILES_BASE             MEM_BG_TILES_BLOCK_ADDR(3)
+#define SAVE_MENU_BG_TILES_BASE             MEM_BG_TILES_BLOCK_ADDR(2)
 #define SAVE_MENU_BG_MAP_BASE               MEM_BG_MAP_BLOCK_ADDR(28)
 
 static int selected_slot;

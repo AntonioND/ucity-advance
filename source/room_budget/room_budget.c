@@ -20,7 +20,7 @@
 #define TAX_PERCENTAGE_MAX              20
 
 #define BG_BUDGET_PALETTE               (0)
-#define BG_BUDGET_TILES_BASE            MEM_BG_TILES_BLOCK_ADDR(3)
+#define BG_BUDGET_TILES_BASE            MEM_BG_TILES_BLOCK_ADDR(2)
 #define BG_BUDGET_MAP_BASE              MEM_BG_MAP_BLOCK_ADDR(28)
 
 static int original_tax_percentage;

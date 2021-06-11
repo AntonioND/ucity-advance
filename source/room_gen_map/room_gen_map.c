@@ -25,11 +25,11 @@
 #include "maps/minimap_frame_tiles_bin.h"
 
 #define FRAMEBUFFER_TILES_BASE          MEM_BG_TILES_BLOCK_ADDR(0)
-#define FRAMEBUFFER_MAP_BASE            MEM_BG_MAP_BLOCK_ADDR(16)
+#define FRAMEBUFFER_MAP_BASE            MEM_BG_MAP_BLOCK_ADDR(30)
 #define FRAMEBUFFER_COLOR_BASE          (192)
 
 #define GEN_MAP_BG_PALETTE              (0)
-#define GEN_MAP_BG_TILES_BASE           MEM_BG_TILES_BLOCK_ADDR(3)
+#define GEN_MAP_BG_TILES_BASE           MEM_BG_TILES_BLOCK_ADDR(2)
 #define GEN_MAP_BG_MAP_BASE             MEM_BG_MAP_BLOCK_ADDR(28)
 
 typedef enum {
