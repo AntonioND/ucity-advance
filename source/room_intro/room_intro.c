@@ -57,7 +57,7 @@ void Room_Intro_Load(void)
                     CITY_MAP_HEIGHT, CITY_MAP_WIDTH);
 
     // Setup background
-    BG_RegularInit(2, BG_REGULAR_512x512, BG_16_COLORS,
+    BG_RegularInit(2, BG_REGULAR_512x512, BG_256_COLORS,
                    CITY_TILES_BASE, CITY_MAP_BASE);
 
     // Load game logo

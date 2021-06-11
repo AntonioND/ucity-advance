@@ -255,7 +255,7 @@ static void Load_City_Graphics(void)
                       city_map_tiles_bin_size);
 
     // Setup background
-    BG_RegularInit(2, BG_REGULAR_512x512, BG_16_COLORS,
+    BG_RegularInit(2, BG_REGULAR_512x512, BG_256_COLORS,
                    CITY_TILES_BASE, CITY_MAP_BASE);
 }
 

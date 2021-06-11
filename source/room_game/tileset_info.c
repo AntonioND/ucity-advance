@@ -12,15 +12,10 @@
 
 // ----------------------------------------------------------------------------
 
-#include "maps/city/city_map_tiles_map_bin.h"
-
-// This takes a define from the list in "tileset_info.h" and returns the
-// combined tile number and palette to be written to VRAM in the background.
 uint16_t City_Tileset_VRAM_Info(uint16_t city_index)
 {
     UGBA_Assert(city_index <= T_LAST);
-    uint16_t *ptr = (uint16_t *)city_map_tiles_map_bin;
-    return ptr[city_index];
+    return city_index;
 }
 
 // ----------------------------------------------------------------------------

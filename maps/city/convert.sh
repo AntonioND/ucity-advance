@@ -14,8 +14,8 @@ echo ""
 
 ${SUPERFAMICONV} palette \
     --mode gba \
-    --palettes 10 \
-    --colors 16 \
+    --palettes 1 \
+    --colors 160 \
     --color-zero FF00FF \
     --in-image ${IN}/city_map_tiles.png \
     --out-data ${OUT}/city_map_palette.bin \
@@ -24,7 +24,7 @@ ${SUPERFAMICONV} palette \
 
 ${SUPERFAMICONV} tiles \
     --mode gba \
-    --bpp 4 \
+    --bpp 8 \
     --tile-width 8 --tile-height 8 \
     --max-tiles 512 \
     --in-image ${IN}/city_map_tiles.png \
@@ -35,20 +35,7 @@ ${SUPERFAMICONV} tiles \
 
 ${SUPERFAMICONV} map \
     --mode gba \
-    --bpp 4 \
-    --tile-width 8 --tile-height 8 \
-    --tile-base-offset 0 \
-    --palette-base-offset 0 \
-    --in-image ${IN}/city_map_tiles.png \
-    --in-palette ${OUT}/city_map_palette.bin \
-    --in-tiles ${OUT}/city_map_tiles.bin \
-    --out-data ${OUT}/city_map_tiles_map.bin \
-    --no-flip \
-    --verbose
-
-${SUPERFAMICONV} map \
-    --mode gba \
-    --bpp 4 \
+    --bpp 8 \
     --tile-width 8 --tile-height 8 \
     --tile-base-offset 0 \
     --palette-base-offset 0 \
@@ -63,7 +50,7 @@ ${SUPERFAMICONV} map \
 
 ${SUPERFAMICONV} map \
     --mode gba \
-    --bpp 4 \
+    --bpp 8 \
     --tile-width 8 --tile-height 8 \
     --tile-base-offset 0 \
     --palette-base-offset 0 \
@@ -77,7 +64,7 @@ ${SUPERFAMICONV} map \
 
 ${SUPERFAMICONV} map \
     --mode gba \
-    --bpp 4 \
+    --bpp 8 \
     --tile-width 8 --tile-height 8 \
     --tile-base-offset 0 \
     --palette-base-offset 0 \
@@ -92,7 +79,7 @@ ${SUPERFAMICONV} map \
 
 ${SUPERFAMICONV} map \
     --mode gba \
-    --bpp 4 \
+    --bpp 8 \
     --tile-width 8 --tile-height 8 \
     --tile-base-offset 0 \
     --palette-base-offset 0 \
@@ -107,7 +94,7 @@ ${SUPERFAMICONV} map \
 
 ${SUPERFAMICONV} map \
     --mode gba \
-    --bpp 4 \
+    --bpp 8 \
     --tile-width 8 --tile-height 8 \
     --tile-base-offset 0 \
     --palette-base-offset 0 \
