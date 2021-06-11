@@ -12,6 +12,31 @@ echo ""
 echo "[*] Converting ${IN}..."
 echo ""
 
+# Old tileset
+
+${SUPERFAMICONV} palette \
+    --mode gba \
+    --palettes 1 \
+    --colors 160 \
+    --color-zero FF00FF \
+    --in-image ${IN}/city_map_tiles_gbc.png \
+    --out-data ${OUT}/city_map_palette_gbc.bin \
+    --out-image ${OUT}/city_map_palette_gbc.png \
+    --verbose
+
+${SUPERFAMICONV} tiles \
+    --mode gba \
+    --bpp 8 \
+    --tile-width 8 --tile-height 8 \
+    --max-tiles 512 \
+    --in-image ${IN}/city_map_tiles_gbc.png \
+    --in-palette ${OUT}/city_map_palette_gbc.bin \
+    --out-data ${OUT}/city_map_tiles_gbc.bin \
+    --no-flip --no-discard \
+    --verbose
+
+# New tileset
+
 ${SUPERFAMICONV} palette \
     --mode gba \
     --palettes 1 \
@@ -32,6 +57,8 @@ ${SUPERFAMICONV} tiles \
     --out-data ${OUT}/city_map_tiles.bin \
     --no-flip --no-discard \
     --verbose
+
+# Maps
 
 ${SUPERFAMICONV} map \
     --mode gba \

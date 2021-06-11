@@ -6,8 +6,6 @@
 
 set -e
 
-BASE_DIR=$(pwd)
-
 # Build tools
 
 pushd tools
@@ -32,6 +30,8 @@ mkdir ${OUT_DIR}
 # Generate city tileset
 
 bash maps/buildings/convert.sh maps/city
+
+bash maps/buildings_gbc/convert.sh maps/city
 
 # Convert maps
 
