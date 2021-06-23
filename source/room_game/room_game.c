@@ -700,6 +700,9 @@ void Room_Game_Set_Initial_Load_State(void)
     // returning to this room from a menu, or from checking minimaps.
     simulation_enabled = 1;
 
+    // Clear messages that may be in the queue from the previously loaded city
+    MessageQueueInit();
+
     Simulation_TransportAnimsInit();
 }
 

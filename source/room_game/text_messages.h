@@ -38,6 +38,7 @@ typedef enum {
 // up to 8 bits.
 #define BYTES_SAVE_PERSISTENT_MSG   ((ID_MSG_PERSISTENT_NUM + 7) / 8)
 
+void MessageQueueInit(void);
 void MessageQueueAdd(int id);
 const char *MessageQueueGet(void);
 int MessageQueueIsEmpty(void);
