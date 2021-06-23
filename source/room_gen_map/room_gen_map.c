@@ -8,6 +8,7 @@
 
 #include "input_utils.h"
 #include "main.h"
+#include "random.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
 #include "room_game/text_messages.h"
@@ -311,6 +312,7 @@ void Room_Generate_Map_Handle(void)
                 Simulation_NegativeBudgetCountSet(0);
                 Simulation_GraphsResetAll();
                 Room_Game_Set_Initial_Load_State();
+                rand_slow_set_seed(rand_fast()); // Generate a new seed
                 Game_Room_Prepare_Switch(ROOM_GAME);
                 return;
             }
