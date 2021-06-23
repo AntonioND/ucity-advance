@@ -140,6 +140,10 @@ void Room_Game_SlowVBLHandler(void);
 const char *Room_Game_Get_City_Name(void);
 void Room_Game_Set_City_Name(const char *name);
 
+void Room_Game_Graphics_New_Set(int new_graphics);
+int Room_Game_Graphics_New_Get(void);
+void Room_Game_Load_City_Graphics(void);
+
 // ----------------------------------------------------------------------------
 
 void Room_Game_Load_City(const void *map, const char *name,

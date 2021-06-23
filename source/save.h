@@ -63,6 +63,7 @@ typedef struct {
     uint8_t     disasters_enabled;
     uint8_t     animations_enabled;
     uint8_t     music_enabled;
+    uint8_t     new_graphics;
 
     city_save_data city[4];
 } save_data;

@@ -14,7 +14,9 @@
 // Assets
 
 #include "maps/city/city_map_palette_bin.h"
+#include "maps/city/city_map_palette_gbc_bin.h"
 #include "maps/city/city_map_tiles_bin.h"
+#include "maps/city/city_map_tiles_gbc_bin.h"
 #include "maps/city/scenario_0_rock_river_bin.h"
 #include "maps/city/scenario_1_boringtown_bin.h"
 #include "maps/city/scenario_2_portville_bin.h"
@@ -37,13 +39,27 @@ void Room_Intro_Load(void)
     // Load city background
     // --------------------
 
-    // Load the palettes
-    VRAM_BGPalette16Copy(city_map_palette_bin, city_map_palette_bin_size,
-                         CITY_MAP_PALETTE);
+    if (Room_Game_Graphics_New_Get())
+    {
+        // Load the palettes
+        VRAM_BGPalette16Copy(city_map_palette_bin, city_map_palette_bin_size,
+                             CITY_MAP_PALETTE);
 
-    // Load the tiles
-    SWI_CpuSet_Copy16(city_map_tiles_bin, (void *)CITY_TILES_BASE,
-                      city_map_tiles_bin_size);
+        // Load the tiles
+        SWI_CpuSet_Copy16(city_map_tiles_bin, (void *)CITY_TILES_BASE,
+                          city_map_tiles_bin_size);
+    }
+    else
+    {
+        // Load the palettes
+        VRAM_BGPalette16Copy(city_map_palette_gbc_bin,
+                             city_map_palette_gbc_bin_size,
+                             CITY_MAP_PALETTE);
+
+        // Load the tiles
+        SWI_CpuSet_Copy16(city_map_tiles_gbc_bin, (void *)CITY_TILES_BASE,
+                          city_map_tiles_gbc_bin_size);
+    }
 
     // Load the map
     const void *maps[] = {

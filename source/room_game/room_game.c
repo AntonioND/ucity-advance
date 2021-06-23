@@ -42,10 +42,13 @@
 // Assets
 
 #include "maps/city/city_map_palette_bin.h"
+#include "maps/city/city_map_palette_gbc_bin.h"
 #include "maps/city/city_map_tiles_bin.h"
+#include "maps/city/city_map_tiles_gbc_bin.h"
 
 // ----------------------------------------------------------------------------
 
+static int graphics_are_new = 1;
 static int simulation_enabled = 1;
 static int animations_enabled = 1;
 
@@ -244,15 +247,39 @@ void Room_Game_Request_Scroll(int scx, int scy)
     BG_RegularScrollSet(2, mapx, mapy);
 }
 
-static void Load_City_Graphics(void)
+void Room_Game_Graphics_New_Set(int new_graphics)
 {
-    // Load the palettes
-    VRAM_BGPalette16Copy(city_map_palette_bin, city_map_palette_bin_size,
-                         CITY_MAP_PALETTE);
+    graphics_are_new = new_graphics;
+}
 
-    // Load the tiles
-    SWI_CpuSet_Copy16(city_map_tiles_bin, (void *)CITY_TILES_BASE,
-                      city_map_tiles_bin_size);
+int Room_Game_Graphics_New_Get(void)
+{
+    return graphics_are_new;
+}
+
+void Room_Game_Load_City_Graphics(void)
+{
+    if (Room_Game_Graphics_New_Get())
+    {
+        // Load the palettes
+        VRAM_BGPalette16Copy(city_map_palette_bin, city_map_palette_bin_size,
+                             CITY_MAP_PALETTE);
+
+        // Load the tiles
+        SWI_CpuSet_Copy16(city_map_tiles_bin, (void *)CITY_TILES_BASE,
+                          city_map_tiles_bin_size);
+    }
+    else
+    {
+        // Load the palettes
+        VRAM_BGPalette16Copy(city_map_palette_gbc_bin,
+                             city_map_palette_gbc_bin_size,
+                             CITY_MAP_PALETTE);
+
+        // Load the tiles
+        SWI_CpuSet_Copy16(city_map_tiles_gbc_bin, (void *)CITY_TILES_BASE,
+                          city_map_tiles_gbc_bin_size);
+    }
 
     // Setup background
     BG_RegularInit(2, BG_REGULAR_512x512, BG_256_COLORS,
@@ -630,7 +657,7 @@ void Room_Game_Load(void)
     // Load city background
     // ---------------
 
-    Load_City_Graphics();
+    Room_Game_Load_City_Graphics();
 
     BG_RegularScrollSet(2, mapx, mapy);
 
@@ -1035,6 +1062,12 @@ void Room_Game_SlowVBLHandler(void)
                     Audio_Enable_Set(Audio_Enable_Get() ^ 1);
                     PauseMenuDraw();
                     break;
+                case OPTIONS_GRAPHICS_NEW:
+                    graphics_are_new  ^= 1;
+                    Room_Game_Graphics_New_Set(graphics_are_new);
+                    Room_Game_Load_City_Graphics();
+                    PauseMenuDraw();
+                    break;
 
                 case PAUSE_MENU_INVALID_OPTION:
                     // Nothing to do, this is returned when no action needs to
@@ -1223,6 +1256,7 @@ void Room_Game_Settings_Load(void)
     Simulation_DisastersSetEnabled(sav->disasters_enabled);
     Room_Game_SetAnimationsEnabled(sav->animations_enabled);
     Audio_Enable_Set(sav->music_enabled);
+    Room_Game_Graphics_New_Set(sav->new_graphics);
 
     uint32_t seed = ((uint32_t)sav->rand_fast_seed[3] << 24) |
                     ((uint32_t)sav->rand_fast_seed[2] << 16) |
@@ -1238,6 +1272,7 @@ void Room_Game_Settings_Save(void)
     sav->disasters_enabled = Simulation_AreDisastersEnabled();
     sav->animations_enabled = Room_Game_AreAnimationsEnabled();
     sav->music_enabled = Audio_Enable_Get();
+    sav->new_graphics = Room_Game_Graphics_New_Get();
 
     uint32_t seed = rand_fast_get_seed();
     sav->rand_fast_seed[3] = seed >> 24;

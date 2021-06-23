@@ -64,6 +64,7 @@ static menu_entry_info menu_entry[] = {
 
     [OPTIONS_ANIMATIONS_ENABLE]     = { 11, 6, "Enable" },
     [OPTIONS_MUSIC_ENABLE]          = { 11, 10, "Enable" },
+    [OPTIONS_GRAPHICS_NEW]          = { 11, 14, "New" },
 };
 
 // ----------------------------------------------------------------------------
@@ -151,6 +152,7 @@ static void PauseMenuDrawOptions(void)
 
     StatusBarPrint(9, 4 + (32 - 30), "Animations:");
     StatusBarPrint(9, 8 + (32 - 30), "Music:");
+    StatusBarPrint(9, 12 + (32 - 30), "Graphics:");
 
     int x = menu_entry[OPTIONS_ANIMATIONS_ENABLE].x;
     int y = menu_entry[OPTIONS_ANIMATIONS_ENABLE].y + (32 - 30);
@@ -167,6 +169,14 @@ static void PauseMenuDrawOptions(void)
         StatusBarPrint(x, y, "Disable");
     else
         StatusBarPrint(x, y, "Enable ");
+
+    x = menu_entry[OPTIONS_GRAPHICS_NEW].x;
+    y = menu_entry[OPTIONS_GRAPHICS_NEW].y + (32 - 30);
+
+    if (Room_Game_Graphics_New_Get())
+        StatusBarPrint(x, y, "New");
+    else
+        StatusBarPrint(x, y, "Old");
 }
 
 void PauseMenuDraw(void)
@@ -369,6 +379,8 @@ static pause_menu_options PauseMenuHandleInputOptions(void)
             return OPTIONS_ANIMATIONS_ENABLE;
         else if (selected_option == OPTIONS_MUSIC_ENABLE)
             return OPTIONS_MUSIC_ENABLE;
+        else if (selected_option == OPTIONS_GRAPHICS_NEW)
+            return OPTIONS_GRAPHICS_NEW;
     }
 
     return PAUSE_MENU_INVALID_OPTION;
