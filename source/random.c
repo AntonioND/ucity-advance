@@ -50,7 +50,7 @@ static uint64_t state_slow;
 
 void rand_slow_set_seed(uint64_t seed)
 {
-    state_fast = seed;
+    state_slow = seed;
 }
 
 uint64_t rand_slow_get_seed(void)
