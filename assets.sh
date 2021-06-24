@@ -69,6 +69,10 @@ OUT_DIR_SPRITES_GRAPHS_MENU=${OUT_DIR}/sprites/graphs_menu
 mkdir -p ${OUT_DIR_SPRITES_GRAPHS_MENU}
 bash sprites/graphs_menu/convert.sh ${OUT_DIR_SPRITES_GRAPHS_MENU}
 
+OUT_DIR_SPRITES_GRAPHS_MENU_GBC=${OUT_DIR}/sprites/graphs_menu_gbc
+mkdir -p ${OUT_DIR_SPRITES_GRAPHS_MENU_GBC}
+bash sprites/graphs_menu_gbc/convert.sh ${OUT_DIR_SPRITES_GRAPHS_MENU_GBC}
+
 OUT_DIR_SPRITES_MINIMAP_MENU=${OUT_DIR}/sprites/minimap_menu
 mkdir -p ${OUT_DIR_SPRITES_MINIMAP_MENU}
 bash sprites/minimap_menu/convert.sh ${OUT_DIR_SPRITES_MINIMAP_MENU}

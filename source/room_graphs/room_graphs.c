@@ -18,6 +18,8 @@
 #include "maps/minimap_frame_tiles_bin.h"
 #include "sprites/graphs_menu/graphs_menu_sprites_palette_bin.h"
 #include "sprites/graphs_menu/graphs_menu_sprites_tiles_bin.h"
+#include "sprites/graphs_menu_gbc/graphs_menu_sprites_palette_gbc_bin.h"
+#include "sprites/graphs_menu_gbc/graphs_menu_sprites_tiles_gbc_bin.h"
 
 #define FRAMEBUFFER_TILES_BASE          MEM_BG_TILES_BLOCK_ADDR(0)
 #define FRAMEBUFFER_MAP_BASE            MEM_BG_MAP_BLOCK_ADDR(30)
@@ -335,9 +337,18 @@ void Room_Graphs_Load(void)
     // ----------
 
     // Load the tiles
-    SWI_CpuSet_Copy16(graphs_menu_sprites_tiles_bin,
-                      (void *)GRAPH_MENU_ICONS_TILES_BASE,
-                      graphs_menu_sprites_tiles_bin_size);
+    if (Room_Game_Graphics_New_Get())
+    {
+        SWI_CpuSet_Copy16(graphs_menu_sprites_tiles_bin,
+                          (void *)GRAPH_MENU_ICONS_TILES_BASE,
+                          graphs_menu_sprites_tiles_bin_size);
+    }
+    else
+    {
+        SWI_CpuSet_Copy16(graphs_menu_sprites_tiles_gbc_bin,
+                          (void *)GRAPH_MENU_ICONS_TILES_BASE,
+                          graphs_menu_sprites_tiles_gbc_bin_size);
+    }
 
     // Load frame map
     // --------------
@@ -414,8 +425,16 @@ void Room_Graphs_Load(void)
     // -------------
 
     // Load icon palettes
-    VRAM_OBJPalette256Copy(graphs_menu_sprites_palette_bin,
-                           graphs_menu_sprites_palette_bin_size);
+    if (Room_Game_Graphics_New_Get())
+    {
+        VRAM_OBJPalette256Copy(graphs_menu_sprites_palette_bin,
+                               graphs_menu_sprites_palette_bin_size);
+    }
+    else
+    {
+        VRAM_OBJPalette256Copy(graphs_menu_sprites_palette_gbc_bin,
+                               graphs_menu_sprites_palette_gbc_bin_size);
+    }
 
     // Load frame palettes
     SWI_CpuSet_Copy16(minimap_frame_palette_bin,
