@@ -1069,6 +1069,7 @@ void Room_Game_SlowVBLHandler(void)
                     graphics_are_new  ^= 1;
                     Room_Game_Graphics_New_Set(graphics_are_new);
                     Room_Game_Load_City_Graphics();
+                    BuildSelectMenuLoadGfx();
                     PauseMenuDraw();
                     break;
 

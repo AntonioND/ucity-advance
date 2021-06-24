@@ -17,7 +17,9 @@
 // Assets
 
 #include "sprites/building_menu/building_menu_sprites_palette_bin.h"
+#include "sprites/building_menu_gbc/building_menu_sprites_palette_gbc_bin.h"
 #include "sprites/building_menu/building_menu_sprites_tiles_bin.h"
+#include "sprites/building_menu_gbc/building_menu_sprites_tiles_gbc_bin.h"
 
 int selected_group = 0;
 int selected_group_icon = 0;
@@ -287,14 +289,28 @@ void BuildSelectMenuLoadGfx(void)
 {
 #define SPRITES_TILES_BASE  MEM_BG_TILES_BLOCK_ADDR(4)
 
-    // Load the palettes
-    VRAM_OBJPalette256Copy(building_menu_sprites_palette_bin,
-                           building_menu_sprites_palette_bin_size);
+    if (Room_Game_Graphics_New_Get())
+    {
+        // Load the palettes
+        VRAM_OBJPalette256Copy(building_menu_sprites_palette_bin,
+                               building_menu_sprites_palette_bin_size);
 
-    // Load the tiles
-    SWI_CpuSet_Copy16(building_menu_sprites_tiles_bin,
-                      (void *)SPRITES_TILES_BASE,
-                      building_menu_sprites_tiles_bin_size);
+        // Load the tiles
+        SWI_CpuSet_Copy16(building_menu_sprites_tiles_bin,
+                          (void *)SPRITES_TILES_BASE,
+                          building_menu_sprites_tiles_bin_size);
+    }
+    else
+    {
+        // Load the palettes
+        VRAM_OBJPalette256Copy(building_menu_sprites_palette_gbc_bin,
+                               building_menu_sprites_palette_gbc_bin_size);
+
+        // Load the tiles
+        SWI_CpuSet_Copy16(building_menu_sprites_tiles_gbc_bin,
+                          (void *)SPRITES_TILES_BASE,
+                          building_menu_sprites_tiles_gbc_bin_size);
+    }
 }
 
 int BuildMenuSelection(void)

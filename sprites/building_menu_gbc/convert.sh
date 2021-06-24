@@ -31,8 +31,8 @@ ${SUPERFAMICONV} palette \
     --colors 192 \
     --color-zero FF00FF \
     --in-image ${OUT}/building_menu_sprites.png \
-    --out-data ${OUT}/building_menu_sprites_palette.bin \
-    --out-image ${OUT}/building_menu_sprites_palette.png \
+    --out-data ${OUT}/building_menu_sprites_palette_gbc.bin \
+    --out-image ${OUT}/building_menu_sprites_palette_gbc.png \
     --verbose
 
 ${SUPERFAMICONV} tiles \
@@ -41,7 +41,7 @@ ${SUPERFAMICONV} tiles \
     --tile-width 8 --tile-height 8 \
     --max-tiles 256 \
     --in-image ${OUT}/building_menu_sprites.png \
-    --in-palette ${OUT}/building_menu_sprites_palette.bin \
-    --out-data ${OUT}/building_menu_sprites_tiles.bin \
+    --in-palette ${OUT}/building_menu_sprites_palette_gbc.bin \
+    --out-data ${OUT}/building_menu_sprites_tiles_gbc.bin \
     --no-flip --no-discard \
     --verbose
