@@ -12,10 +12,10 @@
 
 // Assets
 
-#include "maps/bank_offer_menu_bg_bin.h"
-#include "maps/bank_repay_menu_bg_bin.h"
-#include "maps/minimap_frame_palette_bin.h"
-#include "maps/minimap_frame_tiles_bin.h"
+#include "maps/menus/bank_offer_menu_bg_bin.h"
+#include "maps/menus/bank_repay_menu_bg_bin.h"
+#include "maps/menus/menus_palette_bin.h"
+#include "maps/menus/menus_tileset_bin.h"
 
 #define BG_BANK_PALETTE                 (0)
 #define BG_BANK_TILES_BASE              MEM_BG_TILES_BLOCK_ADDR(2)
@@ -117,8 +117,8 @@ void Room_Bank_Load(void)
     // --------------
 
     // Load the tiles
-    SWI_CpuSet_Copy16(minimap_frame_tiles_bin, (void *)BG_BANK_TILES_BASE,
-                      minimap_frame_tiles_bin_size);
+    SWI_CpuSet_Copy16(menus_tileset_bin, (void *)BG_BANK_TILES_BASE,
+                      menus_tileset_bin_size);
 
     // Load the map
     if (loan_remaining_payments > 0)
@@ -153,8 +153,8 @@ void Room_Bank_Load(void)
     // -------------
 
     // Load frame palettes
-    SWI_CpuSet_Copy16(minimap_frame_palette_bin, &MEM_PALETTE_BG[BG_BANK_PALETTE],
-                      minimap_frame_palette_bin_size);
+    SWI_CpuSet_Copy16(menus_palette_bin, &MEM_PALETTE_BG[BG_BANK_PALETTE],
+                      menus_palette_bin_size);
 
     MEM_PALETTE_BG[0] = RGB15(31, 31, 31);
 

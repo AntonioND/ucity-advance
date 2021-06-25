@@ -22,9 +22,9 @@
 
 // Assets
 
-#include "maps/minimap_frame_bg_bin.h"
-#include "maps/minimap_frame_palette_bin.h"
-#include "maps/minimap_frame_tiles_bin.h"
+#include "maps/menus/minimap_frame_bg_bin.h"
+#include "maps/menus/menus_palette_bin.h"
+#include "maps/menus/menus_tileset_bin.h"
 #include "sprites/minimap_menu/minimap_menu_sprites_palette_bin.h"
 #include "sprites/minimap_menu/minimap_menu_sprites_tiles_bin.h"
 #include "sprites/minimap_menu_gbc/minimap_menu_sprites_palette_gbc_bin.h"
@@ -1074,8 +1074,8 @@ void Room_Minimap_Load(void)
     // --------------
 
     // Load the tiles
-    SWI_CpuSet_Copy16(minimap_frame_tiles_bin, (void *)BG_FRAME_TILES_BASE,
-                      minimap_frame_tiles_bin_size);
+    SWI_CpuSet_Copy16(menus_tileset_bin, (void *)BG_FRAME_TILES_BASE,
+                      menus_tileset_bin_size);
 
     // Load the map
     SWI_CpuSet_Copy16(minimap_frame_bg_bin, (void *)BG_FRAME_MAP_BASE,
@@ -1180,9 +1180,8 @@ void Room_Minimap_Load(void)
     }
 
     // Load frame palettes
-    SWI_CpuSet_Copy16(minimap_frame_palette_bin,
-                      &MEM_PALETTE_BG[BG_FRAME_PALETTE],
-                      minimap_frame_palette_bin_size);
+    SWI_CpuSet_Copy16(menus_palette_bin, &MEM_PALETTE_BG[BG_FRAME_PALETTE],
+                      menus_palette_bin_size);
 
     Load_Cursor_Palette(CURSOR_PALETTE);
 

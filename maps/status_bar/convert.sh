@@ -32,3 +32,22 @@ ${SUPERFAMICONV} tiles \
     --out-data ${OUT}/text_tiles.bin \
     --no-flip --no-discard \
     --verbose
+
+convert_map() {
+    ${SUPERFAMICONV} map \
+        --mode gba \
+        --bpp 4 \
+        --tile-width 8 --tile-height 8 \
+        --tile-base-offset 0 \
+        --palette-base-offset 0 \
+        --map-width 32 --map-height 32 \
+        --in-image ${IN}/$1.png \
+        --in-palette ${OUT}/text_palette.bin \
+        --in-tiles ${OUT}/text_tiles.bin \
+        --out-data ${OUT}/$1.bin \
+        --no-flip \
+        --verbose
+}
+
+convert_map notification_bg
+convert_map pause_menu_bg

@@ -35,9 +35,9 @@ bash maps/buildings_gbc/convert.sh maps/city
 
 # Convert maps
 
-OUT_DIR_MAPS=${OUT_DIR}/maps
-mkdir -p ${OUT_DIR_MAPS}
-bash maps/convert.sh ${OUT_DIR_MAPS}
+OUT_DIR_MAPS_MENUS=${OUT_DIR}/maps/menus
+mkdir -p ${OUT_DIR_MAPS_MENUS}
+bash maps/menus/convert.sh ${OUT_DIR_MAPS_MENUS}
 
 OUT_DIR_MAPS_CITY=${OUT_DIR}/maps/city
 mkdir -p ${OUT_DIR_MAPS_CITY}

@@ -22,9 +22,9 @@
 
 // Assets
 
-#include "maps/scenario_selection_bg_bin.h"
-#include "maps/minimap_frame_palette_bin.h"
-#include "maps/minimap_frame_tiles_bin.h"
+#include "maps/menus/scenario_selection_bg_bin.h"
+#include "maps/menus/menus_palette_bin.h"
+#include "maps/menus/menus_tileset_bin.h"
 
 #include "maps/city/scenario_0_rock_river_bin.h"
 #include "maps/city/scenario_1_boringtown_bin.h"
@@ -320,8 +320,8 @@ void Room_Scenarios_Load(void)
     // --------------
 
     // Load the tiles
-    SWI_CpuSet_Copy16(minimap_frame_tiles_bin, (void *)SCENARIOS_BG_TILES_BASE,
-                      minimap_frame_tiles_bin_size);
+    SWI_CpuSet_Copy16(menus_tileset_bin, (void *)SCENARIOS_BG_TILES_BASE,
+                      menus_tileset_bin_size);
 
     // Load the map
     SWI_CpuSet_Copy16(scenario_selection_bg_bin, (void *)SCENARIOS_BG_MAP_BASE,
@@ -390,9 +390,8 @@ void Room_Scenarios_Load(void)
     // -------------
 
     // Load frame palettes
-    SWI_CpuSet_Copy16(minimap_frame_palette_bin,
-                      &MEM_PALETTE_BG[SCENARIOS_BG_PALETTE],
-                      minimap_frame_palette_bin_size);
+    SWI_CpuSet_Copy16(menus_palette_bin, &MEM_PALETTE_BG[SCENARIOS_BG_PALETTE],
+                      menus_palette_bin_size);
 
     MEM_PALETTE_BG[0] = RGB15(31, 31, 31);
 }

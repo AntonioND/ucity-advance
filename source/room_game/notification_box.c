@@ -8,7 +8,7 @@
 
 // Assets
 
-#include "maps/notification_bg_bin.h"
+#include "maps/status_bar/notification_bg_bin.h"
 
 #define NOTIFICATION_BOX_MAP_BASE   MEM_BG_MAP_BLOCK_ADDR(30)
 

@@ -17,7 +17,7 @@
 
 // Assets
 
-#include "maps/pause_menu_bg_bin.h"
+#include "maps/status_bar/pause_menu_bg_bin.h"
 
 #define MENU_MAP_BASE       (TEXT_MAP_BASE + (32 * 32 * 2))
 

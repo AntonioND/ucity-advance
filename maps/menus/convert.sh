@@ -17,9 +17,9 @@ ${SUPERFAMICONV} palette \
     --palettes 10 \
     --colors 16 \
     --color-zero FF00FF \
-    --in-image ${IN}/minimap_frame_tiles.png \
-    --out-data ${OUT}/minimap_frame_palette.bin \
-    --out-image ${OUT}/minimap_frame_palette.png \
+    --in-image ${IN}/menus_tileset.png \
+    --out-data ${OUT}/menus_palette.bin \
+    --out-image ${OUT}/menus_palette.png \
     --verbose
 
 ${SUPERFAMICONV} tiles \
@@ -27,9 +27,9 @@ ${SUPERFAMICONV} tiles \
     --bpp 4 \
     --tile-width 8 --tile-height 8 \
     --max-tiles 512 \
-    --in-image ${IN}/minimap_frame_tiles.png \
-    --in-palette ${OUT}/minimap_frame_palette.bin \
-    --out-data ${OUT}/minimap_frame_tiles.bin \
+    --in-image ${IN}/menus_tileset.png \
+    --in-palette ${OUT}/menus_palette.bin \
+    --out-data ${OUT}/menus_tileset.bin \
     --no-flip --no-discard \
     --verbose
 
@@ -42,8 +42,8 @@ convert_map() {
         --palette-base-offset 0 \
         --map-width 32 --map-height 32 \
         --in-image ${IN}/$1.png \
-        --in-palette ${OUT}/minimap_frame_palette.bin \
-        --in-tiles ${OUT}/minimap_frame_tiles.bin \
+        --in-palette ${OUT}/menus_palette.bin \
+        --in-tiles ${OUT}/menus_tileset.bin \
         --out-data ${OUT}/$1.bin \
         --no-flip \
         --verbose
@@ -59,7 +59,5 @@ convert_map generate_map_bg
 convert_map graphs_frame_bg
 convert_map main_menu_bg
 convert_map name_input_menu_bg
-convert_map notification_bg
-convert_map pause_menu_bg
 convert_map save_menu_bg
 convert_map scenario_selection_bg

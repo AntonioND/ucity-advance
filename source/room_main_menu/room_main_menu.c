@@ -14,9 +14,9 @@
 
 // Assets
 
-#include "maps/main_menu_bg_bin.h"
-#include "maps/minimap_frame_palette_bin.h"
-#include "maps/minimap_frame_tiles_bin.h"
+#include "maps/menus/main_menu_bg_bin.h"
+#include "maps/menus/menus_palette_bin.h"
+#include "maps/menus/menus_tileset_bin.h"
 
 #define BG_MAIN_MENU_PALETTE                (0)
 #define BG_MAIN_MENU_TILES_BASE             MEM_BG_TILES_BLOCK_ADDR(3)
@@ -64,8 +64,8 @@ void Room_Main_Menu_Load(void)
     // --------------
 
     // Load the tiles
-    SWI_CpuSet_Copy16(minimap_frame_tiles_bin, (void *)BG_MAIN_MENU_TILES_BASE,
-                      minimap_frame_tiles_bin_size);
+    SWI_CpuSet_Copy16(menus_tileset_bin, (void *)BG_MAIN_MENU_TILES_BASE,
+                      menus_tileset_bin_size);
 
     // Load the map
     SWI_CpuSet_Copy16(main_menu_bg_bin, (void *)BG_MAIN_MENU_MAP_BASE,
@@ -88,9 +88,8 @@ void Room_Main_Menu_Load(void)
     // -------------
 
     // Load frame palettes
-    SWI_CpuSet_Copy16(minimap_frame_palette_bin,
-                      &MEM_PALETTE_BG[BG_MAIN_MENU_PALETTE],
-                      minimap_frame_palette_bin_size);
+    SWI_CpuSet_Copy16(menus_palette_bin, &MEM_PALETTE_BG[BG_MAIN_MENU_PALETTE],
+                      menus_palette_bin_size);
 
     MEM_PALETTE_BG[0] = RGB15(31, 31, 31);
 
