@@ -17,6 +17,27 @@ ${SUPERFAMICONV} palette \
     --palettes 10 \
     --colors 16 \
     --color-zero FF00FF \
+    --in-image ${IN}/menus_tileset_gbc.png \
+    --out-data ${OUT}/menus_palette_gbc.bin \
+    --out-image ${OUT}/menus_palette_gbc.png \
+    --verbose
+
+${SUPERFAMICONV} tiles \
+    --mode gba \
+    --bpp 4 \
+    --tile-width 8 --tile-height 8 \
+    --max-tiles 512 \
+    --in-image ${IN}/menus_tileset_gbc.png \
+    --in-palette ${OUT}/menus_palette_gbc.bin \
+    --out-data ${OUT}/menus_tileset_gbc.bin \
+    --no-flip --no-discard \
+    --verbose
+
+${SUPERFAMICONV} palette \
+    --mode gba \
+    --palettes 10 \
+    --colors 16 \
+    --color-zero FF00FF \
     --in-image ${IN}/menus_tileset.png \
     --out-data ${OUT}/menus_palette.bin \
     --out-image ${OUT}/menus_palette.png \
