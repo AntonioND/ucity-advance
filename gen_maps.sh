@@ -8,8 +8,11 @@ set -e
 
 # Convert maps
 
-MAPS_CITY=maps/city
-bash maps/city/gen_maps.sh ${MAPS_CITY}
+bash maps/city/gen_maps.sh maps/city
+
+bash maps/menus/gen_maps.sh maps/menus
+
+bash maps/status_bar/gen_maps.sh maps/status_bar
 
 # Done!
 
