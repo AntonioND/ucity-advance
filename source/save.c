@@ -102,11 +102,16 @@ void Save_Data_Reset(void)
 
     // Default settings
     Simulation_DisastersSetEnabled(1);
-    Room_Game_SetAnimationsEnabled(1);
-    Audio_Enable_Set(1);
     sav->disasters_enabled = 1;
+
+    Room_Game_SetAnimationsEnabled(1);
     sav->animations_enabled = 1;
+
+    Audio_Enable_Set(1);
     sav->music_enabled = 1;
+
+    Room_Game_Graphics_New_Set(1);
+    sav->new_graphics = 1;
 
     rand_fast_set_seed(RAND_FAST_DEFAULT_SEED);
     sav->rand_fast_seed[3] = (RAND_FAST_DEFAULT_SEED >> 24) & 0xFF;
