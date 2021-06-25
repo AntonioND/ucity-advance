@@ -8,6 +8,7 @@
 #include "main.h"
 #include "text_utils.h"
 #include "room_bank/room_bank.h"
+#include "room_game/room_game.h"
 #include "simulation/simulation_calculate_stats.h"
 #include "simulation/simulation_money.h"
 
@@ -15,7 +16,9 @@
 
 #include "maps/menus/budget_menu_bg_bin.h"
 #include "maps/menus/menus_palette_bin.h"
+#include "maps/menus/menus_palette_gbc_bin.h"
 #include "maps/menus/menus_tileset_bin.h"
+#include "maps/menus/menus_tileset_gbc_bin.h"
 
 #define TAX_PERCENTAGE_MAX              20
 
@@ -87,8 +90,16 @@ void Room_Budget_Load(void)
     // --------------
 
     // Load the tiles
-    SWI_CpuSet_Copy16(menus_tileset_bin, (void *)BG_BUDGET_TILES_BASE,
-                      menus_tileset_bin_size);
+    if (Room_Game_Graphics_New_Get())
+    {
+        SWI_CpuSet_Copy16(menus_tileset_bin, (void *)BG_BUDGET_TILES_BASE,
+                          menus_tileset_bin_size);
+    }
+    else
+    {
+        SWI_CpuSet_Copy16(menus_tileset_gbc_bin, (void *)BG_BUDGET_TILES_BASE,
+                          menus_tileset_gbc_bin_size);
+    }
 
     // Load the map
     SWI_CpuSet_Copy16(budget_menu_bg_bin, (void *)BG_BUDGET_MAP_BASE,
@@ -120,8 +131,17 @@ void Room_Budget_Load(void)
     // -------------
 
     // Load frame palettes
-    SWI_CpuSet_Copy16(menus_palette_bin, &MEM_PALETTE_BG[BG_BUDGET_PALETTE],
-                      menus_palette_bin_size);
+    if (Room_Game_Graphics_New_Get())
+    {
+        SWI_CpuSet_Copy16(menus_palette_bin, &MEM_PALETTE_BG[BG_BUDGET_PALETTE],
+                          menus_palette_bin_size);
+    }
+    else
+    {
+        SWI_CpuSet_Copy16(menus_palette_gbc_bin,
+                          &MEM_PALETTE_BG[BG_BUDGET_PALETTE],
+                          menus_palette_gbc_bin_size);
+    }
 
     MEM_PALETTE_BG[0] = RGB15(31, 31, 31);
 

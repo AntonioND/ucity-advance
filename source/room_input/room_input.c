@@ -13,7 +13,9 @@
 
 #include "maps/menus/name_input_menu_bg_bin.h"
 #include "maps/menus/menus_palette_bin.h"
+#include "maps/menus/menus_palette_gbc_bin.h"
 #include "maps/menus/menus_tileset_bin.h"
+#include "maps/menus/menus_tileset_gbc_bin.h"
 
 #define BG_INPUT_PALETTE            (0)
 #define BG_INPUT_TILES_BASE         MEM_BG_TILES_BLOCK_ADDR(3)
@@ -127,8 +129,16 @@ void Room_Input_Load(void)
     // --------------
 
     // Load the tiles
-    SWI_CpuSet_Copy16(menus_tileset_bin, (void *)BG_INPUT_TILES_BASE,
-                      menus_tileset_bin_size);
+    if (Room_Game_Graphics_New_Get())
+    {
+        SWI_CpuSet_Copy16(menus_tileset_bin, (void *)BG_INPUT_TILES_BASE,
+                          menus_tileset_bin_size);
+    }
+    else
+    {
+        SWI_CpuSet_Copy16(menus_tileset_gbc_bin, (void *)BG_INPUT_TILES_BASE,
+                          menus_tileset_gbc_bin_size);
+    }
 
     // Load the map
     SWI_CpuSet_Copy16(name_input_menu_bg_bin, (void *)BG_INPUT_MAP_BASE,
@@ -162,8 +172,17 @@ void Room_Input_Load(void)
     // -------------
 
     // Load frame palettes
-    SWI_CpuSet_Copy16(menus_palette_bin, &MEM_PALETTE_BG[BG_INPUT_PALETTE],
-                      menus_palette_bin_size);
+    if (Room_Game_Graphics_New_Get())
+    {
+        SWI_CpuSet_Copy16(menus_palette_bin, &MEM_PALETTE_BG[BG_INPUT_PALETTE],
+                          menus_palette_bin_size);
+    }
+    else
+    {
+        SWI_CpuSet_Copy16(menus_palette_gbc_bin,
+                          &MEM_PALETTE_BG[BG_INPUT_PALETTE],
+                          menus_palette_gbc_bin_size);
+    }
 
     MEM_PALETTE_BG[0] = RGB15(31, 31, 31);
 }
