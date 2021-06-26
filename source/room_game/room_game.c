@@ -878,12 +878,12 @@ void Room_Game_SlowVBLHandler(void)
         {
             ViewModeUpdateStatusBar();
 
-            if (keys_pressed & KEY_SELECT)
+            if (keys_pressed & (KEY_SELECT | KEY_L))
                 Room_Game_Set_Mode(MODE_SELECT_BUILDING);
             else if (keys_pressed & KEY_B)
                 Room_Game_Set_Mode(MODE_WATCH);
 
-            if (keys_released & KEY_START)
+            if (keys_released & (KEY_START | KEY_R))
             {
                 Room_Game_Set_Mode(MODE_PAUSE_MENU);
                 return;
@@ -952,7 +952,7 @@ void Room_Game_SlowVBLHandler(void)
                 Room_Game_Set_Mode(MODE_RUNNING);
                 Simulation_CountBuildings();
             }
-            else if (keys_pressed & KEY_SELECT)
+            else if (keys_pressed & (KEY_SELECT | KEY_L))
             {
                 Room_Game_Set_Mode(MODE_SELECT_BUILDING);
             }
