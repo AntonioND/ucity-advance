@@ -24,6 +24,9 @@
 #include "maps/intro/ucity_logo_map_bin.h"
 #include "maps/intro/ucity_logo_palette_bin.h"
 #include "maps/intro/ucity_logo_tiles_bin.h"
+#include "maps/intro/ucity_logo_gbc_map_bin.h"
+#include "maps/intro/ucity_logo_gbc_palette_bin.h"
+#include "maps/intro/ucity_logo_gbc_tiles_bin.h"
 
 // ----------------------------------------------------------------------------
 
@@ -83,17 +86,38 @@ void Room_Intro_Load(void)
 #define GAME_LOGO_TILES_BASE    MEM_BG_TILES_BLOCK_ADDR(2)
 #define GAME_LOGO_MAP_BASE      MEM_BG_MAP_BLOCK_ADDR(30)
 
-    // Load the palettes
-    VRAM_BGPalette16Copy(ucity_logo_palette_bin, ucity_logo_palette_bin_size,
-                         GAME_LOGO_PALETTE);
+    if (Room_Game_Graphics_New_Get())
+    {
+        // Load the palettes
+        VRAM_BGPalette16Copy(ucity_logo_palette_bin,
+                             ucity_logo_palette_bin_size,
+                             GAME_LOGO_PALETTE);
 
-    // Load the tiles
-    SWI_CpuSet_Copy16(ucity_logo_tiles_bin, (void *)GAME_LOGO_TILES_BASE,
-                      ucity_logo_tiles_bin_size);
+        // Load the tiles
+        SWI_CpuSet_Copy16(ucity_logo_tiles_bin,
+                          (void *)GAME_LOGO_TILES_BASE,
+                          ucity_logo_tiles_bin_size);
 
-    // Load the tiles
-    SWI_CpuSet_Copy16(ucity_logo_map_bin, (void *)GAME_LOGO_MAP_BASE,
-                      ucity_logo_map_bin_size);
+        // Load the map
+        SWI_CpuSet_Copy16(ucity_logo_map_bin, (void *)GAME_LOGO_MAP_BASE,
+                          ucity_logo_map_bin_size);
+    }
+    else
+    {
+        // Load the palettes
+        VRAM_BGPalette16Copy(ucity_logo_gbc_palette_bin,
+                             ucity_logo_gbc_palette_bin_size,
+                             GAME_LOGO_PALETTE);
+
+        // Load the tiles
+        SWI_CpuSet_Copy16(ucity_logo_gbc_tiles_bin,
+                          (void *)GAME_LOGO_TILES_BASE,
+                          ucity_logo_gbc_tiles_bin_size);
+
+        // Load the map
+        SWI_CpuSet_Copy16(ucity_logo_gbc_map_bin, (void *)GAME_LOGO_MAP_BASE,
+                          ucity_logo_gbc_map_bin_size);
+    }
 
     // Setup background
     BG_RegularInit(0, BG_REGULAR_256x256, BG_16_COLORS,
