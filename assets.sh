@@ -27,12 +27,6 @@ OUT_DIR=built_assets
 rm -rf ${OUT_DIR}
 mkdir ${OUT_DIR}
 
-# Generate city tileset
-
-bash maps/buildings/convert.sh maps/city
-
-bash maps/buildings_gbc/convert.sh maps/city
-
 # Convert maps
 
 OUT_DIR_MAPS_MENUS=${OUT_DIR}/maps/menus

@@ -6,6 +6,26 @@
 
 set -e
 
+# Build tools
+
+pushd tools
+
+rm -rf build ; mkdir build ; cd build
+cmake ..
+make
+
+popd
+
+# Paths to tools
+
+export PNGS2STRIP=tools/build/pngs2strip/pngs2strip
+
+# Generate city tileset
+
+bash maps/buildings/convert.sh maps/city
+
+bash maps/buildings_gbc/convert.sh maps/city
+
 # Convert maps
 
 bash maps/city/gen_maps.sh maps/city
