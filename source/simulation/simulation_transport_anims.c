@@ -12,6 +12,8 @@
 
 #include "sprites/transport_palette_bin.h"
 #include "sprites/transport_tiles_bin.h"
+#include "sprites/transport_gbc_palette_bin.h"
+#include "sprites/transport_gbc_tiles_bin.h"
 
 static int sprites_shown;
 
@@ -24,11 +26,24 @@ int simulation_scy_old;
 
 void Simulation_TransportLoadGraphics(void)
 {
-    VRAM_OBJTiles16Copy(transport_tiles_bin, transport_tiles_bin_size,
-                        TRANSPORT_TILE_INDEX_BASE);
+    if (Room_Game_Graphics_New_Get())
+    {
+        VRAM_OBJTiles16Copy(transport_tiles_bin, transport_tiles_bin_size,
+                            TRANSPORT_TILE_INDEX_BASE);
 
-    VRAM_OBJPalette16Copy(transport_palette_bin, transport_palette_bin_size,
-                          TRANSPORT_PALETTE);
+        VRAM_OBJPalette16Copy(transport_palette_bin, transport_palette_bin_size,
+                            TRANSPORT_PALETTE);
+    }
+    else
+    {
+        VRAM_OBJTiles16Copy(transport_gbc_tiles_bin,
+                            transport_gbc_tiles_bin_size,
+                            TRANSPORT_TILE_INDEX_BASE);
+
+        VRAM_OBJPalette16Copy(transport_gbc_palette_bin,
+                              transport_gbc_palette_bin_size,
+                              TRANSPORT_PALETTE);
+    }
 }
 
 // Initialize objects to random locations. It doesn't refresh the sprites.

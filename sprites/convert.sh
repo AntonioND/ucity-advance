@@ -53,3 +53,24 @@ ${SUPERFAMICONV} tiles \
     --in-palette ${OUT}/transport_palette.bin \
     --out-data ${OUT}/transport_tiles.bin \
     --verbose
+
+# Transport GBC
+
+${SUPERFAMICONV} palette \
+    --mode gba \
+    --palettes 1 \
+    --colors 16 \
+    --color-zero FF00FF \
+    --in-image ${IN}/transport_gbc.png \
+    --out-data ${OUT}/transport_gbc_palette.bin \
+    --out-image ${OUT}/transport_gbc_palette.png \
+    --verbose
+
+${SUPERFAMICONV} tiles \
+    --mode gba \
+    --bpp 4 \
+    --tile-width 8 --tile-height 8 \
+    --in-image ${IN}/transport_gbc.png \
+    --in-palette ${OUT}/transport_gbc_palette.bin \
+    --out-data ${OUT}/transport_gbc_tiles.bin \
+    --verbose
