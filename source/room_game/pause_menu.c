@@ -12,8 +12,8 @@
 #include "room_game/pause_menu.h"
 #include "room_game/room_game.h"
 #include "room_game/status_bar.h"
-#include "simulation/simulation_calculate_stats.h"
-#include "simulation/simulation_common.h"
+#include "simulation/calculate_stats.h"
+#include "simulation/common.h"
 
 // Assets
 

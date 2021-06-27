@@ -9,8 +9,8 @@
 #include "text_utils.h"
 #include "room_bank/room_bank.h"
 #include "room_game/room_game.h"
-#include "simulation/simulation_calculate_stats.h"
-#include "simulation/simulation_money.h"
+#include "simulation/budget.h"
+#include "simulation/calculate_stats.h"
 
 // Assets
 

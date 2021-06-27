@@ -11,9 +11,9 @@
 #include "text_utils.h"
 #include "room_game/draw_common.h"
 #include "room_game/room_game.h"
-#include "simulation/simulation_calculate_stats.h"
-#include "simulation/simulation_pollution.h"
-#include "simulation/simulation_traffic.h"
+#include "simulation/calculate_stats.h"
+#include "simulation/pollution.h"
+#include "simulation/traffic.h"
 
 // Assets
 

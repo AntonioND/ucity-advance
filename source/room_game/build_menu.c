@@ -11,8 +11,8 @@
 #include "room_game/status_bar.h"
 #include "room_game/tileset_info.h"
 #include "room_game/building_info.h"
-#include "simulation/simulation_calculate_stats.h"
-#include "simulation/simulation_technology.h"
+#include "simulation/calculate_stats.h"
+#include "simulation/technology.h"
 
 // Assets
 

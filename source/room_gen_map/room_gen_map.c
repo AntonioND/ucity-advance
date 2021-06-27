@@ -15,9 +15,9 @@
 #include "room_game/tileset_info.h"
 #include "room_gen_map/generate_map.h"
 #include "room_input/room_input.h"
-#include "simulation/simulation_common.h"
-#include "simulation/simulation_money.h"
-#include "simulation/simulation_technology.h"
+#include "simulation/budget.h"
+#include "simulation/common.h"
+#include "simulation/technology.h"
 
 // Assets
 

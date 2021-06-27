@@ -10,7 +10,7 @@
 #include "audio.h"
 #include "random.h"
 #include "save.h"
-#include "simulation/simulation_common.h"
+#include "simulation/common.h"
 
 volatile save_data *Save_Data_Get(void)
 {
