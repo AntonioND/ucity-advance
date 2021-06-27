@@ -6,6 +6,10 @@
 #define ROOM_GAME_TEXT_MESSAGES_H__
 
 typedef enum {
+    // This message can only be sent once to the queue, there is only room for
+    // one custom message.
+    ID_MSG_CUSTOM                       = -1,
+
     ID_MSG_EMPTY                        = 0,
 
     // Messages that are only shown once per year.
@@ -42,6 +46,8 @@ void MessageQueueInit(void);
 void MessageQueueAdd(int id);
 const char *MessageQueueGet(void);
 int MessageQueueIsEmpty(void);
+
+void CustomMessageStringSet(const char *str);
 
 void PersistentMessageFlagAsShown(message_ids id);
 void PersistentMessageShow(message_ids id);

@@ -68,6 +68,14 @@ static const char *msg_text[] = {
         "      GAME  OVER",
 };
 
+static char custom_message_string[60];
+
+void CustomMessageStringSet(const char *str)
+{
+    strncpy(&custom_message_string[0], str, sizeof(custom_message_string));
+    custom_message_string[sizeof(custom_message_string) - 1] = '\0';
+}
+
 #define MESSAGE_QUEUE_SIZE  10
 
 static int message_queue[MESSAGE_QUEUE_SIZE];
@@ -104,6 +112,9 @@ const char *MessageQueueGet(void)
         message_queue_read_ptr = 0;
 
     message_queue_size--;
+
+    if (id == ID_MSG_CUSTOM)
+        return &custom_message_string[0];
 
     return msg_text[id];
 }

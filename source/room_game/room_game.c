@@ -21,6 +21,7 @@
 #include "room_game/building_info.h"
 #include "room_game/build_menu.h"
 #include "room_game/draw_building.h"
+#include "room_game/draw_common.h"
 #include "room_game/notification_box.h"
 #include "room_game/pause_menu.h"
 #include "room_game/room_game.h"
@@ -887,6 +888,21 @@ void Room_Game_SlowVBLHandler(void)
             {
                 Room_Game_Set_Mode(MODE_PAUSE_MENU);
                 return;
+            }
+
+            if (keys_pressed & KEY_A)
+            {
+                int curx, cury;
+                Cursor_Get_Position(&curx, &cury);
+
+                int x = (mapx + curx) / 8;
+                int y = (mapy + cury) / 8;
+
+                uint16_t tile = CityMapGetTile(x, y);
+                const city_tile_info *info = City_Tileset_Entry_Info(tile);
+
+                 CustomMessageStringSet(info->name);
+                 MessageQueueAdd(ID_MSG_CUSTOM);
             }
 
             GameAnimateMap();
