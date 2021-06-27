@@ -2,6 +2,8 @@
 //
 // Copyright (c) 2021 Antonio Niño Díaz
 
+#include <string.h>
+
 #include <ugba/ugba.h>
 
 #include "room_game/status_bar.h"
@@ -35,8 +37,13 @@ void Notification_Box_Clear(void)
     }
 }
 
+static char notification_text[90];
+static int notification_text_len = 0;
+
 void Notification_Box_Load(void)
 {
+    notification_text[0] = '\0';
+
     Notification_Box_Clear();
 
     Notification_Box_Hide();
@@ -46,15 +53,22 @@ void Notification_Box_Load(void)
                    TEXT_TILES_BASE, NOTIFICATION_BOX_MAP_BASE);
 }
 
-void Notification_Box_Print(int x, int y, const char *text)
+void Notification_Box_Set_Text(const char *text)
+{
+    notification_text_len = 0;
+    strncpy(&notification_text[0], text, sizeof(notification_text));
+    notification_text[sizeof(notification_text) - 1] = '\0';
+}
+
+void Notification_Box_Print(const char *text, int len)
 {
     const int minx = 4;
     const int miny = 1;
     const int maxx = 25;
     const int maxy = 4;
 
-    x += minx;
-    y += miny;
+    int x = minx;
+    int y = miny;
 
     while (1)
     {
@@ -86,5 +100,25 @@ void Notification_Box_Print(int x, int y, const char *text)
 
         if (y == maxy)
             return;
+
+        len--;
+        if (len == 0)
+            return;
     }
+}
+
+void Notification_Box_Update(void)
+{
+    if (notification_text[notification_text_len] == '\0')
+        return;
+
+    for (int i = 0; i < 2; i++)
+    {
+        if (notification_text[notification_text_len] == '\0')
+            break;
+
+        notification_text_len++;
+    }
+
+    Notification_Box_Print(notification_text, notification_text_len);
 }

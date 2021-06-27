@@ -724,7 +724,7 @@ void Room_Game_Handle(void)
             if (MessageQueueIsEmpty() == 0)
             {
                 Notification_Box_Clear();
-                Notification_Box_Print(0, 0, MessageQueueGet());
+                Notification_Box_Set_Text(MessageQueueGet());
                 Room_Game_Set_Mode(MODE_SHOW_NOTIFICATION);
                 break;
             }
@@ -757,7 +757,7 @@ void Room_Game_Handle(void)
             if (MessageQueueIsEmpty() == 0)
             {
                 Notification_Box_Clear();
-                Notification_Box_Print(0, 0, MessageQueueGet());
+                Notification_Box_Set_Text(MessageQueueGet());
                 Room_Game_Set_Mode(MODE_SHOW_NOTIFICATION);
                 break;
             }
@@ -920,12 +920,14 @@ void Room_Game_SlowVBLHandler(void)
         }
         case MODE_SHOW_NOTIFICATION:
         {
+            Notification_Box_Update();
+
             if (keys_pressed & KEY_A)
             {
                 if (MessageQueueIsEmpty() == 0)
                 {
                     Notification_Box_Clear();
-                    Notification_Box_Print(0, 0, MessageQueueGet());
+                    Notification_Box_Set_Text(MessageQueueGet());
                 }
                 else
                 {
