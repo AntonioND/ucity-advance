@@ -191,18 +191,18 @@ static void BoatSpawn(boat_info *p)
     int scx, scy;
     Room_Game_GetCurrentScroll(&scx, &scy);
 
-    int r = rand_fast();
+    unsigned int r = rand_fast();
 
     // Spawn at a dock
 
     // TODO: Maybe spawn at border of map
 
     building_count_info *info = Simulation_CountBuildingsGet();
-    int docks = info->docks;
+    unsigned int docks = info->docks;
 
     UGBA_Assert(docks > 0);
 
-    int the_dock = r % docks;
+    unsigned int the_dock = r % docks;
 
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)
     {

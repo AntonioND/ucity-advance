@@ -214,17 +214,17 @@ static void TrainSpawn(train_info *p)
     int scx, scy;
     Room_Game_GetCurrentScroll(&scx, &scy);
 
-    int r = rand_fast();
+    unsigned int r = rand_fast();
 
     // Spawn at a train track
 
     building_count_info *info = Simulation_CountBuildingsGet();
-    int train_tracks = info->train_tracks;
+    unsigned int train_tracks = info->train_tracks;
 
     if (train_tracks < 0)
         return;
 
-    int the_track = r % train_tracks;
+    unsigned int the_track = r % train_tracks;
 
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)
     {

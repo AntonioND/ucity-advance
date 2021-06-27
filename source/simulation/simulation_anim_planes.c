@@ -104,18 +104,18 @@ static void PlaneSpawn(plane_info *p)
     int scx, scy;
     Room_Game_GetCurrentScroll(&scx, &scy);
 
-    int r = rand_fast();
+    unsigned int r = rand_fast();
 
     if (r & (1 << 2))
     {
         // Spawn at an airport
 
         building_count_info *info = Simulation_CountBuildingsGet();
-        int airports = info->airports;
+        unsigned int airports = info->airports;
 
         UGBA_Assert(airports > 0);
 
-        int the_airport = (r >> 3) % airports;
+        unsigned int the_airport = (r >> 3) % airports;
 
         for (int j = 0; j < CITY_MAP_HEIGHT; j++)
         {
@@ -271,7 +271,7 @@ void PlanesHandle(void)
         p->direction_change_countdown--;
         if (p->direction_change_countdown == 0)
         {
-            int r = rand_fast();
+            unsigned int r = rand_fast();
             p->direction_change_countdown = (r & (PLANE_CHANGE_DIR_RANGE - 1))
                                           + PLANE_CHANGE_DIR_MIN;
             p->direction += r & (1 << 16) ? 1 : -1;
