@@ -107,6 +107,14 @@ void Notification_Box_Print(const char *text, int len)
     }
 }
 
+int Notification_Box_Message_Is_Completed(void)
+{
+    if (notification_text[notification_text_len] == '\0')
+        return 1;
+
+    return 0;
+}
+
 void Notification_Box_Update(void)
 {
     if (notification_text[notification_text_len] == '\0')

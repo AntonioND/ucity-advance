@@ -924,15 +924,18 @@ void Room_Game_SlowVBLHandler(void)
 
             if (keys_pressed & KEY_A)
             {
-                if (MessageQueueIsEmpty() == 0)
+                if (Notification_Box_Message_Is_Completed())
                 {
-                    Notification_Box_Clear();
-                    Notification_Box_Set_Text(MessageQueueGet());
-                }
-                else
-                {
-                    Notification_Box_Hide();
-                    Room_Game_Set_Mode(MODE_RUNNING);
+                    if (MessageQueueIsEmpty() == 0)
+                    {
+                        Notification_Box_Clear();
+                        Notification_Box_Set_Text(MessageQueueGet());
+                    }
+                    else
+                    {
+                        Notification_Box_Hide();
+                        Room_Game_Set_Mode(MODE_RUNNING);
+                    }
                 }
             }
 
