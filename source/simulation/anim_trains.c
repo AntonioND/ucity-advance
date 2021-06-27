@@ -221,7 +221,7 @@ static void TrainSpawn(train_info *p)
     building_count_info *info = Simulation_CountBuildingsGet();
     unsigned int train_tracks = info->train_tracks;
 
-    if (train_tracks < 0)
+    if (train_tracks <= 0)
         return;
 
     unsigned int the_track = r % train_tracks;
