@@ -7,7 +7,8 @@
 
 #include <ugba/ugba.h>
 
-// Assets (so that it isn't needed to include this header everywhere)
+// Assets. By including this header here it isn't needed to include it in every
+// file that wants to play a song or sound effect.
 #include "audio/umod_pack_info.h"
 
 void Audio_Init(void);
