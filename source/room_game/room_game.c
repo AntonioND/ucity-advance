@@ -753,15 +753,6 @@ void Room_Game_Handle(void)
         }
         case MODE_WATCH:
         {
-            // If there are pending messages, don't start simulation step
-            if (MessageQueueIsEmpty() == 0)
-            {
-                Notification_Box_Clear();
-                Notification_Box_Set_Text(MessageQueueGet());
-                Room_Game_Set_Mode(MODE_SHOW_NOTIFICATION);
-                break;
-            }
-
             if (simulation_enabled)
             {
                 if (frames_left_to_step == 0)
@@ -905,12 +896,28 @@ void Room_Game_SlowVBLHandler(void)
                  MessageQueueAdd(ID_MSG_CUSTOM);
             }
 
+            if (MessageQueueIsEmpty() == 0)
+            {
+                Notification_Box_Clear();
+                Notification_Box_Set_Text(MessageQueueGet());
+                Room_Game_Set_Mode(MODE_SHOW_NOTIFICATION);
+                break;
+            }
+
             GameAnimateMap();
 
             break;
         }
         case MODE_WATCH:
         {
+            if (MessageQueueIsEmpty() == 0)
+            {
+                Notification_Box_Clear();
+                Notification_Box_Set_Text(MessageQueueGet());
+                Room_Game_Set_Mode(MODE_SHOW_NOTIFICATION);
+                break;
+            }
+
             if (keys_released & KEY_B)
                 Room_Game_Set_Mode(MODE_RUNNING);
 
