@@ -33,6 +33,48 @@ ${SUPERFAMICONV} tiles \
     --out-data ${OUT}/cursor_tiles.bin \
     --verbose
 
+# Busy icon
+
+${SUPERFAMICONV} palette \
+    --mode gba \
+    --palettes 1 \
+    --colors 16 \
+    --color-zero FF00FF \
+    --in-image ${IN}/busy_icon.png \
+    --out-data ${OUT}/busy_icon_palette.bin \
+    --out-image ${OUT}/busy_icon_palette.png \
+    --verbose
+
+${SUPERFAMICONV} tiles \
+    --mode gba \
+    --bpp 4 \
+    --tile-width 8 --tile-height 8 \
+    --in-image ${IN}/busy_icon.png \
+    --in-palette ${OUT}/busy_icon_palette.bin \
+    --out-data ${OUT}/busy_icon_tiles.bin \
+    --verbose
+
+# Busy icon GBC
+
+${SUPERFAMICONV} palette \
+    --mode gba \
+    --palettes 1 \
+    --colors 16 \
+    --color-zero FF00FF \
+    --in-image ${IN}/busy_icon_gbc.png \
+    --out-data ${OUT}/busy_icon_gbc_palette.bin \
+    --out-image ${OUT}/busy_icon_gbc_palette.png \
+    --verbose
+
+${SUPERFAMICONV} tiles \
+    --mode gba \
+    --bpp 4 \
+    --tile-width 8 --tile-height 8 \
+    --in-image ${IN}/busy_icon_gbc.png \
+    --in-palette ${OUT}/busy_icon_gbc_palette.bin \
+    --out-data ${OUT}/busy_icon_gbc_tiles.bin \
+    --verbose
+
 # Transport
 
 ${SUPERFAMICONV} palette \

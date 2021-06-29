@@ -46,6 +46,10 @@
 #include "maps/city/city_map_palette_gbc_bin.h"
 #include "maps/city/city_map_tiles_bin.h"
 #include "maps/city/city_map_tiles_gbc_bin.h"
+#include "sprites/busy_icon_gbc_palette_bin.h"
+#include "sprites/busy_icon_gbc_tiles_bin.h"
+#include "sprites/busy_icon_palette_bin.h"
+#include "sprites/busy_icon_tiles_bin.h"
 
 // ----------------------------------------------------------------------------
 
@@ -300,6 +304,50 @@ static void Room_Game_Load_Cursor_Graphics(void)
     Load_Cursor_Palette(CURSOR_PALETTE);
 }
 
+static void Room_Game_Load_Busy_Icon_Graphics(void)
+{
+#define BUSY_ICON_PALETTE      (11)
+#define BUSY_ICON_TILES_BASE   (MEM_BG_TILES_BLOCK_ADDR(5) + (8 * 8 * 4 / 8))
+#define BUSY_ICON_TILES_INDEX  (513)
+
+    if (Room_Game_Graphics_New_Get())
+    {
+        SWI_CpuSet_Copy16(busy_icon_tiles_bin, (void *)BUSY_ICON_TILES_BASE,
+                          busy_icon_tiles_bin_size);
+
+        VRAM_OBJPalette16Copy(busy_icon_palette_bin, busy_icon_palette_bin_size,
+                              BUSY_ICON_PALETTE);
+    }
+    else
+    {
+        SWI_CpuSet_Copy16(busy_icon_gbc_tiles_bin, (void *)BUSY_ICON_TILES_BASE,
+                          busy_icon_gbc_tiles_bin_size);
+
+        VRAM_OBJPalette16Copy(busy_icon_gbc_palette_bin,
+                              busy_icon_gbc_palette_bin_size,
+                              BUSY_ICON_PALETTE);
+    }
+
+    OBJ_RegularInit(116, GBA_SCREEN_W - 8, 0,
+                    OBJ_SIZE_8x8, OBJ_16_COLORS,
+                    BUSY_ICON_PALETTE, BUSY_ICON_TILES_INDEX);
+    OBJ_PrioritySet(116, 1);
+    OBJ_RegularEnableSet(116, 0);
+}
+
+static void Room_Game_Load_Busy_Icon_Set_Position(int status_bar_is_up)
+{
+    if (status_bar_is_up)
+        OBJ_PositionSet(116, GBA_SCREEN_W - 8, 16);
+    else
+        OBJ_PositionSet(116, GBA_SCREEN_W - 8, 0);
+}
+
+static void Room_Game_Load_Busy_Icon_Show(int show)
+{
+    OBJ_RegularEnableSet(116, show);
+}
+
 static void Room_Game_Draw_RCI_Bars(void)
 {
     int r, c, i;
@@ -427,6 +475,7 @@ static void Room_Game_Handle_Scroll(void)
 
     if (cury <= cur_win_y_min)
     {
+        Room_Game_Load_Busy_Icon_Set_Position(0);
         StatusBarPositionSet(STATUS_BAR_DOWN);
         if (current_mode == MODE_MODIFY_MAP)
         {
@@ -436,6 +485,7 @@ static void Room_Game_Handle_Scroll(void)
     }
     else if ((cury + curh) >= cur_win_y_max)
     {
+        Room_Game_Load_Busy_Icon_Set_Position(1);
         StatusBarPositionSet(STATUS_BAR_UP);
         if (current_mode == MODE_MODIFY_MAP)
         {
@@ -555,6 +605,7 @@ void Room_Game_Set_Mode(int mode)
     {
         case MODE_RUNNING:
         {
+            Room_Game_Load_Busy_Icon_Show(0);
             BuildSelectMenuHide();
             BuildIconPlace(0, 240, 160);
             Cursor_Set_Size(8, 8);
@@ -569,12 +620,14 @@ void Room_Game_Set_Mode(int mode)
         }
         case MODE_WATCH:
         {
+            Room_Game_Load_Busy_Icon_Show(0);
             Cursor_Hide();
             StatusBarHide();
             break;
         }
         case MODE_SHOW_NOTIFICATION:
         {
+            Room_Game_Load_Busy_Icon_Show(0);
             StatusBarHide();
             Notification_Box_Show();
             break;
@@ -649,6 +702,7 @@ void Room_Game_Load(void)
     StatusBarLoad();
     StatusBarShow();
     Room_Game_Load_Cursor_Graphics();
+    Room_Game_Load_Busy_Icon_Graphics();
 
     // Load notification box
     // ---------------------
@@ -950,6 +1004,8 @@ void Room_Game_SlowVBLHandler(void)
         }
         case MODE_SELECT_BUILDING:
         {
+            Room_Game_Load_Busy_Icon_Show(main_loop_is_busy != 0);
+
             BuildMenuHandleInput();
 
             if (keys_released & KEY_B)
@@ -975,6 +1031,8 @@ void Room_Game_SlowVBLHandler(void)
         }
         case MODE_MODIFY_MAP:
         {
+            Room_Game_Load_Busy_Icon_Show(main_loop_is_busy != 0);
+
             if (keys_released & KEY_B)
             {
                 Room_Game_Set_Mode(MODE_RUNNING);
@@ -1101,6 +1159,7 @@ void Room_Game_SlowVBLHandler(void)
                     Room_Game_Load_City_Graphics();
                     Simulation_TransportLoadGraphics();
                     BuildSelectMenuLoadGfx();
+                    Room_Game_Load_Busy_Icon_Graphics();
                     PauseMenuDraw();
                     break;
 
