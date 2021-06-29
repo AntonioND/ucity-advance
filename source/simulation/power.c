@@ -35,7 +35,7 @@ uint8_t *Simulation_PowerDistributionGetMap(void)
 static int power_plant_energy_left;
 
 // Give as much energy as possible to the specified tile
-static void AddPowerToTile(int x, int y)
+IWRAM_CODE static void AddPowerToTile(int x, int y)
 {
     // If this is a power plant, flag as handled and return right away
     if (power_map[y * CITY_MAP_WIDTH + x] & TILE_HANDLED_POWER_PLANT)
@@ -75,7 +75,7 @@ static void AddPowerToTile(int x, int y)
     *ptr = ((*ptr + consumed_energy) & TILE_POWER_LEVEL_MASK) | TILE_HANDLED;
 }
 
-static void AddToQueueHorizontalDisplacement(int x, int y)
+IWRAM_CODE static void AddToQueueHorizontalDisplacement(int x, int y)
 {
     if ((x < 0) || (x >= CITY_MAP_WIDTH))
         return;
@@ -101,7 +101,7 @@ static void AddToQueueHorizontalDisplacement(int x, int y)
     QueueAddPair(x, y);
 }
 
-static void AddToQueueVerticalDisplacement(int x, int y)
+IWRAM_CODE static void AddToQueueVerticalDisplacement(int x, int y)
 {
     if ((y < 0) || (y >= CITY_MAP_HEIGHT))
         return;
@@ -129,8 +129,9 @@ static void AddToQueueVerticalDisplacement(int x, int y)
 
 // Flood fill from the power plant on the specified coordinates. It also needs
 // the delta to reach the center of the power plant.
-static void Simulation_PowerPlantFloodFill(uint16_t base_tile, int x, int y,
-                                           int dx, int dy, int power)
+IWRAM_CODE static void Simulation_PowerPlantFloodFill(uint16_t base_tile,
+                                                      int x, int y,
+                                                      int dx, int dy, int power)
 {
     // Reset all TILE_HANDLED flags
 
@@ -215,7 +216,7 @@ static void Simulation_PowerPlantFloodFill(uint16_t base_tile, int x, int y,
     }
 }
 
-void Simulation_PowerDistribution(void)
+IWRAM_CODE void Simulation_PowerDistribution(void)
 {
     memset(power_map, 0, sizeof(power_map));
 

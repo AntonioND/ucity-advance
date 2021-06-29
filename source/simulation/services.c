@@ -117,7 +117,7 @@ const uint8_t SERVICES_INFLUENCE_MASK[SERVICES_MASK_WIDTH * SERVICES_MASK_HEIGHT
 };
 
 // Coordinates are the center of the mask
-static void Simulation_ServicesApplyMask(int x, int y)
+IWRAM_CODE static void Simulation_ServicesApplyMask(int x, int y)
 {
     int sx = x - SERVICES_MASK_CENTER_X;
     int sy = y - SERVICES_MASK_CENTER_Y;
@@ -155,7 +155,7 @@ static void Simulation_ServicesApplyMask(int x, int y)
     }
 }
 
-void Simulation_ServicesSetTileOkFlag(void)
+IWRAM_CODE void Simulation_ServicesSetTileOkFlag(void)
 {
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)
     {
@@ -186,7 +186,7 @@ void Simulation_ServicesSetTileOkFlag(void)
 
 // Like Simulation_ServicesSetTileOkFlag(), but can only set to 1 if it was 1
 // before.
-void Simulation_ServicesAddTileOkFlag(void)
+IWRAM_CODE void Simulation_ServicesAddTileOkFlag(void)
 {
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)
     {
@@ -216,7 +216,7 @@ void Simulation_ServicesAddTileOkFlag(void)
     }
 }
 
-void Simulation_EducationSetTileOkFlag(void)
+IWRAM_CODE void Simulation_EducationSetTileOkFlag(void)
 {
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)
     {
@@ -247,7 +247,7 @@ void Simulation_EducationSetTileOkFlag(void)
 
 // Like Simulation_EducationSetTileOkFlag(), but can only set to 1 if it was 1
 // before.
-void Simulation_EducationAddTileOkFlag(void)
+IWRAM_CODE void Simulation_EducationAddTileOkFlag(void)
 {
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)
     {
@@ -278,7 +278,7 @@ void Simulation_EducationAddTileOkFlag(void)
 }
 
 // Central tile of the building (tileset_info.h)
-void Simulation_Services(uint16_t source_tile)
+IWRAM_CODE void Simulation_Services(uint16_t source_tile)
 {
     memset(services_matrix, 0, sizeof(services_matrix));
 
@@ -650,7 +650,7 @@ static uint8_t SERVICES_INFLUENCE_MASK_BIG[
 };
 
 // Coordinates are the center of the mask
-static void Simulation_ServicesApplyMaskBig(int x, int y)
+IWRAM_CODE static void Simulation_ServicesApplyMaskBig(int x, int y)
 {
     int sx = x - SERVICES_MASK_BIG_CENTER_X;
     int sy = y - SERVICES_MASK_BIG_CENTER_Y;
@@ -689,7 +689,7 @@ static void Simulation_ServicesApplyMaskBig(int x, int y)
 }
 
 // Central tile of the building (tileset_info.h)
-void Simulation_ServicesBig(uint16_t source_tile)
+IWRAM_CODE void Simulation_ServicesBig(uint16_t source_tile)
 {
     memset(services_matrix, 0, sizeof(services_matrix));
 

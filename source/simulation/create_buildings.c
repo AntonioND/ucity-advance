@@ -58,7 +58,7 @@ EWRAM_BSS static uint8_t building_level[CITY_MAP_WIDTH * CITY_MAP_HEIGHT];
 
 // Generate flags to build/demolish buildings on a per-tile basis. Flags are
 // only calculated for RCI type zones!
-void Simulation_FlagCreateBuildings(void)
+IWRAM_CODE void Simulation_FlagCreateBuildings(void)
 {
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)
     {
@@ -347,7 +347,8 @@ static const uint8_t create_building_level[] = {
     BUILDING3X3LEVEL(T_INDUSTRIAL_S3_D)
 };
 
-static int PositionTest(int x, int y, uint16_t ref_type, uint8_t flags, int level)
+IWRAM_CODE static int PositionTest(int x, int y, uint16_t ref_type,
+                                   uint8_t flags, int level)
 {
     uint16_t type = CityMapGetType(x, y);
 
@@ -372,7 +373,7 @@ static int PositionTest(int x, int y, uint16_t ref_type, uint8_t flags, int leve
 }
 
 // Try to build a building as big as possible.
-void Simulation_CreateBuildingsTryBuild(int x, int y, uint16_t type)
+IWRAM_CODE void Simulation_CreateBuildingsTryBuild(int x, int y, uint16_t type)
 {
     int building_result;
     int size;
@@ -572,7 +573,7 @@ build_building:
 // The functions used to build and delete buildings will clear the FLAGS in the
 // tiles affected by the change, so the loop won't try to handle all tiles after
 // one of these changes.
-void Simulation_CreateBuildings(void)
+IWRAM_CODE void Simulation_CreateBuildings(void)
 {
     // The probability of creating and destroying buildings depend on the amount
     // of taxes.

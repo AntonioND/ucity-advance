@@ -44,7 +44,8 @@ uint8_t *Simulation_PollutionGetMap(void)
     return &scratch_map_1[0];
 }
 
-static void Diffuminate_Central_Tile(uint8_t *src, uint8_t *dst, int i, int j)
+IWRAM_CODE static void Diffuminate_Central_Tile(uint8_t *src, uint8_t *dst,
+                                                int i, int j)
 {
     uint32_t total = 0;
     uint32_t weight = 5;
@@ -86,7 +87,7 @@ static void Diffuminate_Central_Tile(uint8_t *src, uint8_t *dst, int i, int j)
     dst[j * CITY_MAP_WIDTH + i] = result;
 }
 
-static void Diffuminate_Loop(uint8_t *src, uint8_t *dst)
+IWRAM_CODE static void Diffuminate_Loop(uint8_t *src, uint8_t *dst)
 {
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)
     {
@@ -95,7 +96,7 @@ static void Diffuminate_Loop(uint8_t *src, uint8_t *dst)
     }
 }
 
-static void Simulation_PollutionSetTileOkFlag(void)
+IWRAM_CODE static void Simulation_PollutionSetTileOkFlag(void)
 {
     // List of terrains that ignore the pollution level. In general, any terrain
     // that generates pollution ignores it. This is only used for buildings, so
@@ -160,7 +161,7 @@ static void Simulation_PollutionSetTileOkFlag(void)
     }
 }
 
-void Simulation_Pollution(void)
+IWRAM_CODE void Simulation_Pollution(void)
 {
     // Cleanup
     // -------

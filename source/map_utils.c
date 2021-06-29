@@ -30,7 +30,7 @@ void copy_map_to_sbb(const void *source, void *dest, int width, int height)
     }
 }
 
-uint16_t *get_pointer_sbb(void *map, int x, int y)
+IWRAM_CODE uint16_t *get_pointer_sbb(void *map, int x, int y)
 {
     uint16_t *ptr = (uint16_t *)map;
 
@@ -47,25 +47,25 @@ uint16_t *get_pointer_sbb(void *map, int x, int y)
     return &ptr[index];
 }
 
-void write_tile_sbb(uint16_t entry, void *dest, int x, int y)
+IWRAM_CODE void write_tile_sbb(uint16_t entry, void *dest, int x, int y)
 {
     uint16_t *dst_ptr = get_pointer_sbb(dest, x, y);
     *dst_ptr = entry;
 }
 
-void toggle_hflip_tile_sbb(void *map, int x, int y)
+IWRAM_CODE void toggle_hflip_tile_sbb(void *map, int x, int y)
 {
     uint16_t *map_ptr = get_pointer_sbb(map, x, y);
     *map_ptr ^= MAP_REGULAR_HFLIP;
 }
 
-void toggle_vflip_tile_sbb(void *map, int x, int y)
+IWRAM_CODE void toggle_vflip_tile_sbb(void *map, int x, int y)
 {
     uint16_t *map_ptr = get_pointer_sbb(map, x, y);
     *map_ptr ^= MAP_REGULAR_VFLIP;
 }
 
-uint16_t read_tile_sbb(void *source, int x, int y)
+IWRAM_CODE uint16_t read_tile_sbb(void *source, int x, int y)
 {
     uint16_t *src_ptr = get_pointer_sbb(source, x, y);
     return *src_ptr;

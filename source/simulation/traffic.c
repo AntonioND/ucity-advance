@@ -29,7 +29,7 @@ int simulation_traffic_jam_num_tiles_percent;
 // Remaining density in the residential building being handled at the moment.
 int source_building_remaining_density;
 
-static int min(int a, int b)
+IWRAM_CODE static int min(int a, int b)
 {
     if (a < b)
         return a;
@@ -47,7 +47,7 @@ uint8_t *Simulation_TrafficGetMap(void)
 }
 
 // Returns remaining density of a building from any tile of it.
-static uint8_t *TrafficGetBuildingiRemainingDensityPointer(int x, int y)
+IWRAM_CODE static uint8_t *TrafficGetBuildingiRemainingDensityPointer(int x, int y)
 {
     uint16_t tile = CityMapGetTile(x, y);
 
@@ -61,7 +61,7 @@ static uint8_t *TrafficGetBuildingiRemainingDensityPointer(int x, int y)
 
 // Add initial tiles that are next to a residential building. The only allowed
 // destinations are road and train tracks tiles.
-static void TrafficAddStart(int x, int y)
+IWRAM_CODE static void TrafficAddStart(int x, int y)
 {
     if ((x < 0) || (x >= CITY_MAP_WIDTH))
         return;
@@ -83,7 +83,7 @@ static void TrafficAddStart(int x, int y)
 
 // Try to add a certain tile to the queue. Only non-residential buildings and
 // road/train tracks are allowed.
-static void TrafficAdd(int x, int y, int accumulated_cost)
+IWRAM_CODE static void TrafficAdd(int x, int y, int accumulated_cost)
 {
     // Check if it is a non-residential building. If so, add to queue
     // immediately.
@@ -131,7 +131,7 @@ static void TrafficAdd(int x, int y, int accumulated_cost)
     QueueAddPair(x, y);
 }
 
-static void TrafficTryMoveUp(int x, int y, int accumulated_cost)
+IWRAM_CODE static void TrafficTryMoveUp(int x, int y, int accumulated_cost)
 {
     // Return if this is in the top row
     if (y == 0)
@@ -153,7 +153,7 @@ static void TrafficTryMoveUp(int x, int y, int accumulated_cost)
     TrafficAdd(x, y - 1, accumulated_cost);
 }
 
-static void TrafficTryMoveDown(int x, int y, int accumulated_cost)
+IWRAM_CODE static void TrafficTryMoveDown(int x, int y, int accumulated_cost)
 {
     // Return if this is in the bottom row
     if (y == (CITY_MAP_HEIGHT - 1))
@@ -175,7 +175,7 @@ static void TrafficTryMoveDown(int x, int y, int accumulated_cost)
     TrafficAdd(x, y + 1, accumulated_cost);
 }
 
-static void TrafficTryMoveLeft(int x, int y, int accumulated_cost)
+IWRAM_CODE static void TrafficTryMoveLeft(int x, int y, int accumulated_cost)
 {
     // Return if this is in the left column
     if (x == 0)
@@ -197,7 +197,7 @@ static void TrafficTryMoveLeft(int x, int y, int accumulated_cost)
     TrafficAdd(x - 1, y, accumulated_cost);
 }
 
-static void TrafficTryMoveRight(int x, int y, int accumulated_cost)
+IWRAM_CODE static void TrafficTryMoveRight(int x, int y, int accumulated_cost)
 {
     // Return if this is in the right column
     if (x == (CITY_MAP_WIDTH - 1))
@@ -223,7 +223,7 @@ static void TrafficTryMoveRight(int x, int y, int accumulated_cost)
 // cost of this tile and add it. If the top cost is not reached, try to expand
 // in all directions. Top cost is 255. If it goes to 256 and overflows, it is
 // considered to be too far for the car/train to get there.
-static void TrafficTryExpand(int x, int y)
+IWRAM_CODE static void TrafficTryExpand(int x, int y)
 {
     const int TILE_TRANSPORT_INFO[] = { // Cost
         [T_ROAD_TB]                 = 12,
@@ -314,7 +314,7 @@ static void TrafficTryExpand(int x, int y)
 }
 
 // Checks bounds, returns 255 if outside the map else the accumulated cost
-static int TrafficGetAccumulatedCost(int x, int y)
+IWRAM_CODE static int TrafficGetAccumulatedCost(int x, int y)
 {
     if ((x < 0) || (x >= CITY_MAP_WIDTH) ||
         (y < 0) || (y >= CITY_MAP_HEIGHT))
@@ -328,7 +328,7 @@ static int TrafficGetAccumulatedCost(int x, int y)
 }
 
 // Recursively find origin of traffic and increase traffic in traffic map.
-static void TrafficRetraceStep(int x, int y, int amount_of_traffic)
+IWRAM_CODE static void TrafficRetraceStep(int x, int y, int amount_of_traffic)
 {
     if ((x < 0) || (x >= CITY_MAP_WIDTH))
         return;
@@ -410,7 +410,7 @@ static void TrafficRetraceStep(int x, int y, int amount_of_traffic)
 // account.
 //
 // The coordinates given to it are the top left corner of the building.
-static void Simulation_TrafficHandleSource(int x, int y)
+IWRAM_CODE static void Simulation_TrafficHandleSource(int x, int y)
 {
     // Get density of this building
     // ----------------------------
@@ -577,7 +577,7 @@ static void Simulation_TrafficHandleSource(int x, int y)
     // End of this building
 }
 
-static void Simulation_TrafficSetTileOkFlag(void)
+IWRAM_CODE static void Simulation_TrafficSetTileOkFlag(void)
 {
     // - For roads and train, make sure that the traffic is below a certain
     //   threshold.
@@ -677,7 +677,7 @@ static void Simulation_TrafficSetTileOkFlag(void)
     }
 }
 
-void Simulation_Traffic(void)
+IWRAM_CODE void Simulation_Traffic(void)
 {
     // Final traffic density and building handled flags go to traffic_map[],
     // temporary expansion map goes to scratch_map[].
@@ -811,7 +811,7 @@ void Simulation_Traffic(void)
     Simulation_TrafficSetTileOkFlag();
 }
 
-void Simulation_TrafficRemoveAnimationTiles(void)
+IWRAM_CODE void Simulation_TrafficRemoveAnimationTiles(void)
 {
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)
     {
@@ -833,7 +833,7 @@ void Simulation_TrafficRemoveAnimationTiles(void)
     }
 }
 
-void Simulation_TrafficAnimate(void)
+IWRAM_CODE void Simulation_TrafficAnimate(void)
 {
     // Animate tiles of the map with traffic animation
 
