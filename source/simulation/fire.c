@@ -192,6 +192,8 @@ void Simulation_FireTryStart(int force)
 
 static void Simulation_FireExpand(int x, int y)
 {
+    int can_expand = 0;
+
     if (y > 0) // Expand up
     {
         int tx = x;
@@ -202,6 +204,7 @@ static void Simulation_FireExpand(int x, int y)
         const city_tile_density_info *di = CityTileDensityInfo(tile);
         if (di->fire_probability > 0)
         {
+            can_expand = 1;
             int val = fire_map[ty * CITY_MAP_WIDTH + tx];
             val += di->fire_probability;
             if (val > 255)
@@ -220,6 +223,7 @@ static void Simulation_FireExpand(int x, int y)
         const city_tile_density_info *di = CityTileDensityInfo(tile);
         if (di->fire_probability > 0)
         {
+            can_expand = 1;
             int val = fire_map[ty * CITY_MAP_WIDTH + tx];
             val += di->fire_probability;
             if (val > 255)
@@ -238,6 +242,7 @@ static void Simulation_FireExpand(int x, int y)
         const city_tile_density_info *di = CityTileDensityInfo(tile);
         if (di->fire_probability > 0)
         {
+            can_expand = 1;
             int val = fire_map[ty * CITY_MAP_WIDTH + tx];
             val += di->fire_probability;
             if (val > 255)
@@ -256,12 +261,23 @@ static void Simulation_FireExpand(int x, int y)
         const city_tile_density_info *di = CityTileDensityInfo(tile);
         if (di->fire_probability > 0)
         {
+            can_expand = 1;
             int val = fire_map[ty * CITY_MAP_WIDTH + tx];
             val += di->fire_probability;
             if (val > 255)
                 val = 255;
             fire_map[ty * CITY_MAP_WIDTH + tx] = val;
         }
+    }
+
+    // If the fire of this tile can't expand, make it disappear with a 50%
+    // probability. This is done so that a fire can't be active for a long time,
+    // which can be really frustrating for the player.
+    if (can_expand == 0)
+    {
+        int r = rand_slow();
+        if (r & 1)
+            CityMapDrawTile(T_DEMOLISHED, x, y);
     }
 }
 
