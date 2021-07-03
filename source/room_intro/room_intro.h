@@ -9,5 +9,6 @@ void Room_Intro_Load(void);
 void Room_Intro_Unload(void);
 
 void Room_Intro_Handle(void);
+void Room_Intro_FastVBLHandler(void);
 
 #endif // ROOM_INTRO_ROOM_INTRO_H__

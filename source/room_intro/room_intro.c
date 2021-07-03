@@ -161,7 +161,10 @@ void Room_Intro_Handle(void)
     {
         Game_Room_Prepare_Switch(ROOM_MAIN_MENU);
     }
+}
 
+void Room_Intro_FastVBLHandler(void)
+{
     // Scroll map
 
     static int frame = 0;

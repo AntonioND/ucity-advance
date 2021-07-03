@@ -333,6 +333,8 @@ IWRAM_CODE ARM_CODE void Master_VBL_Handler(void)
 
     if (current_room == ROOM_GAME)
         Room_Game_FastVBLHandler();
+    else if (current_room == ROOM_INTRO)
+        Room_Intro_FastVBLHandler();
 
     Game_Room_Update_Switch();
 
