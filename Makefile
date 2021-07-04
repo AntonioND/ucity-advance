@@ -11,6 +11,9 @@ endif
 
 TARGET      := $(notdir $(CURDIR))
 
+GAME_TITLE  := "UCITYADVANCE"
+GAME_CODE   := "UCAD"
+
 BUILDDIR    := build
 SOURCEDIR   := source
 INCLUDEDIRS := source
@@ -110,7 +113,7 @@ $(TARGET).gba: $(TARGET).elf
 	@echo "  OBJCOPY $@"
 	$(QUIET)$(OBJCOPY) -O binary $< $@
 	@echo "  GBAFIX  $@"
-	$(QUIET)gbafix $@
+	$(QUIET)gbafix $@ -t$(GAME_TITLE) -c$(GAME_CODE)
 
 $(TARGET).elf: $(OBJS)
 	@echo "  LD      $@"
