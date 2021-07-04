@@ -7,6 +7,7 @@
 #include "audio.h"
 #include "date.h"
 #include "input_utils.h"
+#include "jukebox.h"
 #include "main.h"
 #include "money.h"
 #include "save.h"
@@ -115,7 +116,7 @@ static void Game_Room_Load(int room)
     {
         case ROOM_GAME:
             Room_Game_Load();
-            Audio_Song_Play(SONG_CITY_MOD);
+            Jukebox_RoomSet(JUKEBOX_ROOM_GAME);
             break;
         case ROOM_MINIMAP:
             Room_Minimap_Load();
@@ -137,7 +138,7 @@ static void Game_Room_Load(int room)
             break;
         case ROOM_MAIN_MENU:
             Room_Main_Menu_Load();
-            Audio_Song_Play(SONG_MENU_MOD);
+            Jukebox_RoomSet(JUKEBOX_ROOM_MAIN_MENU);
             break;
         case ROOM_SCENARIOS:
             Room_Scenarios_Load();
@@ -153,7 +154,7 @@ static void Game_Room_Load(int room)
             break;
         case ROOM_INTRO:
             Room_Intro_Load();
-            Audio_Song_Play(SONG_TITLE_MOD);
+            Jukebox_RoomSet(JUKEBOX_ROOM_INTRO);
             break;
         default:
             UGBA_Assert(0);
@@ -395,6 +396,8 @@ int main(int argc, char *argv[])
 
         if (Game_Room_HasToSwitch())
             Game_Room_DoSwitch();
+
+        Jukebox_Update();
     }
 
     return 0;
