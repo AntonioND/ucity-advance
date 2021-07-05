@@ -10,6 +10,7 @@
 #include "cursor.h"
 #include "date.h"
 #include "input_utils.h"
+#include "jukebox.h"
 #include "main.h"
 #include "money.h"
 #include "map_utils.h"
@@ -1161,6 +1162,7 @@ void Room_Game_SlowVBLHandler(void)
                     BuildSelectMenuLoadGfx();
                     Room_Game_Load_Busy_Icon_Graphics();
                     PauseMenuDraw();
+                    Jukebox_RoomSet(JUKEBOX_ROOM_GAME);
                     break;
 
                 case PAUSE_MENU_INVALID_OPTION:
