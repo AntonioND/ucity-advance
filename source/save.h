@@ -26,6 +26,8 @@ typedef struct {
 
     int32_t     funds;
 
+    int32_t     city_type;
+
     // Last scroll position when saving the game
     uint8_t     last_scroll_x;
     uint8_t     last_scroll_y;

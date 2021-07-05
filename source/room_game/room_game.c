@@ -1243,6 +1243,7 @@ int Room_Game_City_Load(int slot_index)
 
     DateSet(city->month, city->year);
 
+    Simulation_SetCityClass(city->city_type);
     rand_slow_set_seed(city->rand_slow_seed);
 
     Room_Game_Set_City_Economy(city->funds, city->tax_percent,
@@ -1298,6 +1299,8 @@ void Room_Game_City_Save(int slot_index)
     city->rand_slow_seed = rand_slow_get_seed();
 
     city->funds = MoneyGet();
+
+    city->city_type = Simulation_GetCityClass();
 
     city->last_scroll_x = mapx / 8;
     city->last_scroll_y = mapy / 8;

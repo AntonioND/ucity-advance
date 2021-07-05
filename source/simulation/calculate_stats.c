@@ -51,6 +51,12 @@ int Simulation_GetCityClass(void)
     return city_class;
 }
 
+// This only works until the first simulation step
+void Simulation_SetCityClass(int type)
+{
+    city_class = type;
+}
+
 const char *Simulation_GetCityClassString(void)
 {
     const char *city_class_name[] = {

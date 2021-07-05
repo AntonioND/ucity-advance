@@ -6,6 +6,7 @@
 #define SIMULATION_CALCULATE_STATS_H__
 
 int Simulation_GetCityClass(void);
+void Simulation_SetCityClass(int type);
 const char *Simulation_GetCityClassString(void);
 
 uint32_t Simulation_GetTotalPopulation(void);

@@ -17,6 +17,7 @@
 #include "room_game/tileset_info.h"
 #include "room_input/room_input.h"
 #include "simulation/budget.h"
+#include "simulation/calculate_stats.h"
 #include "simulation/common.h"
 #include "simulation/technology.h"
 
@@ -49,6 +50,7 @@ typedef struct {
     const char *name;
     int start_scroll_x, start_scroll_y;
     uint32_t start_funds;
+    int city_type;
     int start_month, start_year;
     int tax_percentage;
     int payments_left;
@@ -77,6 +79,7 @@ static const scenario_info scenarios[] = {
         .start_scroll_x     = 14,
         .start_scroll_y     = 33,
         .start_funds        = 20000,
+        .city_type          = CLASS_TOWN,
         .start_month        = 0,
         .start_year         = 1950,
         .tax_percentage     = 10,
@@ -93,6 +96,7 @@ static const scenario_info scenarios[] = {
         .start_scroll_x     = 24,
         .start_scroll_y     = 24,
         .start_funds        = 9000,
+        .city_type          = CLASS_VILLAGE,
         .start_month        = 3,
         .start_year         = 1975,
         .tax_percentage     = 10,
@@ -109,6 +113,7 @@ static const scenario_info scenarios[] = {
         .start_scroll_x     = 7,
         .start_scroll_y     = 26,
         .start_funds        = 20000,
+        .city_type          = CLASS_CITY,
         .start_month        = 0,
         .start_year         = 1960,
         .tax_percentage     = 10,
@@ -125,6 +130,7 @@ static const scenario_info scenarios[] = {
         .start_scroll_x     = 22,
         .start_scroll_y     = 23,
         .start_funds        = 20000,
+        .city_type          = CLASS_CITY,
         .start_month        = 0,
         .start_year         = 1950,
         .tax_percentage     = 10,
@@ -141,6 +147,7 @@ static const scenario_info scenarios[] = {
         .start_scroll_x     = 22,
         .start_scroll_y     = 23,
         .start_funds        = 99999999,
+        .city_type          = CLASS_CITY,
         .start_month        = 0,
         .start_year         = 1950,
         .tax_percentage     = 10,
@@ -440,6 +447,7 @@ void Room_Scenarios_Handle(void)
         // Setup initial game state
         Room_Game_Load_City(s->map, s->name, s->start_scroll_x, s->start_scroll_y);
         Room_Game_Set_City_Date(s->start_month, s->start_year);
+        Simulation_SetCityClass(s->city_type);
         Room_Game_Set_City_Economy(s->start_funds, s->tax_percentage,
                                    s->payments_left, s->amount_per_payment);
         Technology_SetLevel(s->technology_level);

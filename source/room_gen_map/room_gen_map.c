@@ -16,6 +16,7 @@
 #include "room_gen_map/generate_map.h"
 #include "room_input/room_input.h"
 #include "simulation/budget.h"
+#include "simulation/calculate_stats.h"
 #include "simulation/common.h"
 #include "simulation/technology.h"
 
@@ -325,6 +326,7 @@ void Room_Generate_Map_Handle(void)
                 int scy = (CITY_MAP_HEIGHT - (GBA_SCREEN_H / 8)) / 2;
                 Room_Game_Load_City(NULL, Room_Input_Text_String(), scx, scy);
                 Room_Game_Set_City_Date(0, 1950);
+                Simulation_SetCityClass(CLASS_VILLAGE);
                 Room_Game_Set_City_Economy(20000, 10, 0, 0);
                 Technology_SetLevel(0);
                 PersistentMessageFlagsReset();
