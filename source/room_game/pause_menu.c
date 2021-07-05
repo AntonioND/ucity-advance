@@ -152,7 +152,7 @@ static void PauseMenuDrawOptions(void)
 
     StatusBarPrint(9, 4 + (32 - 30), "Animations:");
     StatusBarPrint(9, 8 + (32 - 30), "Music:");
-    StatusBarPrint(9, 12 + (32 - 30), "Graphics:");
+    StatusBarPrint(9, 12 + (32 - 30), "Art set:");
 
     int x = menu_entry[OPTIONS_ANIMATIONS_ENABLE].x;
     int y = menu_entry[OPTIONS_ANIMATIONS_ENABLE].y + (32 - 30);
@@ -174,9 +174,9 @@ static void PauseMenuDrawOptions(void)
     y = menu_entry[OPTIONS_GRAPHICS_NEW].y + (32 - 30);
 
     if (Room_Game_Graphics_New_Get())
-        StatusBarPrint(x, y, "New");
+        StatusBarPrint(x, y, "GBA");
     else
-        StatusBarPrint(x, y, "Old");
+        StatusBarPrint(x, y, "GBC");
 }
 
 void PauseMenuDraw(void)
