@@ -6,6 +6,7 @@
 
 #include <string.h>
 
+#include "jukebox.h"
 #include "room_game/text_messages.h"
 
 static uint8_t persistent_msg_flags[BYTES_SAVE_PERSISTENT_MSG];
@@ -153,6 +154,16 @@ void PersistentMessageShow(message_ids id)
         return;
 
     persistent_msg_flags[which_byte] |= bit_mask;
+
+    // If this is a change of city type, refresh music
+
+    if ((id == ID_MSG_CLASS_TOWN) || (id == ID_MSG_CLASS_CITY) ||
+        (id == ID_MSG_CLASS_METROPOLIS) || (id == ID_MSG_CLASS_CAPITAL))
+    {
+        Jukebox_RoomSet(JUKEBOX_ROOM_GAME);
+    }
+
+    // Finally, show message
 
     MessageQueueAdd(id);
 }
