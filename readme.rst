@@ -49,9 +49,21 @@ Tools and libraries used:
 - Tiled: https://www.mapeditor.org/
 - JFXR: https://jfxr.frozenfractal.com/
 - Open ModPlug Tracker: https://openmpt.org/
+- The Mod Archive: https://modarchive.org/
 
-License
-=======
+Licenses
+========
 
-This game has been licensed under the terms of the GPL v3.0 only. The full text
-is included in the repository and can be seen `here <gpl-3.0.txt>`_.
+Different parts of the game have different licenses.
+
+- Code: GPL-3.0-only
+
+- Art: CC-BY-NC-SA-4.0
+
+- Music: Most songs have been obtained from https://modarchive.org/ and they are
+  from different authors. Their license is the Mod Archive Distribution License.
+  Each mod file is acompanied by a txt file that makes this explicit, as well as
+  having a link at the original location. Songs without a txt file and all
+  sound effects are original. They are licensed under the CC-BY-NC-SA-4.0.
+
+The full text of all licenses can be found in the **licenses** folder.
