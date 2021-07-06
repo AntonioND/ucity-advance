@@ -232,7 +232,6 @@ void Room_Credits_Unload(void)
 void Room_Credits_Handle(void)
 {
     uint16_t keys_pressed = KEYS_Pressed();
-    uint16_t keys_released = KEYS_Released();
 
     if (keys_pressed & KEY_A)
     {
