@@ -225,13 +225,14 @@ static void TrainSpawn(train_info *p)
         return;
 
     unsigned int the_track = r % train_tracks;
+    uint16_t spawn_tile = 0;
 
     for (int j = 0; j < CITY_MAP_HEIGHT; j++)
     {
         for (int i = 0; i < CITY_MAP_WIDTH; i++)
         {
-            uint16_t tile, type;
-            CityMapGetTypeAndTileUnsafe(i, j, &tile, &type);
+            uint16_t type;
+            CityMapGetTypeAndTileUnsafe(i, j, &spawn_tile, &type);
 
             if ((type & TYPE_HAS_TRAIN) == 0)
                 continue;
@@ -253,6 +254,64 @@ track_found:
 
     p->is_waiting = 1;
     p->waitframes = 0;
+
+    // Set a direction based on the starting tile
+
+    const uint16_t allowed_directions[] = {
+        [0] = 0,
+        [T_TRAIN_TB] = KEY_UP | KEY_DOWN,
+        [T_TRAIN_LR] = KEY_LEFT | KEY_RIGHT,
+        [T_TRAIN_RB] = KEY_RIGHT | KEY_DOWN,
+        [T_TRAIN_LB] = KEY_LEFT | KEY_DOWN,
+        [T_TRAIN_TR] = KEY_UP | KEY_RIGHT,
+        [T_TRAIN_TL] = KEY_UP | KEY_LEFT,
+        [T_TRAIN_TRB] = KEY_UP | KEY_RIGHT | KEY_DOWN,
+        [T_TRAIN_LRB] = KEY_RIGHT | KEY_DOWN | KEY_LEFT,
+        [T_TRAIN_TLB] = KEY_UP | KEY_LEFT | KEY_DOWN,
+        [T_TRAIN_TLR] = KEY_UP | KEY_LEFT | KEY_RIGHT,
+        [T_TRAIN_TLRB] = KEY_UP | KEY_LEFT | KEY_RIGHT | KEY_DOWN,
+        [T_TRAIN_LR_ROAD] = KEY_LEFT | KEY_RIGHT,
+        [T_TRAIN_TB_ROAD] = KEY_UP | KEY_DOWN,
+        [T_TRAIN_TB_POWER_LINES] = KEY_UP | KEY_DOWN,
+        [T_TRAIN_LR_POWER_LINES] = KEY_LEFT | KEY_RIGHT,
+        [T_TRAIN_TB_BRIDGE] = KEY_UP | KEY_DOWN,
+        [T_TRAIN_LR_BRIDGE] = KEY_LEFT | KEY_RIGHT,
+    };
+
+    // This shouldn't happen
+    if (spawn_tile > T_TRAIN_LR_BRIDGE)
+        return;
+
+    uint16_t allowed = allowed_directions[spawn_tile];
+
+    if (allowed == 0)
+        return;
+
+    while (1)
+    {
+        unsigned int newdir = rand_fast() & (TRAIN_NUM_DIRECTIONS - 1);
+
+        if ((newdir == 0) && (allowed & KEY_UP))
+        {
+            p->direction = 0;
+            break;
+        }
+        else if ((newdir == 1) && (allowed & KEY_RIGHT))
+        {
+            p->direction = 1;
+            break;
+        }
+        else if ((newdir == 2) && (allowed & KEY_DOWN))
+        {
+            p->direction = 2;
+            break;
+        }
+        else if ((newdir == 3) && (allowed & KEY_LEFT))
+        {
+            p->direction = 3;
+            break;
+        }
+    }
 
     // Enable it only if it has spawned correctly
 

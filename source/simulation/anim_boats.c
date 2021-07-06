@@ -261,6 +261,7 @@ dock_found:
 
     p->is_waiting = 1;
     p->waitframes = BOAT_MOVE_WAIT_MIN + (rand_fast() % BOAT_MOVE_WAIT_RANGE);
+    p->direction = rand_slow() & (BOAT_NUM_DIRECTIONS - 1);
 
     // Enable it only if it has spawned correctly
 
