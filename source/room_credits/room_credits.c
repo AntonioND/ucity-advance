@@ -20,6 +20,153 @@
 #define BG_CREDITS_TILES_BASE       MEM_BG_TILES_BLOCK_ADDR(3)
 #define BG_CREDITS_MAP_BASE         MEM_BG_MAP_BLOCK_ADDR(28)
 
+#define CHAR_MICRO      "\x83"
+#define CHAR_COPYRIGHT  "\x8D"
+#define CHAR_NTILDE     "\x8F"
+
+static const char *credits_pages[] = {
+
+    // Page 1
+
+    "\n"
+    "  " CHAR_MICRO "City " CHAR_COPYRIGHT " 2017-2018, 2021\n"
+    "\n"
+    "  Antonio Ni" CHAR_NTILDE "o Diaz\n"
+    "\n"
+    "\n"
+    "    AntonioND/SkyLyrac\n"
+    "\n"
+    "    antonio_nd@outlook.com\n"
+    "\n"
+    "    www.skylyrac.net\n"
+    "    github.com/AntonioND\n"
+    "\n"
+    "\n"
+    "  Licenses:\n"
+    "\n"
+    "    Code: GPL-3.0-only\n"
+    "    Art: CC-BY-NC-SA-4.0\n"
+    "    Music: Various\n"
+    "                           1/4\n",
+
+    // Page 2
+
+    "\n"
+    "  Music:\n"
+    "\n"
+    "  'no energy'\n"
+    "  roberts/beta team\n"
+    "  ID: 120127\n"
+    "  Mod Archive Distr. license\n"
+    "\n"
+    "  balthasar\n"
+    "  andy / banal\n"
+    "  ID: 76460\n"
+    "  Mod Archive Distr. license\n"
+    "\n"
+    "  The Mssing Lnk.\n"
+    "  optic & dascon of trsi\n"
+    "  ID: 113254\n"
+    "  Mod Archive Distr. license\n"
+    "\n"
+    "\n"
+    "                           2/4\n",
+
+    // Page 3
+
+    "\n"
+    "  Music:\n"
+    "\n"
+    "  jointpeople\n"
+    "  Anadune & Floppy\n"
+    "  ID: 115447\n"
+    "  Mod Archive Distr. license\n"
+    "\n"
+    "  Improvisation\n"
+    "  Unknown\n"
+    "  ID: 44379\n"
+    "  Mod Archive Distr. license\n"
+    "\n"
+    "  tecjaz\n"
+    "  AE\n"
+    "  ID: 59910\n"
+    "  Mod Archive Distr. license\n"
+    "\n"
+    "\n"
+    "                           3/4\n",
+
+    // Page 4
+
+    "\n"
+    "  Music:\n"
+    "\n"
+    "  Schwinging the swing\n"
+    "  Cybelius of sonic pc\n"
+    "  ID: 54272\n"
+    "  Mod Archive Distr. license\n"
+    "\n"
+    "\n"
+    "  Other music and SFXs:\n"
+    "\n"
+    "    AntonioND/SkyLyrac\n"
+    "\n"
+    "    CC-BY-NC-SA-4.0\n"
+    "\n"
+    "\n"
+    "\n"
+    "\n"
+    "\n"
+    "                           4/4\n",
+};
+
+static size_t current_page = 0;
+
+static int Room_Credits_PageExists(size_t num)
+{
+    size_t nelem = sizeof(credits_pages) / sizeof(credits_pages[0]);
+    if (num >= nelem)
+        return 0;
+
+    return 1;
+}
+
+static void Room_Credits_PagePrint(size_t num)
+{
+    if (Room_Credits_PageExists(num) == 0)
+        return;
+
+    // Reload the map
+    SWI_CpuSet_Copy16(credits_bg_bin, (void *)BG_CREDITS_MAP_BASE,
+                      credits_bg_bin_size);
+
+    const char *text = credits_pages[num];
+
+    uintptr_t addr = BG_CREDITS_MAP_BASE;
+
+    while (1)
+    {
+        int c = (uint8_t)*text++;
+        if (c == '\0')
+        {
+            break;
+        }
+        else if (c == '\n')
+        {
+            // This needs to be uintptr_t, not uint32_t, so that the pointer
+            // isn't clamped down to 32 bits by mistake.
+            uintptr_t mask = 32 * 2; // 32 columns
+            addr = (addr + mask) & ~(mask - 1);
+            continue;
+        }
+
+        uint16_t *ptr = (uint16_t *)addr;
+
+        *ptr = MAP_REGULAR_TILE(c) | MAP_REGULAR_PALETTE(BG_CREDITS_PALETTE);
+
+        addr += 2;
+    }
+}
+
 void Room_Credits_Load(void)
 {
     // Load frame map
@@ -48,6 +195,9 @@ void Room_Credits_Load(void)
 
     // Update room state
     // -----------------
+
+    current_page = 0;
+    Room_Credits_PagePrint(current_page);
 
     // Setup display mode
 
@@ -82,6 +232,38 @@ void Room_Credits_Unload(void)
 void Room_Credits_Handle(void)
 {
     uint16_t keys_pressed = KEYS_Pressed();
+    uint16_t keys_released = KEYS_Released();
+
+    if (keys_pressed & KEY_A)
+    {
+        if (Room_Credits_PageExists(current_page + 1))
+        {
+            current_page++;
+            Room_Credits_PagePrint(current_page);
+        }
+        else
+        {
+            Game_Room_Prepare_Switch(ROOM_MAIN_MENU);
+            return;
+        }
+    }
+
+    if (keys_pressed & KEY_RIGHT)
+    {
+        if (Room_Credits_PageExists(current_page + 1))
+        {
+            current_page++;
+            Room_Credits_PagePrint(current_page);
+        }
+    }
+    if (keys_pressed & KEY_LEFT)
+    {
+        if (current_page > 0)
+        {
+            current_page--;
+            Room_Credits_PagePrint(current_page);
+        }
+    }
 
     if (keys_pressed & KEY_B)
     {
