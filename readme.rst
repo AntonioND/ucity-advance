@@ -33,13 +33,15 @@ For instructions on how to compile the game, check `this <compiling.rst>`_.
 Credits
 =======
 
-Game and art made by AntonioND/SkyLyrac (Antonio Niño Díaz)
+Game, art, SFXs and some music made by AntonioND/SkyLyrac (Antonio Niño Díaz).
 
 - Email: antonio_nd (at) outlook (dot) com
 - GitHub: https://github.com/AntonioND
 - Website: www.skylyrac.net
 
-Tools and libraries used:
+Most music obtained from https://modarchive.org/.
+
+Third party tools and libraries used:
 
 - devkitPro: https://devkitpro.org/
 - SDL 2: https://www.libsdl.org/
