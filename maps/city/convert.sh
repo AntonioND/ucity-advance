@@ -127,6 +127,21 @@ ${SUPERFAMICONV} map \
     --palette-base-offset 0 \
     --map-width 64 --map-height 64 \
     --split-width 64 --split-height 64 \
+    --in-image ${IN}/scenario_4_central.png \
+    --in-palette ${OUT}/city_map_palette.bin \
+    --in-tiles ${OUT}/city_map_tiles.bin \
+    --out-data ${OUT}/scenario_4_central.bin \
+    --no-flip \
+    --verbose
+
+${SUPERFAMICONV} map \
+    --mode gba \
+    --bpp 8 \
+    --tile-width 8 --tile-height 8 \
+    --tile-base-offset 0 \
+    --palette-base-offset 0 \
+    --map-width 64 --map-height 64 \
+    --split-width 64 --split-height 64 \
     --in-image ${IN}/test_map.png \
     --in-palette ${OUT}/city_map_palette.bin \
     --in-tiles ${OUT}/city_map_tiles.bin \

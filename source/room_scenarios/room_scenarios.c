@@ -33,6 +33,7 @@
 #include "maps/city/scenario_1_boringtown_bin.h"
 #include "maps/city/scenario_2_portville_bin.h"
 #include "maps/city/scenario_3_newdale_bin.h"
+#include "maps/city/scenario_4_central_bin.h"
 #include "maps/city/test_map_bin.h"
 
 #define FRAMEBUFFER_TILES_BASE          MEM_BG_TILES_BLOCK_ADDR(0)
@@ -66,8 +67,9 @@ typedef enum {
     SCENARIO_BORINGTOWN,
     SCENARIO_PORTVILLE,
     SCENARIO_NEWDALE,
+    SCENARIO_CENTRAL,
 
-    SCENARIO_MAX = SCENARIO_NEWDALE,
+    SCENARIO_MAX = SCENARIO_CENTRAL,
 
     SCENARIO_TEST_MAP,
 } scenario_enum;
@@ -139,6 +141,23 @@ static const scenario_info scenarios[] = {
         .technology_level   = 0,
         .permanent_msgs_to_disable = {
             ID_MSG_CLASS_TOWN, ID_MSG_CLASS_CITY, 0, 0, 0
+        }
+    },
+    [SCENARIO_CENTRAL] = {
+        .map                = scenario_4_central_bin,
+        .name               = "Central",
+        .start_scroll_x     = 2,
+        .start_scroll_y     = 2,
+        .start_funds        = 30000,
+        .city_type          = CLASS_METROPOLIS,
+        .start_month        = 8,
+        .start_year         = 2000,
+        .tax_percentage     = 14,
+        .payments_left      = 0,
+        .amount_per_payment = 0,
+        .technology_level   = TECH_LEVEL_NUCLEAR,
+        .permanent_msgs_to_disable = {
+            ID_MSG_CLASS_TOWN, ID_MSG_CLASS_CITY, ID_MSG_CLASS_METROPOLIS, 0, 0
         }
     },
     [SCENARIO_TEST_MAP] = {
