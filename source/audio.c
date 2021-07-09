@@ -99,16 +99,21 @@ int Audio_Enable_Get(void)
     return audio_enabled;
 }
 
-// Play song, but don't restart it if it is already playing
-void Audio_Song_Play(uint32_t song)
+void Audio_Song_Play_Force(uint32_t song)
 {
-    if (current_song == song)
-        return;
-
     current_song = song;
 
     if (audio_enabled)
         UMOD_Song_Play(song);
     else
          UMOD_Song_Stop();
+}
+
+// Play song, but don't restart it if it is already playing
+void Audio_Song_Play(uint32_t song)
+{
+    if (current_song == song)
+        return;
+
+    Audio_Song_Play_Force(song);
 }

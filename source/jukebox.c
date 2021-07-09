@@ -110,24 +110,25 @@ void Jukebox_Update(void)
     int is_gba = Room_Game_Graphics_New_Get();
     int city_level = Simulation_GetCityClass();
 
+    // Loop around all the songs starting from the one next to the current one
     for (size_t i = 0; i < nelem; i++)
     {
-        size_t check_index = (i + current_index) % nelem;
+        size_t check_index = (i + current_index + 1) % nelem;
 
-        if (song_info[i].is_gba != is_gba)
+        if (song_info[check_index].is_gba != is_gba)
             continue;
 
-        if (song_info[i].room != current_room)
+        if (song_info[check_index].room != current_room)
             continue;
 
-        if (song_info[i].city_level != -1)
+        if (song_info[check_index].city_level != -1)
         {
-            if (song_info[i].city_level != city_level)
+            if (song_info[check_index].city_level != city_level)
                 continue;
         }
 
         current_index = check_index;
-        Audio_Song_Play(current_index);
+        Audio_Song_Play_Force(current_index);
         break;
     }
 }

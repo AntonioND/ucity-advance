@@ -19,6 +19,7 @@ IWRAM_CODE ARM_CODE void Audio_Mix(void);
 void Audio_Enable_Set(int enabled);
 int Audio_Enable_Get(void);
 
+void Audio_Song_Play_Force(uint32_t song);
 void Audio_Song_Play(uint32_t song);
 
 #endif // AUDIO_H__
