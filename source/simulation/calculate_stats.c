@@ -186,7 +186,7 @@ static void Simulation_CalculateCityType(void)
 #define POPULATION_TOWN         500
 #define POPULATION_CITY         1000
 #define POPULATION_METROPOLIS   3000
-#define POPULATION_CAPITAL      6000
+#define POPULATION_CAPITAL      5000
 
     // Default to village
 
