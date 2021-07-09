@@ -17,4 +17,5 @@ tiled.tmxrasterizer ${IN}/scenario_1_boringtown.tmx ${IN}/scenario_1_boringtown.
 tiled.tmxrasterizer ${IN}/scenario_2_portville.tmx ${IN}/scenario_2_portville.png
 tiled.tmxrasterizer ${IN}/scenario_3_newdale.tmx ${IN}/scenario_3_newdale.png
 tiled.tmxrasterizer ${IN}/scenario_4_central.tmx ${IN}/scenario_4_central.png
+tiled.tmxrasterizer ${IN}/scenario_5_futura.tmx ${IN}/scenario_5_futura.png
 tiled.tmxrasterizer ${IN}/test_map.tmx ${IN}/test_map.png
