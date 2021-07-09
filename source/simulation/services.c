@@ -657,7 +657,7 @@ IWRAM_CODE static void Simulation_ServicesApplyMaskBig(int x, int y)
 
     for (int j = 0; j < SERVICES_MASK_BIG_HEIGHT; j++)
     {
-        int mapy = j - sy;
+        int mapy = j + sy;
 
         if (mapy < 0)
             continue;
@@ -667,7 +667,7 @@ IWRAM_CODE static void Simulation_ServicesApplyMaskBig(int x, int y)
 
         for (int i = 0; i < SERVICES_MASK_BIG_WIDTH; i++)
         {
-            int mapx = i - sx;
+            int mapx = i + sx;
 
             if (mapx < 0)
                 continue;

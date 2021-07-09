@@ -154,7 +154,7 @@ void Simulation_SimulateAll(void)
 
     if (city_class >= CLASS_VILLAGE)
     {
-        Simulation_ServicesBig(T_SCHOOL_CENTER);
+        Simulation_ServicesBig(T_HIGH_SCHOOL_CENTER);
         Simulation_EducationAddTileOkFlag();
     }
 
