@@ -47,7 +47,7 @@ static const char *credits_pages[] = {
     "    Code: GPL-3.0-only\n"
     "    Art: CC-BY-NC-SA-4.0\n"
     "    Music: Various\n"
-    "                           1/4\n",
+    "                           1/5\n",
 
     // Page 2
 
@@ -70,7 +70,7 @@ static const char *credits_pages[] = {
     "  Mod Archive Distr. license\n"
     "\n"
     "\n"
-    "                           2/4\n",
+    "                           2/5\n",
 
     // Page 3
 
@@ -93,7 +93,7 @@ static const char *credits_pages[] = {
     "  Mod Archive Distr. license\n"
     "\n"
     "\n"
-    "                           3/4\n",
+    "                           3/5\n",
 
     // Page 4
 
@@ -116,7 +116,30 @@ static const char *credits_pages[] = {
     "  patience and support during\n"
     "  this project.\n"
     "\n"
-    "                           4/4\n",
+    "                           4/5\n",
+
+    // Page 5
+
+    "\n"
+    "  Other thanks:\n"
+    "\n"
+    "    devkitPro\n"
+    "\n"
+    "    SDL 2\n"
+    "\n"
+    "    libpng\n"
+    "\n"
+    "    Aseprite\n"
+    "\n"
+    "    Tiled\n"
+    "\n"
+    "    JFXR\n"
+    "\n"
+    "    Open ModPlug Tracker\n"
+    "\n"
+    "    The Mod Archive\n"
+    "\n"
+    "                           5/5\n",
 };
 
 static size_t current_page = 0;
