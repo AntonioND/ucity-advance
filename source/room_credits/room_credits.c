@@ -109,12 +109,12 @@ static const char *credits_pages[] = {
     "  Other music and SFXs:\n"
     "\n"
     "    AntonioND/SkyLyrac\n"
-    "\n"
     "    CC-BY-NC-SA-4.0\n"
     "\n"
     "\n"
-    "\n"
-    "\n"
+    "  Valentina, thanks for your\n"
+    "  patience and support during\n"
+    "  this project.\n"
     "\n"
     "                           4/4\n",
 };
