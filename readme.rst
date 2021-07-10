@@ -11,6 +11,9 @@ original `µCity for Game Boy Color <https://github.com/AntonioND/ucity/>`_.
 
 .. image:: screenshot-0.png
 .. image:: screenshot-1.png
+.. image:: screenshot-2.png
+.. image:: screenshot-3.png
+.. image:: screenshot-4.png
 
 This game is completely free. Just download the ROM, install a Game Boy Advance
 emulator, and play! The last release of the game should be here:
@@ -31,6 +34,9 @@ Compiling
 =========
 
 For instructions on how to compile the game, check `this <compiling.rst>`_.
+
+Note that, because of using **UGBA**, it is possible to build this game natively
+for PC as well.
 
 Credits
 =======
