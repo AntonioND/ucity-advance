@@ -20,6 +20,8 @@ https://github.com/AntonioND/ucity-advance/releases
 You can also play on real hardware. Even though the game has been developed
 using mainly emulators, it has been verified to work on hardware.
 
+This video shows the game in action: https://www.youtube.com/watch?v=xYQfRM_zih0
+
 Manual
 ======
 
