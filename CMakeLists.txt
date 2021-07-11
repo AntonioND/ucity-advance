@@ -9,6 +9,20 @@ get_filename_component(EXECUTABLE_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 
 project(${EXECUTABLE_NAME})
 
+# Set installation settings
+# -------------------------
+
+# When invoking cmake install, install binaries to build directory
+set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install/" CACHE PATH
+    "Default install path" FORCE)
+
+# Set RPATH so that Linux looks for the libraries in the same folder. This needs
+# to go before any add_executable() or add_library()
+set(CMAKE_INSTALL_RPATH "$ORIGIN")
+
+# Declare binary
+# --------------
+
 add_executable(${EXECUTABLE_NAME})
 
 # Link with libugba
@@ -65,3 +79,8 @@ target_include_directories(${EXECUTABLE_NAME} PRIVATE
     source
     built_assets
 )
+
+# Define install targets
+# ----------------------
+
+install(TARGETS ${EXECUTABLE_NAME} libugba DESTINATION .)
