@@ -14,15 +14,12 @@ First, you need CMake 3.15 or newer, make, and libpng 1.6. For example:
 
    sudo apt install cmake build-essential libpng-dev
 
-Then, clone the repository of this game, and the repositories of **UGBA**,
-**UMOD Player** and **SuperFamiconv**:
+Then, clone the repository of this game with all its submodules:
 
 .. code:: bash
 
-    git clone https://github.com/AntonioND/ucity-advance
-    git clone https://github.com/AntonioND/ugba
-    git clone https://github.com/AntonioND/umod-player
-    git clone https://github.com/Optiroc/SuperFamicon
+    git clone --recurse-submodules https://github.com/AntonioND/ucity-advance
+    cd ucity-advance
 
 Build **SuperFamiconv**:
 
@@ -44,7 +41,6 @@ Finally, convert the assets of the game:
 
 .. code:: bash
 
-   cd ucity-advance
    bash assets.sh
 
 Game Boy Advance
@@ -53,18 +49,18 @@ Game Boy Advance
 First, you need to install devkitPro. Follow the instructions in the following
 link to install it in your system: https://devkitpro.org/wiki/Getting_Started
 
-Build the library files of **UGBA** and the **UMOD Player**:
+Build the library files of **libugba** and the **UMOD Player**:
 
 .. code:: bash
 
-    cd ugba/library && make -j`nproc` && cd ../..
-    cd umod-player/player && make -j`nproc` && cd ../..
+    cd libugba && make && cd ..
+    cd umod-player/player && make && cd ../..
 
 Finally, build the game:
 
 .. code:: bash
 
-   cd ucity-advance && make -j`nproc`
+    make -j`nproc`
 
 Linux
 =====
@@ -74,7 +70,6 @@ do this:
 
 .. code:: bash
 
-    cd ucity-advance
     mkdir build && cd build && cmake .. && make -j`nproc`
 
 If you don't install devkitPro because you only want to build the PC
