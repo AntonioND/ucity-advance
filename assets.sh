@@ -16,6 +16,14 @@ make
 
 popd
 
+pushd umod-player
+
+rm -rf build ; mkdir build ; cd build
+cmake ..
+make
+
+popd
+
 # Paths to tools
 
 export SUPERFAMICONV=../SuperFamiconv/bin/superfamiconv
@@ -79,7 +87,7 @@ bash sprites/minimap_menu_gbc/convert.sh ${OUT_DIR_SPRITES_MINIMAP_MENU_GBC}
 
 mkdir ${OUT_DIR}/audio
 
-../umod-player/build/packer/umod_packer \
+umod-player/build/packer/umod_packer \
     ${OUT_DIR}/audio/umod_pack.bin \
     ${OUT_DIR}/audio/umod_pack_info.h \
     audio/songs/*/*.mod \

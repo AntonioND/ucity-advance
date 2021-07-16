@@ -1,0 +1,6 @@
+[submodule "umod-player"]
+	path = umod-player
+	url = https://github.com/AntonioND/umod-player
+[submodule "libugba"]
+	path = libugba
+	url = https://github.com/AntonioND/libugba

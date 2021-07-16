@@ -19,8 +19,8 @@ SOURCEDIR   := source
 INCLUDEDIRS := source
 BUILTASSETS := built_assets
 
-LIBUGBA     := $(CURDIR)/../ugba/libugba
-UMOD_PLAYER := $(CURDIR)/../umod-player/player
+LIBUGBA     := $(CURDIR)/libugba
+UMOD_PLAYER := $(CURDIR)/umod-player/player
 
 LIBS        := -lugba -lumod
 LIBDIRS     := $(LIBUGBA) $(UMOD_PLAYER)

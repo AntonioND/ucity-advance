@@ -28,13 +28,11 @@ add_executable(${EXECUTABLE_NAME})
 # Link with libugba
 # -----------------
 
-# Get absolute path to default libugba folder
-if("${UGBA_PATH}" STREQUAL "")
-    get_filename_component(UGBA_PATH ../ugba ABSOLUTE)
-endif()
+# Get absolute path to libugba folder
+get_filename_component(LIBUGBA_PATH "libugba" ABSOLUTE)
 
-if(EXISTS ${UGBA_PATH})
-    add_subdirectory(${UGBA_PATH} libugba)
+if(EXISTS ${LIBUGBA_PATH})
+    add_subdirectory(${LIBUGBA_PATH} libugba)
 else()
     message(FATAL_ERROR "ugba folder not found")
 endif()
@@ -44,19 +42,15 @@ target_link_libraries(${EXECUTABLE_NAME} libugba)
 # Link with UMOD Player
 # ---------------------
 
-# Feel free to remove the option of the two provided that you don't need.
+get_filename_component(UMOD_PLAYER_PATH "umod-player" ABSOLUTE)
 
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/audio)
-    get_filename_component(UMOD_PLAYER_PATH ../umod-player ABSOLUTE)
-
-    if(EXISTS ${UMOD_PLAYER_PATH})
-        add_subdirectory(${UMOD_PLAYER_PATH} umod_player)
-    else()
-        message(FATAL_ERROR "UMOD Player repository not found")
-    endif()
-
-    target_link_libraries(${EXECUTABLE_NAME} umod_player)
+if(EXISTS ${UMOD_PLAYER_PATH})
+    add_subdirectory(${UMOD_PLAYER_PATH} umod_player)
+else()
+    message(FATAL_ERROR "UMOD Player repository not found")
 endif()
+
+target_link_libraries(${EXECUTABLE_NAME} umod_player)
 
 # Add source code files
 # ---------------------
@@ -83,4 +77,9 @@ target_include_directories(${EXECUTABLE_NAME} PRIVATE
 # Define install targets
 # ----------------------
 
-install(TARGETS ${EXECUTABLE_NAME} libugba DESTINATION .)
+install(
+    TARGETS
+        ${EXECUTABLE_NAME} libugba
+    DESTINATION
+        .
+)
