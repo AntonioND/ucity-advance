@@ -26,7 +26,7 @@ popd
 
 # Paths to tools
 
-export SUPERFAMICONV=../SuperFamiconv/bin/superfamiconv
+export SUPERFAMICONV=SuperFamiconv/bin/superfamiconv
 export PNGS2STRIP=tools/build/pngs2strip/pngs2strip
 
 # Prepare destination folder

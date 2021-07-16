@@ -4,3 +4,6 @@
 [submodule "libugba"]
 	path = libugba
 	url = https://github.com/AntonioND/libugba
+[submodule "SuperFamiconv"]
+	path = SuperFamiconv
+	url = https://github.com/Optiroc/SuperFamiconv
