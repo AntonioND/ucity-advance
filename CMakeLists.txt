@@ -20,11 +20,6 @@ set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install/" CACHE PATH
 # to go before any add_executable() or add_library()
 set(CMAKE_INSTALL_RPATH "$ORIGIN")
 
-# Declare binary
-# --------------
-
-add_executable(${EXECUTABLE_NAME})
-
 # Link with libugba
 # -----------------
 
@@ -37,8 +32,6 @@ else()
     message(FATAL_ERROR "ugba folder not found")
 endif()
 
-target_link_libraries(${EXECUTABLE_NAME} libugba)
-
 # Link with UMOD Player
 # ---------------------
 
@@ -49,8 +42,6 @@ if(EXISTS ${UMOD_PLAYER_PATH})
 else()
     message(FATAL_ERROR "UMOD Player repository not found")
 endif()
-
-target_link_libraries(${EXECUTABLE_NAME} umod_player)
 
 # Add source code files
 # ---------------------
@@ -63,23 +54,20 @@ endmacro()
 
 search_source_files(source FILES_SOURCE)
 search_source_files(built_assets FILES_BUILT_ASSETS)
-
-target_sources(${EXECUTABLE_NAME} PRIVATE
+set(ALL_FILES_SOURCE
     ${FILES_SOURCE}
     ${FILES_BUILT_ASSETS}
 )
 
-target_include_directories(${EXECUTABLE_NAME} PRIVATE
-    source
-    built_assets
+get_filename_component(INCLUDE_PATH_SOURCE "source" ABSOLUTE)
+get_filename_component(INCLUDE_PATH_BUILT_ASSETS "built_assets" ABSOLUTE)
+
+set(INCLUDE_PATHS
+    ${INCLUDE_PATH_SOURCE}
+    ${INCLUDE_PATH_BUILT_ASSETS}
 )
 
-# Define install targets
-# ----------------------
-
-install(
-    TARGETS
-        ${EXECUTABLE_NAME} libugba
-    DESTINATION
-        .
-)
+if(BUILD_GBA)
+    add_subdirectory(gba)
+endif()
+add_subdirectory(sdl2)
