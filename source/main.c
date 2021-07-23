@@ -63,6 +63,8 @@ static void Game_Room_Unload(int room)
 {
     switch (room)
     {
+        case ROOM_INVALID:
+            break;
         case ROOM_GAME:
             Room_Game_Unload();
             break;
@@ -114,6 +116,8 @@ static void Game_Room_Load(int room)
 
     switch (room)
     {
+        case ROOM_INVALID:
+            break;
         case ROOM_GAME:
             Room_Game_Load();
             Jukebox_RoomSet(JUKEBOX_ROOM_GAME);
@@ -270,6 +274,8 @@ static void Game_Room_Handle_Current(void)
 {
     switch (current_room)
     {
+        case ROOM_INVALID:
+            break;
         case ROOM_GAME:
             Room_Game_Handle();
             break;

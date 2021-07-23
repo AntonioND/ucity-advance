@@ -262,13 +262,13 @@ void CityMapCheckBuildBridge(int force, int x, int y, uint16_t type,
         }
 
         // Check if there is an obstacle
-        uint16_t type = CityMapGetType(curx, cury);
-        if (type != TYPE_WATER)
+        uint16_t type_ = CityMapGetType(curx, cury);
+        if (type_ != TYPE_WATER)
         {
-            type &= TYPE_MASK;
+            type_ &= TYPE_MASK;
 
             // If bridge or dock, fail
-            if ((type == TYPE_WATER) || (type == TYPE_DOCK))
+            if ((type_ == TYPE_WATER) || (type_ == TYPE_DOCK))
             {
                 *length = 0;
                 return;
@@ -423,8 +423,8 @@ void CityMapBuildBridge(int force, int *x, int *y, uint16_t type,
 
     while (built_length < length)
     {
-        uint16_t type = CityMapGetType(*x, *y);
-        if (type != TYPE_WATER)
+        uint16_t type_ = CityMapGetType(*x, *y);
+        if (type_ != TYPE_WATER)
             break;
 
         CityMapDrawTile(tile, *x, *y);
@@ -707,8 +707,8 @@ void DrawCityDeleteBridge(int force, int x, int y)
         else
             ox--;
 
-        uint16_t type = CityMapGetType(ox, oy) & TYPE_MASK;
-        if (type != TYPE_WATER)
+        uint16_t type_ = CityMapGetType(ox, oy) & TYPE_MASK;
+        if (type_ != TYPE_WATER)
         {
             if (is_vertical)
                 oy++;
@@ -734,8 +734,8 @@ void DrawCityDeleteBridge(int force, int x, int y)
         else
             ex++;
 
-        uint16_t type = CityMapGetType(ex, ey) & TYPE_MASK;
-        if (type != TYPE_WATER)
+        uint16_t type_ = CityMapGetType(ex, ey) & TYPE_MASK;
+        if (type_ != TYPE_WATER)
         {
             if (is_vertical)
                 ey--;

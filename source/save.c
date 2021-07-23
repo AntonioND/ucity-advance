@@ -95,7 +95,7 @@ void Save_Data_Reset(void)
 
     // Clear everything
     for (size_t i = 0; i < sizeof(save_data); i++)
-        ((uint8_t *)sav)[i] = 0;
+        ((volatile uint8_t *)sav)[i] = 0;
 
     // Save magic string
     Save_Data_Copy(sav->magic_string, MAGIC_STRING, MAGIC_STRING_LEN);

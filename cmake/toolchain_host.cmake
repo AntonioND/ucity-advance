@@ -28,10 +28,6 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
             $<$<COMPILE_LANGUAGE:C>:-Wstrict-prototypes>
             $<$<COMPILE_LANGUAGE:C>:-Wold-style-definition>
 
-            # Enable Wpedantic but disable warning about having strings that are
-            # too long
-            -Wpedantic -Wno-overlength-strings
-
             # Make sure we don't use too much stack. Windows doesn't like it
             # when the stack usage is too high, even when Linux doesn't complain
             # about it.

@@ -59,7 +59,7 @@ static void Room_Graphs_Refresh_Icons(void)
     int x = ((GBA_SCREEN_W - 16) / 2) - selected_graph * 16;
     int y = GBA_SCREEN_H - 16 - 8;
 
-    for (int i = 0; i < 3; i++)
+    for (unsigned int i = 0; i < 3; i++)
     {
         int tile = i * 4 + GRAPH_MENU_ICONS_TILES_INDEX;
         if (i == selected_graph)

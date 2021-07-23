@@ -464,6 +464,7 @@ IWRAM_CODE void Simulation_CreateBuildingsTryBuild(int x, int y, uint16_t type)
         else
         {
             UGBA_Assert(0);
+            return;
         }
 
         size = 3;
@@ -511,6 +512,7 @@ end3x3:
         else
         {
             UGBA_Assert(0);
+            return;
         }
 
         size = 2;
@@ -541,6 +543,7 @@ end2x2:
         else
         {
             UGBA_Assert(0);
+            return;
         }
 
         size = 1;

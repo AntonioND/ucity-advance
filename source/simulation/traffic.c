@@ -397,6 +397,7 @@ IWRAM_CODE static void TrafficRetraceStep(int x, int y, int amount_of_traffic)
     else
     {
         UGBA_Assert(0);
+        return;
     }
 
     // Recursive call

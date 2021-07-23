@@ -1097,8 +1097,10 @@ void Room_Game_SlowVBLHandler(void)
                     Game_Room_Prepare_Switch(ROOM_CITY_STATS);
                     return;
                 // The following two are handled in PauseMenuHandleInput()
-                //case PAUSE_MENU_DISASTERS:
-                //case PAUSE_MENU_OPTIONS:
+                case PAUSE_MENU_DISASTERS:
+                case PAUSE_MENU_OPTIONS:
+                    UGBA_Assert(0);
+                    break;
                 case PAUSE_MENU_PAUSE:
                     simulation_enabled ^= 1;
                     PauseMenuDraw();

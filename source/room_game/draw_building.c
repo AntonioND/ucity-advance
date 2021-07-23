@@ -60,13 +60,13 @@ int MapDrawBuilding(int forced, int type, int x, int y)
         {
             for (int i = 0; i < w; i++)
             {
-                uint16_t type = CityMapGetType(x + i, y + j);
+                uint16_t type_ = CityMapGetType(x + i, y + j);
 
                 // Valid types: Field, forest and power lines
 
-                if ((type != TYPE_FIELD) &&
-                    (type != TYPE_FOREST) &&
-                    (type != (TYPE_FIELD | TYPE_HAS_POWER)))
+                if ((type_ != TYPE_FIELD) &&
+                    (type_ != TYPE_FOREST) &&
+                    (type_ != (TYPE_FIELD | TYPE_HAS_POWER)))
                 {
                     // Exit and play error sound
                     SFX_BuildError();

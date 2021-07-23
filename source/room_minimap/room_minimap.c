@@ -93,7 +93,7 @@ static void Room_Minimap_Refresh_Icons(void)
     else
         x = ((GBA_SCREEN_W - 16) / 2) - selected_minimap * 16;
 
-    for (int i = 0; i < 14; i++)
+    for (unsigned int i = 0; i < 14; i++)
     {
         int tile = i * 4 + GRAPH_MENU_ICONS_TILES_INDEX;
         if (i == selected_minimap)
