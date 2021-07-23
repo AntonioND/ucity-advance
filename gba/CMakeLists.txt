@@ -44,13 +44,6 @@ target_link_options(${GAME_NAME} PRIVATE
     -Wl,-Map,mapfile.map -Wl,--gc-sections
 )
 
-install(
-    TARGETS
-        ${GAME_NAME}
-    DESTINATION
-        .
-)
-
 # Generate GBA ROM from the ELF file
 # ----------------------------------
 
@@ -63,4 +56,11 @@ add_custom_command(
 
 add_custom_target(ucity_advance_gba_rom ALL
     DEPENDS ${GAME_NAME}.gba
+)
+
+install(
+    FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/${GAME_NAME}.gba
+    DESTINATION
+        .
 )

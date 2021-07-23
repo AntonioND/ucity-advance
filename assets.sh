@@ -9,24 +9,26 @@ set -e
 # Build tools
 
 pushd tools
-
 rm -rf build ; mkdir build ; cd build
 cmake ..
 make
+popd
 
+pushd SuperFamiconv
+rm -rf build ; mkdir build ; cd build
+cmake ..
+make -j`nproc`
 popd
 
 pushd umod-player
-
 rm -rf build ; mkdir build ; cd build
 cmake ..
 make
-
 popd
 
 # Paths to tools
 
-export SUPERFAMICONV=SuperFamiconv/bin/superfamiconv
+export SUPERFAMICONV=SuperFamiconv/build/superfamiconv
 export PNGS2STRIP=tools/build/pngs2strip/pngs2strip
 
 # Prepare destination folder
