@@ -22,15 +22,9 @@ target_include_directories(${GAME_NAME} PRIVATE ${INCLUDE_PATHS})
 # Build options
 # -------------
 
-target_compile_definitions(${GAME_NAME} PRIVATE
-    __GBA__ $<$<CONFIG:RELEASE>:NDEBUG>)
+gba_set_compiler_options(${GAME_NAME})
 
-set(ARGS_C
-    -Wall -Wextra -Wno-unused-parameter
-    -mthumb -mthumb-interwork
-    -mcpu=arm7tdmi -mtune=arm7tdmi
-    -ffunction-sections -fdata-sections
-)
+set(ARGS_C -Wall -Wextra -Wno-unused-parameter)
 
 target_compile_options(${GAME_NAME} PRIVATE
     $<$<COMPILE_LANGUAGE:C>:${ARGS_C}>
@@ -39,24 +33,12 @@ target_compile_options(${GAME_NAME} PRIVATE
 target_link_options(${GAME_NAME} PRIVATE
     -flto
     -Wno-stringop-overflow -Wno-stringop-overread
-    -specs=gba.specs
-    -mthumb -mthumb-interwork
-    -Wl,-Map,mapfile.map -Wl,--gc-sections
 )
 
 # Generate GBA ROM from the ELF file
 # ----------------------------------
 
-add_custom_command(
-    OUTPUT ${GAME_NAME}.gba
-    COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${GAME_NAME}> ${GAME_NAME}.gba
-    COMMAND ${DEVKITPRO_TOOLS}gbafix ${GAME_NAME}.gba
-    DEPENDS ${GAME_NAME}
-)
-
-add_custom_target(ucity_advance_gba_rom ALL
-    DEPENDS ${GAME_NAME}.gba
-)
+make_gba_rom(${GAME_NAME} ${GAME_NAME} "UCITYADVANCE" "UCAD")
 
 install(
     FILES
