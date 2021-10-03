@@ -2,7 +2,7 @@
 #
 # Copyright (c) 2020-2021 Antonio Niño Díaz
 
-include(${CMAKE_SOURCE_DIR}/cmake/toolchain_host.cmake)
+toolchain_sdl2()
 
 # Define library target
 # ---------------------

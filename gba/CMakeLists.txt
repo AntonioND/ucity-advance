@@ -2,7 +2,7 @@
 #
 # Copyright (c) 2021 Antonio Niño Díaz
 
-include(${CMAKE_SOURCE_DIR}/cmake/toolchain_gba.cmake)
+toolchain_gba()
 
 # Define library target
 # ---------------------
