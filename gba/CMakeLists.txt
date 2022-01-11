@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 #
-# Copyright (c) 2021 Antonio Niño Díaz
+# Copyright (c) 2021-2022 Antonio Niño Díaz
 
 toolchain_gba()
 
@@ -11,6 +11,9 @@ set(GAME_NAME ucity-advance-gba)
 
 add_executable(${GAME_NAME})
 target_link_libraries(${GAME_NAME} libugba_gba)
+if(NOT USE_DEVKITARM)
+    target_link_libraries(${GAME_NAME} libsysgba_gba)
+endif()
 target_link_libraries(${GAME_NAME} umod_player_gba)
 
 # Source code, include directories and global definitions
@@ -23,6 +26,9 @@ target_include_directories(${GAME_NAME} PRIVATE ${INCLUDE_PATHS})
 # -------------
 
 gba_set_compiler_options(${GAME_NAME})
+if(NOT USE_DEVKITARM)
+    libsysgba_set_compiler_options(${GAME_NAME})
+endif()
 
 set(ARGS_C -Wall -Wextra -Wno-unused-parameter)
 

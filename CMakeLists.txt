@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-only
 #
-# Copyright (c) 2020-2021 Antonio Niño Díaz
+# Copyright (c) 2020-2022 Antonio Niño Díaz
 
 cmake_minimum_required(VERSION 3.15)
 
@@ -19,6 +19,13 @@ set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install/" CACHE PATH
 # Set RPATH so that Linux looks for the libraries in the same folder. This needs
 # to go before any add_executable() or add_library()
 set(CMAKE_INSTALL_RPATH "$ORIGIN")
+
+# Build options
+# -------------
+
+option(BUILD_GBA "Build GBA binaries in addition to PC binaries" OFF)
+
+option(USE_DEVKITARM "Use devkitARM to build GBA binaries" ON)
 
 # Link with libugba
 # -----------------
