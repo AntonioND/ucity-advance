@@ -2,7 +2,7 @@
 #
 # Copyright (c) 2021-2022 Antonio Niño Díaz
 
-toolchain_gba()
+ugba_toolchain_gba()
 
 # Define library target
 # ---------------------

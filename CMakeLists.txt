@@ -50,19 +50,6 @@ else()
     message(FATAL_ERROR "UMOD Player repository not found")
 endif()
 
-# Toolchain selection macros
-# --------------------------
-
-get_filename_component(UCITY_ADVANCE_PATH "." ABSOLUTE)
-
-macro(toolchain_gba)
-    include(${UCITY_ADVANCE_PATH}/cmake/toolchain_gba.cmake)
-endmacro()
-
-macro(toolchain_sdl2)
-    include(${UCITY_ADVANCE_PATH}/cmake/toolchain_sdl2.cmake)
-endmacro()
-
 # Add source code files
 # ---------------------
 

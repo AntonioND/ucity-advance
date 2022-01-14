@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 #
-# Copyright (c) 2020-2021 Antonio Niño Díaz
+# Copyright (c) 2020-2022 Antonio Niño Díaz
 
-toolchain_sdl2()
+ugba_toolchain_sdl2()
 
 # Define library target
 # ---------------------
