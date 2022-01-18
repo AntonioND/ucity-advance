@@ -8,6 +8,11 @@ cmake_minimum_required(VERSION 3.15)
 get_filename_component(EXECUTABLE_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 
 project(${EXECUTABLE_NAME})
+enable_language(C)
+
+set(C_STANDARD 11)
+set(C_EXTENSIONS ON)
+set(C_STANDARD_REQUIRED ON)
 
 # Set installation settings
 # -------------------------
