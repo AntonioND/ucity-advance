@@ -10,9 +10,9 @@ get_filename_component(EXECUTABLE_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${EXECUTABLE_NAME})
 enable_language(C)
 
-set(C_STANDARD 11)
-set(C_EXTENSIONS ON)
-set(C_STANDARD_REQUIRED ON)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_EXTENSIONS ON)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Set installation settings
 # -------------------------

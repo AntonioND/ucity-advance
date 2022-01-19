@@ -24,10 +24,6 @@ macro(compiler_flags_sdl2 target_name)
                 $<$<COMPILE_LANGUAGE:C>:-Wstrict-prototypes>
                 $<$<COMPILE_LANGUAGE:C>:-Wold-style-definition>
 
-                # Enable Wpedantic but disable warning about having strings that
-                # are too long
-                -Wpedantic -Wno-overlength-strings
-
                 # Make sure we don't use too much stack. Windows doesn't like it
                 # when the stack usage is too high, even when Linux doesn't
                 # complain about it.
