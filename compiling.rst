@@ -44,6 +44,9 @@ The output is in the folder ``build/install``.
 Game Boy Advance
 ================
 
+With **devkitPro**
+^^^^^^^^^^^^^^^^^^
+
 First, you need to install devkitPro. Follow the instructions in the following
 link to install it in your system: https://devkitpro.org/wiki/Getting_Started
 
@@ -54,6 +57,28 @@ The Linux and Game Boy Advance binaries are built at the same time:
     mkdir build
     cd build
     cmake .. -DBUILD_GBA=ON -DCMAKE_BUILD_TYPE=Release
+    make -j`nproc` install
+
+The output is in the folder ``build/install``.
+
+Without **devkitPro**
+^^^^^^^^^^^^^^^^^^^^^
+
+Install ``gcc-arm-none-eabi`` toolchain: You can get it from your package
+manager, or from `Arm's GNU toolchain downloads website`_. In Ubuntu you can
+just do:
+
+.. code:: bash
+
+    sudo apt install gcc-arm-none-eabi
+
+The Linux and Game Boy Advance binaries are built at the same time:
+
+.. code:: bash
+
+    mkdir build
+    cd build
+    cmake .. -DBUILD_GBA=ON -DCMAKE_BUILD_TYPE=Release -DUSE_DEVKITARM=OFF
     make -j`nproc` install
 
 The output is in the folder ``build/install``.
@@ -71,3 +96,5 @@ Install `Tiled <https://www.mapeditor.org/>`_. Then run:
 
 It isn't needed to do this as part of the build process, the resulting files are
 included in the repository.
+
+.. _Arm's GNU toolchain downloads website: https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads
