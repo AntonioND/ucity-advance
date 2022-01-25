@@ -36,7 +36,7 @@ This should be enough:
 
     mkdir build
     cd build
-    cmake ..
+    cmake .. -DBUILD_GBA=OFF
     make -j`nproc` install
 
 The output is in the folder ``build/install``.
@@ -56,7 +56,7 @@ The Linux and Game Boy Advance binaries are built at the same time:
 
     mkdir build
     cd build
-    cmake .. -DBUILD_GBA=ON -DCMAKE_BUILD_TYPE=Release
+    cmake .. -DCMAKE_BUILD_TYPE=Release
     make -j`nproc` install
 
 The output is in the folder ``build/install``.
@@ -78,7 +78,7 @@ The Linux and Game Boy Advance binaries are built at the same time:
 
     mkdir build
     cd build
-    cmake .. -DBUILD_GBA=ON -DCMAKE_BUILD_TYPE=Release -DUSE_DEVKITARM=OFF
+    cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_DEVKITARM=OFF
     make -j`nproc` install
 
 The output is in the folder ``build/install``.

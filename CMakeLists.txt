@@ -28,8 +28,6 @@ set(CMAKE_INSTALL_RPATH "$ORIGIN")
 # Build options
 # -------------
 
-option(BUILD_GBA "Build GBA binaries in addition to PC binaries" OFF)
-
 option(USE_DEVKITARM "Use devkitARM to build GBA binaries" ON)
 
 # Link with libugba
@@ -44,8 +42,25 @@ else()
     message(FATAL_ERROR "ugba folder not found")
 endif()
 
-# Link with UMOD Player
-# ---------------------
+# Look for an ARM toolchain
+# -------------------------
+
+if(NOT "${BUILD_GBA}" STREQUAL OFF)
+    if("${ARM_GCC_PATH}" STREQUAL "")
+        message(STATUS "ugba-testing: GBA toolchain not specified")
+        ugba_search_toolchain_gba(BUILD_GBA)
+    else()
+        message(STATUS "ugba-testing: GBA toolchain has been specified")
+        set(BUILD_GBA ON)
+    endif()
+endif()
+
+if(BUILD_GBA)
+    message(STATUS "ugba-testing: GBA toolchain: ${ARM_GCC_PATH}")
+endif()
+
+# Add UMOD Player to the project after the toolchain is selected
+# --------------------------------------------------------------
 
 get_filename_component(UMOD_PLAYER_PATH "umod-player" ABSOLUTE)
 
