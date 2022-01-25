@@ -83,6 +83,9 @@ The Linux and Game Boy Advance binaries are built at the same time:
 
 The output is in the folder ``build/install``.
 
+To override the autodetected location of the cross compiler, you can add
+``-DARM_GCC_PATH=/path/to/folder/`` to the ``cmake`` command.
+
 Regenerate assets
 =================
 
