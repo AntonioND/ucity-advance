@@ -40,7 +40,9 @@ target_link_options(${ELF_FILE} PRIVATE
 # Generate GBA ROM from the ELF file
 # ----------------------------------
 
-make_gba_rom(${ELF_FILE} ${GAME_NAME} "UCITYADVANCE" "UCAD")
+# The game code starts with "2" for compatibility with the EverDrive GBA. It is
+# used to specify that the save type is SRAM.
+make_gba_rom(${ELF_FILE} ${GAME_NAME} "UCITYADVANCE" "2UCT")
 
 install(
     FILES
