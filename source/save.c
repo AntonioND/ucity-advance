@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 //
-// Copyright (c) 2021 Antonio Niño Díaz
+// Copyright (c) 2021-2022 Antonio Niño Díaz
 
 #include <stddef.h>
 #include <string.h>
@@ -12,27 +12,28 @@
 #include "save.h"
 #include "simulation/common.h"
 
-volatile save_data *Save_Data_Get(void)
+EWRAM_CODE volatile save_data *Save_Data_Get(void)
 {
     return MEM_SRAM;
 }
 
-volatile city_save_data *Save_Data_Get_City(int index)
+EWRAM_CODE volatile city_save_data *Save_Data_Get_City(int index)
 {
     volatile save_data *sav = Save_Data_Get();
 
     return &(sav->city[index]);
 }
 
-city_save_data *Save_Data_Get_City_Temporary(void)
+EWRAM_CODE city_save_data *Save_Data_Get_City_Temporary(void)
 {
     static city_save_data temp_city;
 
     return &temp_city;
 }
 
-static void Save_Data_Copy(volatile void *dst, const volatile void *src,
-                           size_t size)
+EWRAM_CODE static void Save_Data_Copy(volatile void *dst,
+                                      const volatile void *src,
+                                      size_t size)
 {
     volatile uint8_t *s = (volatile uint8_t *)src;
     volatile uint8_t *d = (volatile uint8_t *)dst;
@@ -41,13 +42,13 @@ static void Save_Data_Copy(volatile void *dst, const volatile void *src,
         *d++ = *s++;
 }
 
-void Save_Data_Safe_Copy(volatile city_save_data *dst,
-                         const volatile city_save_data *src)
+EWRAM_CODE void Save_Data_Safe_Copy(volatile city_save_data *dst,
+                                    const volatile city_save_data *src)
 {
     Save_Data_Copy((void *)dst, (const void *)src, sizeof(city_save_data));
 }
 
-static uint32_t Save_Calculate_Checksum(void)
+EWRAM_CODE static uint32_t Save_Calculate_Checksum(void)
 {
     volatile save_data *sav = Save_Data_Get();
     uint8_t *src = (uint8_t *)sav;
@@ -58,7 +59,7 @@ static uint32_t Save_Calculate_Checksum(void)
     return checksum;
 }
 
-void Save_Reset_Checksum(void)
+EWRAM_CODE void Save_Reset_Checksum(void)
 {
     volatile save_data *sav = Save_Data_Get();
     uint32_t checksum = Save_Calculate_Checksum();
@@ -69,7 +70,7 @@ void Save_Reset_Checksum(void)
     sav->checksum[3] = (checksum >> 24) & 0xFF;
 }
 
-void Save_Data_Reset_City(int index)
+EWRAM_CODE void Save_Data_Reset_City(int index)
 {
     volatile city_save_data *sav_city = Save_Data_Get_City(index);
 
@@ -89,7 +90,7 @@ void Save_Data_Reset_City(int index)
     Save_Data_Safe_Copy(sav_city, city);
 }
 
-void Save_Data_Reset(void)
+EWRAM_CODE void Save_Data_Reset(void)
 {
     volatile save_data *sav = Save_Data_Get();
 
@@ -127,7 +128,7 @@ void Save_Data_Reset(void)
 }
 
 // This checks that the saved data is correct, and resets it if it isn't.
-void Save_Data_Check(void)
+EWRAM_CODE void Save_Data_Check(void)
 {
     volatile save_data *sav = Save_Data_Get();
 
