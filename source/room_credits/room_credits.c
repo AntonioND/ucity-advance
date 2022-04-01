@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 //
-// Copyright (c) 2021 Antonio Niño Díaz
+// Copyright (c) 2021-2022 Antonio Niño Díaz
 
 #include <ugba/ugba.h>
 
@@ -29,7 +29,7 @@ static const char *credits_pages[] = {
     // Page 1
 
     "\n"
-    "  " CHAR_MICRO "City " CHAR_COPYRIGHT " 2017-2018, 2021\n"
+    "  " CHAR_MICRO "City" CHAR_COPYRIGHT " 2017-2018,2021-2022\n"
     "\n"
     "  Antonio Ni" CHAR_NTILDE "o Diaz\n"
     "\n"
