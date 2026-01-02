@@ -70,7 +70,7 @@ just do:
 
 .. code:: bash
 
-    sudo apt install gcc-arm-none-eabi
+    sudo apt install gcc-arm-none-eabi libnewlib-arm-none-eabi
 
 The Linux and Game Boy Advance binaries are built at the same time:
 
