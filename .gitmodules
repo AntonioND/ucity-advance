@@ -1,9 +1,9 @@
 [submodule "umod-player"]
 	path = umod-player
-	url = https://github.com/AntonioND/umod-player
+	url = ../umod-player
 [submodule "libugba"]
 	path = libugba
-	url = https://github.com/AntonioND/libugba
+	url = ../libugba
 [submodule "SuperFamiconv"]
 	path = SuperFamiconv
-	url = https://github.com/Optiroc/SuperFamiconv
+	url = ../SuperFamiconv
