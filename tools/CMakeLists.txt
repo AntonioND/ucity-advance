@@ -2,9 +2,9 @@
 #
 # Copyright (c) 2021 Antonio Niño Díaz
 
-project(tools)
-
 cmake_minimum_required(VERSION 3.15)
+
+project(tools)
 
 add_subdirectory(bin2c)
 add_subdirectory(pngs2strip)
