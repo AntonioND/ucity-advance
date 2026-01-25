@@ -18,7 +18,7 @@ Then, clone the repository of this game with all its submodules:
 
 .. code:: bash
 
-    git clone --recurse-submodules https://github.com/AntonioND/ucity-advance
+    git clone --recurse-submodules https://codeberg.org/SkyLyrac/ucity-advance
     cd ucity-advance
 
 Finally, convert the assets of the game:

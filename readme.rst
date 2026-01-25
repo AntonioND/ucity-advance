@@ -7,7 +7,7 @@ Introduction
 
 This is µCity Advance (also spelled 'uCity', pronounced 'micro-city'), the
 open-source city-building game for Game Boy Advance. This is a remake of the
-original `µCity for Game Boy Color <https://github.com/AntonioND/ucity/>`_.
+original `µCity for Game Boy Color <https://github.com/AntonioND/ucity>`_.
 
 .. image:: screenshot-0.png
 .. image:: screenshot-1.png
@@ -18,7 +18,7 @@ original `µCity for Game Boy Color <https://github.com/AntonioND/ucity/>`_.
 This game is completely free. Just download the ROM, install a Game Boy Advance
 emulator, and play! The last release of the game should be here:
 
-https://github.com/AntonioND/ucity-advance/releases
+https://codeberg.org/SkyLyrac/ucity-advance/releases
 
 You can also play on real hardware. Even though the game has been developed
 using mainly emulators, it has been verified to work on hardware.
@@ -43,9 +43,9 @@ Credits
 
 Game, art, SFXs and some music made by AntonioND/SkyLyrac (Antonio Niño Díaz).
 
-- Email: antonio_nd (at) outlook (dot) com
-- GitHub: https://github.com/AntonioND
-- Website: www.skylyrac.net
+- Email: antonio_nd@outlook.com or antonio_nd@proton.me
+- Codeberg: https://codeberg.org/SkyLyrac
+- Website: https://www.skylyrac.net
 
 Most music obtained from https://modarchive.org/.
 
@@ -54,7 +54,7 @@ Third party tools and libraries used:
 - devkitPro: https://devkitpro.org/
 - SDL 2: https://www.libsdl.org/
 - libpng: http://www.libpng.org/pub/png/libpng.html
-- GiiBiiAdvance: https://github.com/AntonioND/giibiiadvance
+- GiiBiiAdvance: https://codeberg.org/SkyLyrac/giibiiadvance
 - Aseprite: https://www.aseprite.org/
 - Tiled: https://www.mapeditor.org/
 - JFXR: https://jfxr.frozenfractal.com/
